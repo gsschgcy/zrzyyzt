@@ -35,7 +35,7 @@ public class TianDiTuLayer extends ImageTiledLayer {
         int col = tileKey.getColumn();
         int row = tileKey.getRow();
         String mainURL = layerInfo.getTianDiTuServiceURL();
-        String requestUrl = mainURL + "&tilecol=" + col + "&tilerow=" + row + "&tilematrix=" + (level);
+        String requestUrl = mainURL + "&x=" + col + "&y=" + row + "&l=" + (level);
         try {
             URL url = new URL(requestUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

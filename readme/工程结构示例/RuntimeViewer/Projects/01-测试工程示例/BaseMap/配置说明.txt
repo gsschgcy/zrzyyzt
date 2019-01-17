@@ -5,6 +5,9 @@
 4、在线切片服务 - OnlineTiledMapServiceLayer
 5、在线动态图层 - OnlineDynamicMapServiceLayer
 6、vtpk-LocalVectorTilePackage
+7、天地图矢量底图 - TianDiDuLayerMap
+8、天地图影像底图 - TianDiDuLayerImage
+9、天地图标注图层 - TianDiDuLayerImageLabel
 
 
 示例：
@@ -17,3 +20,24 @@
 "visable": true, //是否显示
 "opacity": 1 //透明度
 },
+{
+  "name": "天地图矢量底图",
+  "type": "TianDiDuLayerMap",
+  "layerIndex": 3,
+  "visable": false,
+  "opacity": 1
+},
+ {
+  "name": "天地图影像底图",
+  "type": "TianDiDuLayerImage",
+  "layerIndex": 4,
+  "visable": true,
+  "opacity": 1
+},
+ {
+  "name": "天地图标注图层",
+  "type": "TianDiDuLayerImageLabel",
+  "layerIndex": 5,
+  "visable": true,
+  "opacity": 1
+}

@@ -71,7 +71,7 @@ public class TianDiTuLayerInfo {
         return tileInfo;
     }
 
-    String kURLGetTile = "http://t0.tianditu.com/%s/wmts?service=wmts&request=gettile&version=1.0.0&layer=%s&format=tiles&tilematrixset=%s";
+    String kURLGetTile = "http://t5.tianditu.gov.cn/DataServer?T=%s&tk=2ce94f67e58faa24beb7cb8a09780552";
 
     double X_MIN_MERCATOR = -20037508.3427892;
     double Y_MIN_MERCATOR = -20037508.3427892;
