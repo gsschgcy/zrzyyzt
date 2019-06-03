@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esri.arcgisruntime.arcgisservices.LabelDefinition;
 import com.esri.arcgisruntime.data.FeatureCollection;
 import com.esri.arcgisruntime.data.FeatureCollectionTable;
 import com.esri.arcgisruntime.data.ShapefileFeatureTable;
@@ -23,6 +24,7 @@ import com.esri.arcgisruntime.layers.ArcGISVectorTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
 import com.esri.arcgisruntime.layers.RasterLayer;
+import com.esri.arcgisruntime.layers.WebTiledLayer;
 import com.esri.arcgisruntime.raster.Raster;
 import com.esri.arcgisruntime.data.GeoPackage;
 import com.esri.arcgisruntime.data.GeoPackageFeatureTable;
@@ -35,6 +37,7 @@ import com.gisluq.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LayerListview
 import com.gisluq.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LegendListviewAdapter;
 import com.gisluq.runtimeviewer.Widgets.LayerManagerWidget.BaseMap.BaseMapManager;
 import com.gisluq.runtimeviewer.Widgets.LayerManagerWidget.BaseMap.BasemapLayerInfo;
+import com.gisluq.runtimeviewer.Widgets.LayerManagerWidget.UserLayers.GoogleLayer.GoogleWebTiledLayer;
 import com.gisluq.runtimeviewer.Widgets.LayerManagerWidget.UserLayers.TianDiTuLayer.TianDiTuLayer;
 import com.gisluq.runtimeviewer.Widgets.LayerManagerWidget.UserLayers.TianDiTuLayer.TianDiTuLayerInfo;
 
@@ -72,7 +75,7 @@ public class LayerManagerWidget extends BaseWidget {
         context = super.context;
 
         initBaseMapResource();//初始化底图
-        initOperationalLayers();//初始化业务图层
+//        initOperationalLayers();//初始化业务图层
 
         initGeoPackageLayers();//初始化业务图层 gpkg
 
@@ -271,6 +274,23 @@ public class LayerManagerWidget extends BaseWidget {
                      for (int j = 0; j < packageFeatureTables.size(); j++) {
                          GeoPackageFeatureTable table = packageFeatureTables.get(j);
                          FeatureLayer layer = new FeatureLayer(table);
+
+//                         //        //标注测试
+//                        StringBuilder labelDefinitionString = new StringBuilder();
+//                        labelDefinitionString.append("{");
+//                        labelDefinitionString.append("\"labelExpressionInfo\": {");
+//                        labelDefinitionString.append("\"expression\": \"return $feature.fid;\"},");
+//                        labelDefinitionString.append("\"labelPlacement\": \"esriServerPolygonPlacementAlwaysHorizontal\",");
+//                        labelDefinitionString.append("\"minScale\":500000,");
+//                        labelDefinitionString.append("\"symbol\": {");
+//                        labelDefinitionString.append("\"color\": [0,255,50,255],");
+//                        labelDefinitionString.append("\"font\": {\"size\": 14, \"weight\": \"bold\"},");
+//                        labelDefinitionString.append("\"type\": \"esriTS\"}");
+//                        labelDefinitionString.append("}");
+//                         LabelDefinition labelDefinition = LabelDefinition.fromJson(String.valueOf(labelDefinitionString));
+//                         layer.getLabelDefinitions().add(labelDefinition);
+//                         layer.setLabelsEnabled(true);
+
 //                layer.setName(table.getName()+"-gpkg");
                          mapView.getMap().getOperationalLayers().add(layer);
                      }
@@ -281,7 +301,7 @@ public class LayerManagerWidget extends BaseWidget {
     }
 
     /**
-     * 初始化接送
+     * 初始化
      */
     private void initJsonLayers(){
         String path = getJSONPath();
@@ -426,6 +446,30 @@ public class LayerManagerWidget extends BaseWidget {
                 ltl2.setOpacity((float) layerInfo.Opacity);
                 ltl2.setLayerInfo(tdtannoInfo02);
                 super.mapView.getMap().getBasemap().getBaseLayers().add(ltl2);
+            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_GOOGLE_VECTOR)) {//谷歌矢量
+                WebTiledLayer googleWebTiledLayer = GoogleWebTiledLayer.CreateGoogleLayer(GoogleWebTiledLayer.MapType.VECTOR);
+                googleWebTiledLayer.setName(layerInfo.Name);
+                googleWebTiledLayer.setVisible(layerInfo.Visable);
+                googleWebTiledLayer.setOpacity((float) layerInfo.Opacity);
+                super.mapView.getMap().getBasemap().getBaseLayers().add(googleWebTiledLayer);
+            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_GOOGLE_IMAGE)) {//谷歌影像
+                WebTiledLayer googleWebTiledLayer = GoogleWebTiledLayer.CreateGoogleLayer(GoogleWebTiledLayer.MapType.IMAGE);
+                googleWebTiledLayer.setName(layerInfo.Name);
+                googleWebTiledLayer.setVisible(layerInfo.Visable);
+                googleWebTiledLayer.setOpacity((float) layerInfo.Opacity);
+                super.mapView.getMap().getBasemap().getBaseLayers().add(googleWebTiledLayer);
+            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_GOOGLE_TERRAIN)) {//谷歌地形
+                WebTiledLayer googleWebTiledLayer = GoogleWebTiledLayer.CreateGoogleLayer(GoogleWebTiledLayer.MapType.TERRAIN);
+                googleWebTiledLayer.setName(layerInfo.Name);
+                googleWebTiledLayer.setVisible(layerInfo.Visable);
+                googleWebTiledLayer.setOpacity((float) layerInfo.Opacity);
+                super.mapView.getMap().getBasemap().getBaseLayers().add(googleWebTiledLayer);
+            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_GOOGLE_ROAD)) {//谷歌道路
+                WebTiledLayer googleWebTiledLayer = GoogleWebTiledLayer.CreateGoogleLayer(GoogleWebTiledLayer.MapType.ROAD);
+                googleWebTiledLayer.setName(layerInfo.Name);
+                googleWebTiledLayer.setVisible(layerInfo.Visable);
+                googleWebTiledLayer.setOpacity((float) layerInfo.Opacity);
+                super.mapView.getMap().getBasemap().getBaseLayers().add(googleWebTiledLayer);
             }
         }
     }

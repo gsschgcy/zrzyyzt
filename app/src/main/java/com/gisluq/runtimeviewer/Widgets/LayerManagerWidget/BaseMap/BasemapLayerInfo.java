@@ -20,6 +20,11 @@ public class BasemapLayerInfo {
     public static String LYAER_TYPE_TIANDITU_IMAGE="TianDiDuLayerImage";//天地图影像
     public static String LYAER_TYPE_TIANDITU_IMAGE_LABEL="TianDiDuLayerImageLabel";//天地图影像标注图层
 
+    public static String LYAER_TYPE_GOOGLE_VECTOR="GoogleMapLayerVector";//谷歌矢量
+    public static String LYAER_TYPE_GOOGLE_IMAGE="GoogleMapLayerImage";//谷歌影像
+    public static String LYAER_TYPE_GOOGLE_TERRAIN="GoogleMapLayerTerrain";//谷歌地形
+    public static String LYAER_TYPE_GOOGLE_ROAD="GoogleMapLayerRoad";//谷歌道路图层
+
 
     public String Name;//名称
     public String Type;//类型
