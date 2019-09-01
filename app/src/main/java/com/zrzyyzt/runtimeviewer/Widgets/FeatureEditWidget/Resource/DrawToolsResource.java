@@ -1,4 +1,4 @@
-package com.gisluq.runtimeviewer.Widgets.FeatureEditWidget.Resource;
+package com.zrzyyzt.runtimeviewer.Widgets.FeatureEditWidget.Resource;
 
 import android.content.Context;
 import android.view.View;
@@ -6,9 +6,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.gisluq.runtimeviewer.R;
-
-import java.util.zip.CheckedOutputStream;
+import com.zrzyyzt.runtimeviewer.R;
 
 /**
  * 要素绘制工具UI信息
