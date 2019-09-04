@@ -10,14 +10,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.gisluq.runtimeviewer.Config.Xml;
+package com.zrzyyzt.runtimeviewer.Config.Xml;
 
 import android.content.Context;
 
 
-import com.gisluq.runtimeviewer.BMOD.MapModule.Resource.Constant;
-import com.gisluq.runtimeviewer.Config.Entity.ConfigEntity;
-import com.gisluq.runtimeviewer.Config.Entity.WidgetEntity;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource.Constant;
+import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
+import com.zrzyyzt.runtimeviewer.Config.Entity.WidgetEntity;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -49,7 +49,7 @@ public class XmlParser {
 	private final static String XML_NODE_WIDGET_ATTRIBUTE_CONFIG = "config";
 	private final static String XML_NODE_WIDGET_ATTRIBUTE_ISSHOWING = "showing";
 	private final static String XML_NODE_WIDGET_ATTRIBUTE_CLASSNAME = "classname";
-	
+	private final static String XML_NODE_WIDGET_ATTRIBUTE_WIDTH = "width";
 	public static ConfigEntity getConfig(Context c) throws Exception
 	{
 		ConfigEntity config = new ConfigEntity();
@@ -73,7 +73,8 @@ public class XmlParser {
 
 		boolean isWidgetContainer = false;
 		boolean isBaseMap = true;
-		String nodeName = "", temp = "";
+		String nodeName = "";
+		String temp = "";
 		int index=0;
 		try
 		{
@@ -106,6 +107,14 @@ public class XmlParser {
 							entity.setIconName(pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_ICON));
 							entity.setSelectIconName(pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_SELECT_ICON));
 							entity.setStatus(Boolean.valueOf(pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_ISSHOWING)));
+							//获取widget宽度
+							if((pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_WIDTH)!=null)){
+								entity.setWidth(Integer.valueOf(pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_WIDTH)));
+							}else{
+								entity.setWidth(300);
+							}
+
+
 							if(pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_CONFIG) != null)
 							{
 								temp = pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_CONFIG);
