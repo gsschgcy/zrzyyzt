@@ -276,7 +276,7 @@ public class SysUtils {
         cv.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG| Paint.FILTER_BITMAP_FLAG));
 
         cv.drawText(text, width, size, paint);
-        cv.save(Canvas.ALL_SAVE_FLAG);// 保存
+        cv.save();// 保存
         cv.restore();// 存储
 
         return new BitmapDrawable(newb);

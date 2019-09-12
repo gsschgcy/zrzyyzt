@@ -28,7 +28,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="图查属性"
+                android:text="@string/widget_txt_mapquery"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
@@ -55,7 +55,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="属性查图"
+                android:text="@string/widget_txt_querymap"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 

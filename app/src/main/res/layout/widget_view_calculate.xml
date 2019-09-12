@@ -35,7 +35,7 @@
                         android:paddingBottom="5dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="5dp"
-                        android:text="量算工具"
+                        android:text="@string/measure_tool"
                         android:textStyle="normal|bold" />
 
                     <View
@@ -55,7 +55,7 @@
                             <LinearLayout
                                 android:id="@+id/widget_view_calculate_linerBtnGetLocation"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/ic_item_touch"
                                 android:clickable="true"
@@ -76,13 +76,13 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="10dp"
                                     android:layout_weight="1"
-                                    android:text="获取坐标" />
+                                    android:text="@string/measure_point_text" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/widget_view_calculate_linerBtnGetLength"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/ic_item_touch"
                                 android:clickable="true"
@@ -101,13 +101,13 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="10dp"
                                     android:layout_weight="1"
-                                    android:text="量算长度" />
+                                    android:text="@string/measure_polyline_text" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/widget_view_calculate_linerBtnGetArea"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/ic_item_touch"
                                 android:clickable="true"
@@ -126,7 +126,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="10dp"
                                     android:layout_weight="1"
-                                    android:text="量算面积" />
+                                    android:text="@string/measure_area_text" />
 
                             </LinearLayout>
 
@@ -160,7 +160,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:padding="10dp"
-                            android:text="量算结果"
+                            android:text="@string/measure_result"
                             android:textStyle="normal|bold" />
 
                         <TextView
@@ -171,7 +171,7 @@
                             android:clickable="true"
                             android:gravity="center"
                             android:padding="10dp"
-                            android:text="清除"
+                            android:text="@string/clear"
                             android:textColor="@color/colorAccent" />
 
                     </LinearLayout>
@@ -192,7 +192,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:padding="5dp"
-                            android:text="空"
+                            android:text="@string/empty"
                             android:textSize="14sp" />
                     </RelativeLayout>
 
@@ -205,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="说明：选择量算工具开始使用量算功能。当绘制要素为线、面时需双击屏幕结束绘制获取量算结果。" />
+                android:text="@string/measure_description" />
 
         </LinearLayout>
     </ScrollView>

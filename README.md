@@ -56,9 +56,9 @@ App配置文件
 
     <!--widget组件列表-->
     <widgetcontainer>
-        <widget label="图层管理" classname="com.gisluq.runtimeviewer.Widgets.LayerManagerWidget.LayerManagerWidget"  config=""/>
-        <widget label="工程信息" classname="com.gisluq.runtimeviewer.Widgets.ProjectInfoWidget.ProjectInfoWidget"  config=""/>
-        <widget label="Hello World" classname="com.gisluq.runtimeviewer.Widgets.HelloWorldWidget" config=""/>
+        <widget label="图层管理" classname="zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.LayerManagerWidget"  config=""/>
+        <widget label="工程信息" classname="zrzyyzt.runtimeviewer.Widgets.ProjectInfoWidget.ProjectInfoWidget"  config=""/>
+        <widget label="Hello World" classname="zrzyyzt.runtimeviewer.Widgets.HelloWorldWidget" config=""/>
     </widgetcontainer>
 </configuration>
 ```
@@ -164,7 +164,7 @@ public class HelloWorldWidget extends BaseWidget {
 #### 3、配置文件中添加对应内容
 assents/config.xml下添加以下内容：
 ```xml
- <widget label="Hello World" classname="com.gisluq.runtimeviewer.Widgets.HelloWorldWidget" config=""/>
+ <widget label="Hello World" classname="zrzyyzt.runtimeviewer.Widgets.HelloWorldWidget" config=""/>
 ```
 ![ ](./readme/widget-xml.png '描述')
 

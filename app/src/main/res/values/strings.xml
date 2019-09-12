@@ -1,5 +1,4 @@
 <resources>
-
     <string name="app_name">RuntimeViewer</string>
     <string name="app_title_name_mian">通用应用程序框架</string>
     <string name="app_title_name_subhead">基于ArcGIS Runtime SDK 100.x</string>
@@ -19,5 +18,60 @@
     <!--地图窗口-->
     <string name="txt_location_info">(开启GPS) 坐标信息</string>
 
+    <string name="zoom_out_text">缩小</string>
+    <string name="zoom_in_text">放大</string>
 
+    <string name="zoom_rotate_text">旋转</string>
+    <string name="map_north_text">指北</string>
+
+
+    <string name="measure_length_text">测距</string>
+    <string name="measure_area_text">测面积</string>
+    <string name="measure_clear_text">清除</string>
+    <string name="measure_end_text">完成</string>
+    <string name="measure_prev_text">撤销</string>
+    <string name="measure_next_text">恢复</string>
+    <string name="measure_polyline_text">量算长度</string>
+    <string name="measure_point_text">获取坐标</string>
+    <string name="measure_tool">量算工具</string>
+    <string name="clear">清除</string>
+    <string name="measure_result">量算结果</string>
+    <string name="empty">空</string>
+    <string name="measure_description">说明：选择量算工具开始使用量算功能。当绘制要素为线、面时需双击屏幕结束绘制获取量算结果。</string>
+    <string name="txt_scale_info">比例尺</string>
+    <string name="txt_toggle">ToggleButton</string>
+    <string name="widget_txt_mapquery">图查属性</string>
+    <string name="widget_txt_querymap">属性查图</string>
+    <string name="widget_txt_bookmark">位置书签</string>
+    <string name="widget_txt_add">添加</string>
+    <string name="widget_txt_clear">清除</string>
+    <string name="widget_txt_boomark_sample">兰州市</string>
+
+    <string name="pick_file">浏览文件</string>
+    <string name="toast_pick_file_error">浏览文件错误</string>
+
+    <string name="draw_tool">绘图工具</string>
+    <string name="draw_point_text">点</string>
+    <string name="draw_polyline_text">线</string>
+    <string name="draw_polygon_text">面</string>
+    <string name="draw_envelop_text">矩形</string>
+    <string name="draw_freepolyline_text">流状线</string>
+    <string name="draw_freepolygon_text">流状面</string>
+    <string name="draw_circle_text">圆</string>
+    <string name="draw_text_text">文字</string>
+
+    <string name="select_symbol_text">选择符号</string>
+    <string name="draw_description">描述</string>
+
+    <string-array name="fontsizearr">
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
 </resources>

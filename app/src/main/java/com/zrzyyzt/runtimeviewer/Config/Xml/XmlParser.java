@@ -50,6 +50,7 @@ public class XmlParser {
 	private final static String XML_NODE_WIDGET_ATTRIBUTE_ISSHOWING = "showing";
 	private final static String XML_NODE_WIDGET_ATTRIBUTE_CLASSNAME = "classname";
 	private final static String XML_NODE_WIDGET_ATTRIBUTE_WIDTH = "width";
+	private final static String XML_NODE_WIDGET_ATTRIBUTE_PERMISSION = "permission";
 	public static ConfigEntity getConfig(Context c) throws Exception
 	{
 		ConfigEntity config = new ConfigEntity();
@@ -114,6 +115,9 @@ public class XmlParser {
 								entity.setWidth(300);
 							}
 
+							if(pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_PERMISSION)!=null){
+								entity.setmPermission(pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_PERMISSION));
+							}
 
 							if(pullParser.getAttributeValue(null,XML_NODE_WIDGET_ATTRIBUTE_CONFIG) != null)
 							{
