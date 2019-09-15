@@ -23,6 +23,7 @@
 
     <string name="zoom_rotate_text">旋转</string>
     <string name="map_north_text">指北</string>
+    <string name="map_location_text">定位</string>
 
 
     <string name="measure_length_text">测距</string>
@@ -61,7 +62,10 @@
     <string name="draw_text_text">文字</string>
 
     <string name="select_symbol_text">选择符号</string>
-    <string name="draw_description">描述</string>
+    <string name="draw_text_description">描述:先设置标绘内容和文字大小，然后点击地图窗口，即可添加文本标注</string>
+    <string name="draw_description">描述:先选择标绘样式，然后点击地图窗口进行标绘</string>
+    <string name="picture">拍照</string>
+    <string name="request_permission">拍照权限请求</string>
 
     <string-array name="fontsizearr">
         <item>7</item>

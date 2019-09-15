@@ -94,7 +94,7 @@
                                     android:layout_width="40dp"
                                     android:layout_height="30dp"
                                     android:layout_weight="1"
-                                    app:srcCompat="@mipmap/draw_polyline" />
+                                    app:srcCompat="@mipmap/polyline" />
 
                                 <TextView
                                     android:layout_width="match_parent"

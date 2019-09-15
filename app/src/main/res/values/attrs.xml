@@ -27,6 +27,7 @@
         <attr name="map_rotate_text" format="string"/>
 
         <attr name="map_north_text" format="string"/>
+        <attr name="map_location_text" format="string"/>
 
         <attr name="measure_prev_text" format="string"/>
         <attr name="measure_next_text" format="string"/>

@@ -78,7 +78,7 @@ public class WidgetManager {
             try {
                 cc = Class.forName(mListWidget.get(i).getClassname());
                 BaseWidget widget = (BaseWidget)cc.newInstance();
-                Log.d("","id="+mListWidget.get(i).getId()+","+mListWidget.get(i).getClassname());
+                Log.d(TAG,"id="+mListWidget.get(i).getId()+","+mListWidget.get(i).getClassname());
                 instanceWidget(widget, mListWidget.get(i));
                 widget.create();
                 mInstanceWidget.put(mListWidget.get(i).getId(), widget);

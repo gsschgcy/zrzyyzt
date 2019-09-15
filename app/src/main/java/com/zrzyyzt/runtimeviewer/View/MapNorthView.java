@@ -80,7 +80,7 @@ public class MapNorthView extends LinearLayout {
         zoomWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),35));
         zoomHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height,Util.valueToSp(getContext(),35));
         showText=ta.getBoolean(R.styleable.ViewAttr_show_text,false);
-        mapNorthText=ta.getString(R.styleable.ViewAttr_map_north_text);
+        mapNorthText=ta.getString(R.styleable.ViewAttr_map_location_text);
 
         setDpWidth(zoomWidth);
         setDpHeight(zoomHeight);

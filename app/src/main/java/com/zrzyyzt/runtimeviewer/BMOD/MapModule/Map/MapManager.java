@@ -1,21 +1,24 @@
 package com.zrzyyzt.runtimeviewer.BMOD.MapModule.Map;
 
 import android.content.Context;
-import android.widget.CompoundButton;
+import android.graphics.Bitmap;
+import android.util.Log;
+import android.view.View;
 
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
+import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.view.MapScaleChangedEvent;
 import com.esri.arcgisruntime.mapping.view.MapScaleChangedListener;
-import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Location.DMUserLocationManager;
+import com.esri.arcgisruntime.mapping.view.MapView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource.ResourceConfig;
-import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Running.MapConfigInfo;
 import com.zrzyyzt.runtimeviewer.Common.Variable;
 import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
 import com.zrzyyzt.runtimeviewer.R;
 
 import java.text.DecimalFormat;
+import java.util.concurrent.ExecutionException;
 
 import gisluq.lib.Util.ToastUtils;
 
@@ -115,22 +118,22 @@ public class MapManager {
         /**
          * 设置定位相关事件
          */
-        MapConfigInfo.dmUserLocationManager = new DMUserLocationManager(context,resourceConfig.mapView);
-        resourceConfig.togbtnLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    ToastUtils.showShort(context,"定位开");
-                    resourceConfig.togbtnLocation.setBackgroundResource(R.drawable.ic_location_btn_on);
-                    MapConfigInfo.dmUserLocationManager.start();
-                }else{
-                    ToastUtils.showShort(context,"定位关");
-                    resourceConfig.togbtnLocation.setBackgroundResource(R.drawable.ic_location_btn_off);
-                    MapConfigInfo.dmUserLocationManager.stop();
-                    resourceConfig.txtLocation.setText(context.getString(R.string.txt_location_info));
-                }
-            }
-        });
+//        MapConfigInfo.dmUserLocationManager = new DMUserLocationManager(context,resourceConfig.mapView);
+//        resourceConfig.togbtnLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked){
+//                    ToastUtils.showShort(context,"定位开");
+//                    resourceConfig.togbtnLocation.setBackgroundResource(R.drawable.ic_location_btn_on);
+//                    MapConfigInfo.dmUserLocationManager.start();
+//                }else{
+//                    ToastUtils.showShort(context,"定位关");
+//                    resourceConfig.togbtnLocation.setBackgroundResource(R.drawable.ic_location_btn_off);
+//                    MapConfigInfo.dmUserLocationManager.stop();
+//                    resourceConfig.txtLocation.setText(context.getString(R.string.txt_location_info));
+//                }
+//            }
+//        });
 
         /**
          *设置放大缩小按钮相关
@@ -150,6 +153,63 @@ public class MapManager {
 
         resourceConfig.mapNorthView.init(resourceConfig.mapView);
 
+        resourceConfig.mapLocationView.init(resourceConfig.mapView);
+
+
+        resourceConfig.view_tdt_yx.setOnClickListener(listener);
+        resourceConfig. view_tdt_sl.setOnClickListener(listener);
+        resourceConfig.view_china_colour.setOnClickListener(listener);
+        resourceConfig.view_china_blue.setOnClickListener(listener);
+    }
+
+
+    View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(v.getId() == R.id.basemap_tdt_yx){
+                Log.d(TAG, "onClick: basemap_tdt_yx" );
+            }else if(v.getId() == R.id.basemap_tdt_sl){
+                Log.d(TAG, "onClick: basemap_tdt_sl" );
+            }else if(v.getId() == R.id.basemap_china_colour){
+                Log.d(TAG, "onClick: basemap_china_colour" );
+            }else if(v.getId() == R.id.basemap_china_blue){
+                Log.d(TAG, "onClick: basemap_china_blue" );
+            }
+        }
+    };
+    /**
+     * 截图
+     */
+    public Bitmap getMapViewBitmap() {
+        MapView v = resourceConfig.mapView;
+        v.clearFocus();
+        v.setPressed(false);
+        //能画缓存就返回false
+        boolean willNotCache = v.willNotCacheDrawing();
+        v.setWillNotCacheDrawing(false);
+        int color = v.getDrawingCacheBackgroundColor();
+        v.setDrawingCacheBackgroundColor(0);
+        if (color != 0) {
+            v.destroyDrawingCache();
+        }
+        v.buildDrawingCache();
+        Bitmap cacheBitmap = null;
+        while(cacheBitmap == null){
+            final ListenableFuture<Bitmap> export = v.exportImageAsync();
+            try {
+                cacheBitmap =export.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
+        // Restore the view
+        v.destroyDrawingCache();
+        v.setWillNotCacheDrawing(willNotCache);
+        v.setDrawingCacheBackgroundColor(color);
+        return bitmap;
     }
 
 }

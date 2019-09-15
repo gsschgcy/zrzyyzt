@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
+import com.zrzyyzt.runtimeviewer.Config.AppConfig;
+import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Widgets.DocManagerWidget.Adapter.PdfFileAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.DocManagerWidget.Entity.PdfFileEntity;
@@ -31,6 +33,7 @@ public class DocManagerWidget extends BaseWidget {
     private List<PdfFileEntity> webPdfFileEntities= null;
 
     PdfFileAdapter pdfFileAdapter = null;
+    public static ConfigEntity configEntity = null;
 
     @Override
     public void active() {
@@ -48,6 +51,10 @@ public class DocManagerWidget extends BaseWidget {
         context = super.context;
         LayoutInflater mLayoutInflater = LayoutInflater.from(super.context);
         docManagerView = mLayoutInflater.inflate(R.layout.widget_view_pdf_file_list1,null);
+
+        if (configEntity==null){
+            configEntity = AppConfig.getConfig(context);
+        }
 
         //获取网络pdf文件
         webPdfFileEntities = getWebPdfFileEntities();
@@ -103,7 +110,7 @@ public class DocManagerWidget extends BaseWidget {
     private List<PdfFileEntity> getWebPdfFileEntities(){
         List<PdfFileEntity> temp = null;
         ExecutorService pool = Executors.newCachedThreadPool();
-        GetPdfFileThread getPdfFileThread = new GetPdfFileThread(temp);
+        GetPdfFileThread getPdfFileThread = new GetPdfFileThread(temp,configEntity.getIpAddress());
         Future<List<PdfFileEntity>> future  = pool.submit(getPdfFileThread);
         while(true){
             if(future.isDone()){

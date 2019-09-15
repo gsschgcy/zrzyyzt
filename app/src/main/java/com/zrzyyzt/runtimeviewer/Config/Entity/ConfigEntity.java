@@ -22,6 +22,7 @@ import java.util.List;
 public class ConfigEntity 
 {
 	private String runtimrKey = null;//许可信息
+	private String ipAddress = null; //ip地址
 	private String workspacePath = null;//工作空间路径
 
 	private List<WidgetEntity> mListWidget = new ArrayList<WidgetEntity>();
@@ -40,6 +41,14 @@ public class ConfigEntity
 
 	public void setWorkspacePath(String workspacePath) {
 		this.workspacePath = workspacePath;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
 	}
 
 	public void setListWidget(List<WidgetEntity> list)

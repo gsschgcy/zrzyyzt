@@ -51,7 +51,7 @@ public class DrawTool extends Subject {
 
     private LineSymbol lineSymbol;
     private FillSymbol fillSymbol;
-    private FillSymbol circleFillSymbol;
+//    private FillSymbol circleFillSymbol;
     private int drawType;//当前要素绘制类型
     private boolean active;
     private boolean isAllowDoubleTouchToEnd=true;//是否允许双击结束绘制
@@ -77,7 +77,7 @@ public class DrawTool extends Subject {
     public static final int ENVELOPE = 2;//矩形
     public static final int POLYLINE = 3;//线
     public static final int POLYGON = 4;//面
-    public static final int CIRCLE = 5;//圆
+//    public static final int CIRCLE = 5;//圆
     public static final int ELLIPSE = 6;//椭圆
     public static final int FREEHAND_POLYGON = 7; //流状面
     public static final int FREEHAND_POLYLINE = 8; //流状线
@@ -98,7 +98,7 @@ public class DrawTool extends Subject {
         this.markerSymbol = DrawSymbol.markerSymbol;
         this.lineSymbol = DrawSymbol.mLineSymbol;
         this.fillSymbol = DrawSymbol.mFillSymbol;
-        this.circleFillSymbol = DrawSymbol.mCircleFillSymbol;
+//        this.circleFillSymbol = DrawSymbol.mCircleFillSymbol;
         this.textSymbol = DrawSymbol.mTextSymbol;
         //TODO 设置透明度
 //        this.fillSymbol.setAlpha(90);
@@ -124,7 +124,7 @@ public class DrawTool extends Subject {
                 this.envelopeGeometry = new EnvelopeBuilder(getSpatialReference());
                 break;
             case DrawTool.POLYGON:
-            case DrawTool.CIRCLE:
+//            case DrawTool.CIRCLE:
             case DrawTool.FREEHAND_POLYGON:
                 Log.d(TAG, "activate: circle or polygon");
                 this.polygonGeometry = new PolygonBuilder(getSpatialReference());
@@ -282,12 +282,12 @@ public class DrawTool extends Subject {
     /**
      *刷新圆要素信息
      */
-    private void refreshCircle(){
-        if (tempLayer != null) {
-            tempLayer.getGraphics().clear();
-        }
-        drawCircle();
-    }
+//    private void refreshCircle(){
+//        if (tempLayer != null) {
+//            tempLayer.getGraphics().clear();
+//        }
+//        drawCircle();
+//    }
 
     /**
      * 刷新要素信息
@@ -400,10 +400,10 @@ public class DrawTool extends Subject {
     /**
      * 绘制圆
      */
-    private void drawCircle() {
-        this.drawGraphic = new Graphic(polygonGeometry.toGeometry(), circleFillSymbol) ;
-        this.tempLayer.getGraphics().add(this.drawGraphic);
-    }
+//    private void drawCircle() {
+//        this.drawGraphic = new Graphic(polygonGeometry.toGeometry(), circleFillSymbol) ;
+//        this.tempLayer.getGraphics().add(this.drawGraphic);
+//    }
 
     /**
      * 节点回退操作.
@@ -525,31 +525,31 @@ public class DrawTool extends Subject {
 
         @Override
         public boolean onTouch(View view, MotionEvent event) {
-            if(active && (drawType == CIRCLE || drawType == FREEHAND_POLYGON || drawType == FREEHAND_POLYLINE || drawType == ENVELOPE)){
+            if(active && (drawType == FREEHAND_POLYGON || drawType == FREEHAND_POLYLINE || drawType == ENVELOPE)){
                 Point point = mapView.screenToLocation(new android.graphics.Point((int)event.getX(), (int)event.getY()));
                 Log.d(TAG, "onTouch: " + drawType + ","+ point.getX());
                 switch (drawType){
-                    case CIRCLE:
-                        if(event.getAction() == MotionEvent.ACTION_DOWN)
-                        {
-                            startPoint = point;
-                        }else if(event.getAction() == MotionEvent.ACTION_MOVE){
-                            double radius = Math.sqrt(Math.pow(startPoint.getX()
-                                    - point.getX(), 2)
-                                    + Math.pow(startPoint.getY() - point.getY(), 2));
-                            getCircle(startPoint, radius, polygonGeometry);
-                            refreshCircle();
-                        }else if(event.getAction() == MotionEvent.ACTION_UP){
-                            double radius = Math.sqrt(Math.pow(startPoint.getX()
-                                    - point.getX(), 2)
-                                    + Math.pow(startPoint.getY() - point.getY(), 2));
-                            getCircle(startPoint, radius, polygonGeometry);
-                            drawGraphic = new Graphic(polygonGeometry.toGeometry(), circleFillSymbol);
-                            isCompleteDraw=true;
-                            sendDrawEndEvent();
-                            clear();
-                        }
-                        break;
+//                    case CIRCLE:
+//                        if(event.getAction() == MotionEvent.ACTION_DOWN)
+//                        {
+//                            startPoint = point;
+//                        }else if(event.getAction() == MotionEvent.ACTION_MOVE){
+//                            double radius = Math.sqrt(Math.pow(startPoint.getX()
+//                                    - point.getX(), 2)
+//                                    + Math.pow(startPoint.getY() - point.getY(), 2));
+//                            getCircle(startPoint, radius, polygonGeometry);
+//                            refreshCircle();
+//                        }else if(event.getAction() == MotionEvent.ACTION_UP){
+//                            double radius = Math.sqrt(Math.pow(startPoint.getX()
+//                                    - point.getX(), 2)
+//                                    + Math.pow(startPoint.getY() - point.getY(), 2));
+//                            getCircle(startPoint, radius, polygonGeometry);
+//                            drawGraphic = new Graphic(polygonGeometry.toGeometry(), circleFillSymbol);
+//                            isCompleteDraw=true;
+//                            sendDrawEndEvent();
+//                            clear();
+//                        }
+//                        break;
                     case FREEHAND_POLYGON:
                         if(event.getAction() == MotionEvent.ACTION_DOWN){
                             mPoints.add(point);
@@ -743,19 +743,19 @@ public class DrawTool extends Subject {
 
     }
 
-    /**
-     * 绘制圆
-     * @param center
-     * @param radius
-     * @param circle
-     */
-    private void getCircle(Point center, double radius, PolygonBuilder circle) {
-//        circle.setEmpty();
-        Point[] points = getPoints(center, radius);
-//        circle.startPath(points[0]);
-        for (int i = 1; i < points.length; i++)
-            circle.addPoint(points[i]);
-    }
+//    /**
+//     * 绘制圆
+//     * @param center
+//     * @param radius
+//     * @param circle
+//     */
+//    private void getCircle(Point center, double radius, PolygonBuilder circle) {
+////        circle.setEmpty();
+//        Point[] points = getPoints(center, radius);
+////        circle.startPath(points[0]);
+//        for (int i = 1; i < points.length; i++)
+//            circle.addPoint(points[i]);
+//    }
 
     private Point[] getPoints(Point center, double radius) {
         Point[] points = new Point[50];

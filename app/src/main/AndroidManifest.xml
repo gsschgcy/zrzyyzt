@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".BMOD.PhotoModule.View.CameraActivity"></activity>
         <activity android:name=".Widgets.DocManagerWidget.PdfViewerActivity" />
         <activity android:name=".BMOD.SystemModule.LoginActivity" />
         <activity android:name=".BMOD.SystemModule.LockviewActivity" />

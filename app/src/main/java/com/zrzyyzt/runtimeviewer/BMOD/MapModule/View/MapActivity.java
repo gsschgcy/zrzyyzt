@@ -1,16 +1,19 @@
 package com.zrzyyzt.runtimeviewer.BMOD.MapModule.View;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,19 +25,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.esri.arcgisruntime.concurrent.ListenableFuture;
-import com.esri.arcgisruntime.mapping.view.MapView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.WidgetManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Map.MapManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource.ResourceConfig;
+import com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.View.CameraActivity;
 import com.zrzyyzt.runtimeviewer.Base.BaseActivity;
 import com.zrzyyzt.runtimeviewer.Config.AppConfig;
 import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
 import com.zrzyyzt.runtimeviewer.Config.Entity.WidgetEntity;
 import com.zrzyyzt.runtimeviewer.Config.SystemDirPath;
 import com.zrzyyzt.runtimeviewer.R;
+import com.zrzyyzt.runtimeviewer.Utils.DialogUtils;
 import com.zrzyyzt.runtimeviewer.Utils.TimeUtils;
 
 import java.io.File;
@@ -46,7 +50,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import gisluq.lib.Util.SysUtils;
 import gisluq.lib.Util.ToastUtils;
@@ -81,9 +84,11 @@ public class MapActivity extends BaseActivity {
         DirPath = intent.getStringExtra("DirPath");
         titleTextView.setText(DirName);//显示工程文件夹名称
 
+
         resourceConfig = new ResourceConfig(context);//初始化应用程序资源列表
         init();//初始化应用程序
     }
+
 
     @Override
     protected void onStart() {
@@ -158,9 +163,17 @@ public class MapActivity extends BaseActivity {
              * 方案二模式，平板左侧菜单
              */
 
-            MenuItem menuItem= menu.add(Menu.NONE, Menu.FIRST + 1, 0, "截屏");
-            //记录菜单ID和WidgetEntity间对应关系
-            mWidgetEntityMenu.put(menuItem.getItemId(),"printscreen");
+            //截图
+            MenuItem printScreenMenu= menu.add(Menu.NONE, Menu.FIRST + 1, 0, "截屏");
+            mWidgetEntityMenu.put(printScreenMenu.getItemId(),"printscreen");
+
+            //拍照
+            MenuItem cameraMeneu= menu.add(Menu.NONE, Menu.FIRST + 2, 0, "拍照");
+            mWidgetEntityMenu.put(cameraMeneu.getItemId(),"camera");
+
+            //测量
+            MenuItem measureMeneu= menu.add(Menu.NONE, Menu.FIRST + 3, 0, "测量");
+            mWidgetEntityMenu.put(measureMeneu.getItemId(),"measure");
 
             //根据配置文件初始化系统功能菜单栏
             if (mConfigEntity != null) {
@@ -176,8 +189,6 @@ public class MapActivity extends BaseActivity {
                     ImageView imageView = (ImageView) view.findViewById(R.id.base_widget_view_tools_widget_btn_imgWidgetToolIcon);
 
                     Log.i(TAG, "onCreateOptionsMenu: " + widgetEntity.getLabel() + widgetEntity.getId());
-
-
 
                     //设置按钮对应UI
                     mWidgetManager.setWidgetBtnView(widgetEntity.getId(), textViewName, imageView);
@@ -342,14 +353,35 @@ public class MapActivity extends BaseActivity {
                 }
             }else if(object.getClass().equals(String.class)){
                 String name = (String)object;
-                if(name.equalsIgnoreCase("printscreen")){
-                   Bitmap bitmap =  getMapViewBitmap();
-                    saveImageToGallery(bitmap);
+                switch (name){
+                    case "printscreen":
+                        Bitmap bitmap = mMapManager.getMapViewBitmap();
+                        saveImageToGallery(bitmap);
+                        break;
+                    case "camera":
+                        Intent cameraIntent = new Intent(MapActivity.this, CameraActivity.class);
+                        this.startActivity(cameraIntent);
+                        break;
+                    case "measure":
+                        resourceConfig.setMeasureToolViewVisibility();
+
+                        break;
                 }
             }
         }
 
         return true;
+    }
+
+    /**
+     * 获取读取写入权限
+     */
+    private void requestReadExternalStoragePermission() {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) || shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            new DialogUtils.ReadExternalStoragePermissionDialog().show(getSupportFragmentManager(), "dialog");
+        } else {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        }
     }
 
     /**
@@ -374,9 +406,18 @@ public class MapActivity extends BaseActivity {
         String sd =  TimeUtils.getCurrentTime();
         String fileName = sd + ".jpg";
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this,"未获取读取、写入文件权限",Toast.LENGTH_LONG).show();
+            requestReadExternalStoragePermission();
+            return  -1;
+        }
+
         //获取文件
         File file = new File(appDir, fileName);
         FileOutputStream fos = null;
+
+
         try {
             fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -409,40 +450,6 @@ public class MapActivity extends BaseActivity {
         return -1;
     }
 
-    /**
-     * 截图
-     */
-    private Bitmap getMapViewBitmap() {
-       MapView v = resourceConfig.mapView;
-        v.clearFocus();
-        v.setPressed(false);
-        //能画缓存就返回false
-        boolean willNotCache = v.willNotCacheDrawing();
-        v.setWillNotCacheDrawing(false);
-        int color = v.getDrawingCacheBackgroundColor();
-        v.setDrawingCacheBackgroundColor(0);
-        if (color != 0) {
-            v.destroyDrawingCache();
-        }
-        v.buildDrawingCache();
-        Bitmap cacheBitmap = null;
-        while(cacheBitmap == null){
-            final ListenableFuture<Bitmap> export = v.exportImageAsync();
-            try {
-                cacheBitmap =export.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
-        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
-        // Restore the view
-        v.destroyDrawingCache();
-        v.setWillNotCacheDrawing(willNotCache);
-        v.setDrawingCacheBackgroundColor(color);
-        return bitmap;
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

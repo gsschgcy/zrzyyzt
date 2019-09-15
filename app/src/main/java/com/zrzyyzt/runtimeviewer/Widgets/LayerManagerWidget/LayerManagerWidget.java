@@ -330,6 +330,7 @@ public class LayerManagerWidget extends BaseWidget {
      * 初始化基础底图资源
      */
     private void initBaseMapResource() {
+        Log.d(TAG, "initBaseMapResource: start");
 //        String strMapUrl="http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
 //        ArcGISTiledMapServiceLayer arcGISTiledMapServiceLayer = new ArcGISTiledMapServiceLayer(strMapUrl);
 //        resourceConfig.mapView.addLayer(arcGISTiledMapServiceLayer);

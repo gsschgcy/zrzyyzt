@@ -3,6 +3,7 @@ package com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource;
 import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,6 +12,7 @@ import android.widget.ToggleButton;
 
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.zrzyyzt.runtimeviewer.R;
+import com.zrzyyzt.runtimeviewer.View.MapLoactionView;
 import com.zrzyyzt.runtimeviewer.View.MapNorthView;
 import com.zrzyyzt.runtimeviewer.View.MapRotateView;
 import com.zrzyyzt.runtimeviewer.View.MapZoomView;
@@ -20,7 +22,7 @@ import com.zrzyyzt.runtimeviewer.View.MeasureToolView;
  * 资源绑定注册类
  */
 public class ResourceConfig {
-
+    private static final String TAG = "ResourceConfig";
     public Context context;
     private Activity activiy;
 
@@ -46,6 +48,14 @@ public class ResourceConfig {
     public MeasureToolView measureToolView;
     public MapRotateView mapRotateView;
     public MapNorthView mapNorthView;
+    public MapLoactionView mapLocationView;
+
+
+    public View view_tdt_yx;
+    public View view_tdt_sl;
+    public View view_china_colour;
+    public View view_china_blue;
+
     /**
      * 初始化资源列表
      */
@@ -67,7 +77,23 @@ public class ResourceConfig {
         this.measureToolView =(MeasureToolView)activiy.findViewById(R.id.measure_tool);
         this.mapRotateView =(MapRotateView)activiy.findViewById(R.id.map_rotate_view);
         this.mapNorthView = (MapNorthView)activiy.findViewById(R.id.map_north_view);
+        this.mapLocationView = activiy.findViewById(R.id.map_location_view);
+
+        this.view_tdt_yx = activiy.findViewById(R.id.basemap_tdt_yx);
+        this.view_tdt_sl = activiy.findViewById(R.id.basemap_tdt_sl);
+        this.view_china_colour = activiy.findViewById(R.id.basemap_china_colour);
+        this.view_china_blue = activiy.findViewById(R.id.basemap_china_blue);
+
+
     }
 
 
+    public void setMeasureToolViewVisibility() {
+        if(measureToolView==null) return;
+        Log.d(TAG, "setMeasureToolViewVisibility: " + measureToolView.getVisibility());
+        if(measureToolView.getVisibility() == View.VISIBLE)
+            measureToolView.setVisibility(View.GONE);
+        else if(measureToolView.getVisibility() == View.GONE)
+            measureToolView.setVisibility(View.VISIBLE);
+    }
 }

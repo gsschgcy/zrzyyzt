@@ -48,9 +48,9 @@ public class ToolsOnClickListener implements View.OnClickListener {
             case R.id.widget_view_draw_freepolygon://绘制流状面
                 drawTool.activate(DrawTool.FREEHAND_POLYGON);
                 break;
-            case R.id.widget_view_draw_circle://绘制圆
-                drawTool.activate(DrawTool.CIRCLE);
-                break;
+//            case R.id.widget_view_draw_circle://绘制圆
+//                drawTool.activate(DrawTool.CIRCLE);
+//                break;
             case R.id.widget_view_draw_envelop://绘制矩形
                 drawTool.activate(DrawTool.ENVELOPE);
                 break;

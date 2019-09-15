@@ -18,16 +18,23 @@ public class GetPdfFileThread implements Callable<List<PdfFileEntity>> {
 
     private static final String TAG = "GetPdfFileThread";
     private List<PdfFileEntity> webPdfFileEntities = null;
+        private String mIpAddress = null;
 
-    public GetPdfFileThread(List<PdfFileEntity> webPdfFileEntities) {
+    public GetPdfFileThread(List<PdfFileEntity> webPdfFileEntities, String ipAddress) {
         this.webPdfFileEntities = webPdfFileEntities;
+        this.mIpAddress = ipAddress;
     }
 
     @Override
     public List<PdfFileEntity> call() throws Exception {
+        if(mIpAddress==null) return null;
+
         OkHttpClient client = new OkHttpClient();
+        String url = "http://" + mIpAddress + "/pdf/pdflist.json";
+
+        Log.d(TAG, "call: " + url);
         Request request = new Request.Builder()
-                .url("http://192.168.2.116/pdf/pdflist.json")
+                .url(url)
                 .build();
         try {
             Response execute = client.newCall(request).execute();

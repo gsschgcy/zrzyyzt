@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.esri.arcgisruntime.mapping.view.DefaultMapViewOnTouchListener;
 import com.esri.arcgisruntime.mapping.view.Graphic;
@@ -38,11 +39,14 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
     private  View btnDrawPoint = null;
     private  View btnDrawPolyline = null;
     private  View btnDrawPolygon = null;
-    private  View btnDrawCircle  = null;
+//    private  View btnDrawCircle  = null;
     private  View btnDrawEnvelop  = null;
     private  View btnDrawText  = null;
     private  View btnDrawFreePolyline  = null;
     private  View btnDrawFreePolygon = null;
+
+    private TextView textDescription = null;
+
     List<View> viewList = null;
 
     private View drawTextSubView;
@@ -69,20 +73,23 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
         btnDrawPoint = drawView.findViewById(R.id.widget_view_draw_point);
         btnDrawPolyline = drawView.findViewById(R.id.widget_view_draw_polyline);
         btnDrawPolygon = drawView.findViewById(R.id.widget_view_draw_polygon);
-        btnDrawCircle = drawView.findViewById(R.id.widget_view_draw_circle);
+//        btnDrawCircle = drawView.findViewById(R.id.widget_view_draw_circle);
         btnDrawEnvelop = drawView.findViewById(R.id.widget_view_draw_envelop);
         btnDrawText = drawView.findViewById(R.id.widget_view_draw_text);
         btnDrawFreePolyline = drawView.findViewById(R.id.widget_view_draw_freepolyline);
         btnDrawFreePolygon = drawView.findViewById(R.id.widget_view_draw_freepolygon);
+
         viewList =new ArrayList<>();
         viewList.add(btnDrawPoint);
         viewList.add(btnDrawPolyline);
         viewList.add(btnDrawPolygon);
-        viewList.add(btnDrawCircle);
+//        viewList.add(btnDrawCircle);
         viewList.add(btnDrawEnvelop);
         viewList.add(btnDrawText);
         viewList.add(btnDrawFreePolyline);
         viewList.add(btnDrawFreePolygon);
+
+        textDescription = drawView.findViewById(R.id.widget_view_draw_description);
 
         drawTextSubView = drawView.findViewById(R.id.widget_view_draw_text_groupview);
         subViewList = new ArrayList<>();
@@ -137,11 +144,13 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
         mapDefaultOnTouchListener = new DefaultMapViewOnTouchListener(mapView.getContext(), mapView);
         drawEventListener = this;
 
+        btnDrawClear.setOnClickListener(toolsOnClickListener);
+
         btnDrawPoint.setOnClickListener(toolsOnClickListener);
         btnDrawPolyline.setOnClickListener(toolsOnClickListener);
         btnDrawPolygon.setOnClickListener(toolsOnClickListener);
-        btnDrawClear.setOnClickListener(toolsOnClickListener);
-        btnDrawCircle.setOnClickListener(toolsOnClickListener);
+
+//        btnDrawCircle.setOnClickListener(toolsOnClickListener);
         btnDrawEnvelop.setOnClickListener(toolsOnClickListener);
         btnDrawText.setOnClickListener(toolsOnClickListener);
         btnDrawFreePolyline.setOnClickListener(toolsOnClickListener);
@@ -166,7 +175,6 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
                     break;
                 case R.id.widget_view_draw_polyline://绘制线
                     drawTool.activate(DrawTool.POLYLINE);
-                    v.setBackgroundColor(Color.LTGRAY);
                     break;
                 case R.id.widget_view_draw_freepolyline://绘制流状线
                     drawTool.activate(DrawTool.FREEHAND_POLYLINE);
@@ -177,15 +185,14 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
                 case R.id.widget_view_draw_freepolygon://绘制流状面
                     drawTool.activate(DrawTool.FREEHAND_POLYGON);
                     break;
-                case R.id.widget_view_draw_circle://绘制圆
-                    drawTool.activate(DrawTool.CIRCLE);
-                    break;
+//                case R.id.widget_view_draw_circle://绘制圆
+//                    drawTool.activate(DrawTool.CIRCLE);
+//                    break;
                 case R.id.widget_view_draw_envelop://绘制矩形
                     drawTool.activate(DrawTool.ENVELOPE);
                     break;
                 case R.id.widget_view_draw_text:
                     drawTool.activate(DrawTool.TEXT);
-                    drawTextSubView.setVisibility(View.VISIBLE);
                     break;
             }
         }
@@ -199,6 +206,14 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
             }else{
                 view.setBackgroundColor(Color.WHITE);
             }
+        }
+        if(v.getId() == R.id.widget_view_draw_text){
+            drawTextSubView.setVisibility(View.VISIBLE);
+           textDescription.setText(R.string.draw_text_description);
+
+        }else{
+            drawTextSubView.setVisibility(View.GONE);
+            textDescription.setText(R.string.draw_description);
         }
     }
 

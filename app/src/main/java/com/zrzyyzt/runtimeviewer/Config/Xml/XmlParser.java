@@ -34,6 +34,11 @@ public class XmlParser {
 	private final static String XML_NODE_RUNTIMEKEY = "runtimekey";
 	private final static String XML_NODE_RUNTIMEKEY_LICENSE = "license";
 
+
+	private final static String XML_NODE_IPADDRESS = "ipaddress";
+	private final static String XML_NODE_IPADDRESS_ADDRESS = "address";
+
+
 	private final static String XML_NODE_WORKSPACE = "workspace";
 	private final static String XML_NODE_WORKSPACE_PATH = "path";
 
@@ -91,6 +96,9 @@ public class XmlParser {
 						if (XML_NODE_RUNTIMEKEY.equals(nodeName)){//runtimeKey
 							String license=pullParser.getAttributeValue(null,XML_NODE_RUNTIMEKEY_LICENSE);
 							config.setRuntimrKey(license);
+						}else if(XML_NODE_IPADDRESS.equals(nodeName)){//ipaddress
+							String address=pullParser.getAttributeValue(null,XML_NODE_IPADDRESS_ADDRESS);
+							config.setIpAddress(address);
 						}else if(XML_NODE_WORKSPACE.equals(nodeName)){//workPath
 							String path=pullParser.getAttributeValue(null,XML_NODE_WORKSPACE_PATH);
 							config.setWorkspacePath(path);
