@@ -10,33 +10,22 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.esri.arcgisruntime.data.FeatureCollection;
 import com.esri.arcgisruntime.data.FeatureCollectionTable;
 import com.esri.arcgisruntime.data.GeoPackage;
 import com.esri.arcgisruntime.data.GeoPackageFeatureTable;
 import com.esri.arcgisruntime.data.ShapefileFeatureTable;
-import com.esri.arcgisruntime.data.TileCache;
-import com.esri.arcgisruntime.data.VectorTileCache;
-import com.esri.arcgisruntime.io.RequestConfiguration;
-import com.esri.arcgisruntime.layers.ArcGISMapImageLayer;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
-import com.esri.arcgisruntime.layers.ArcGISVectorTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
-import com.esri.arcgisruntime.layers.RasterLayer;
-import com.esri.arcgisruntime.layers.WebTiledLayer;
-import com.esri.arcgisruntime.raster.Raster;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LayerListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LegendListviewAdapter;
-import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.BaseMap.BaseMapManager;
-import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.BaseMap.BasemapLayerInfo;
-import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.UserLayers.GoogleLayer.GoogleWebTiledLayer;
-import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.UserLayers.TianDiTuLayer.TianDiTuMethodsClass;
+import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Entity.OperationLayerInfo;
+import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Manager.OperationMapManager;
 
 import java.io.File;
 import java.util.List;
@@ -50,13 +39,12 @@ public class LayerManagerWidget extends BaseWidget {
     private static String TAG = "LayerManagerWidget";
 
     public View mWidgetView = null;//
-    public ListView baseMapLayerListView = null;
+//    public ListView baseMapLayerListView = null;
     public ListView featureLayerListView = null;
 
     private Context context;
 
     private LayerListviewAdapter featureLayerListviewAdapter =null;
-    private LayerListviewAdapter basemapLayerListviewAdapter =null;
     private LegendListviewAdapter legendListviewAdapter = null;
 
     @Override
@@ -71,8 +59,9 @@ public class LayerManagerWidget extends BaseWidget {
 
         context = super.context;
 
-        initBaseMapResource();//初始化底图
-        initOperationalLayers();//初始化业务图层
+//        initBaseMapResource();//初始化底图
+//        initOperationalLayers();//初始化业务图层
+        initOperationalLayersWeb();
 
         initGeoPackageLayers();//初始化业务图层 gpkg
 
@@ -112,11 +101,11 @@ public class LayerManagerWidget extends BaseWidget {
          * 图层列表
          */
         final View layerManagerView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_layer_manager_layers,null);
-        this.baseMapLayerListView = (ListView)layerManagerView.findViewById(R.id.widget_view_layer_manager_layers_basemapLayerListview);
+//        this.baseMapLayerListView = (ListView)layerManagerView.findViewById(R.id.widget_view_layer_manager_layers_basemapLayerListview);
         this.featureLayerListView = (ListView)layerManagerView.findViewById(R.id.widget_view_layer_manager_layers_featureLayerListview);
 
-        basemapLayerListviewAdapter = new LayerListviewAdapter(context,super.mapView.getMap().getBasemap().getBaseLayers());
-        this.baseMapLayerListView.setAdapter(basemapLayerListviewAdapter);
+//        basemapLayerListviewAdapter = new LayerListviewAdapter(context,super.mapView.getMap().getBasemap().getBaseLayers());
+//        this.baseMapLayerListView.setAdapter(basemapLayerListviewAdapter);
         featureLayerListviewAdapter = new LayerListviewAdapter(context,super.mapView.getMap().getOperationalLayers());
         this.featureLayerListView.setAdapter(featureLayerListviewAdapter);
 
@@ -135,6 +124,7 @@ public class LayerManagerWidget extends BaseWidget {
                             case R.id.menu_layer_handle_tools_openAllLayer:
                                 for (int i=0;i<mapView.getMap().getOperationalLayers().size();i++){
                                     Layer layer = mapView.getMap().getOperationalLayers().get(i);
+                                    Log.d(TAG, "onMenuItemClick: " + layer.getName());
                                     layer.setVisible(true);
                                 }
                                 featureLayerListviewAdapter.refreshData();
@@ -157,40 +147,40 @@ public class LayerManagerWidget extends BaseWidget {
         });
 
         //底图图层
-        Button basemapnBtnMore = (Button)layerManagerView.findViewById(R.id.widget_view_layer_managet_layers_basemap_btnMore);
-        basemapnBtnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu pmp = new PopupMenu(context, v);
-                pmp.getMenuInflater().inflate(R.menu.menu_layer_handle_tools, pmp.getMenu());
-                pmp.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menu_layer_handle_tools_openAllLayer:
-                                for (int i=0;i<mapView.getMap().getBasemap().getBaseLayers().size();i++){
-                                    Layer layer = mapView.getMap().getBasemap().getBaseLayers().get(i);
-                                    layer.setVisible(true);
-                                }
-                                basemapLayerListviewAdapter.refreshData();
-                                break;
-                            case R.id.menu_layer_handle_tools_closedAllLayer:
-                                for (int i=0;i<mapView.getMap().getBasemap().getBaseLayers().size();i++){
-                                    Layer layer = mapView.getMap().getBasemap().getBaseLayers().get(i);
-                                    layer.setVisible(false);
-                                }
-                                basemapLayerListviewAdapter.refreshData();
-                                break;
-                            default:
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                pmp.show();
-            }
-        });
+//        Button basemapnBtnMore = (Button)layerManagerView.findViewById(R.id.widget_view_layer_managet_layers_basemap_btnMore);
+//        basemapnBtnMore.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PopupMenu pmp = new PopupMenu(context, v);
+//                pmp.getMenuInflater().inflate(R.menu.menu_layer_handle_tools, pmp.getMenu());
+//                pmp.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        switch (item.getItemId()) {
+//                            case R.id.menu_layer_handle_tools_openAllLayer:
+//                                for (int i=0;i<mapView.getMap().getBasemap().getBaseLayers().size();i++){
+//                                    Layer layer = mapView.getMap().getBasemap().getBaseLayers().get(i);
+//                                    layer.setVisible(true);
+//                                }
+//                                basemapLayerListviewAdapter.refreshData();
+//                                break;
+//                            case R.id.menu_layer_handle_tools_closedAllLayer:
+//                                for (int i=0;i<mapView.getMap().getBasemap().getBaseLayers().size();i++){
+//                                    Layer layer = mapView.getMap().getBasemap().getBaseLayers().get(i);
+//                                    layer.setVisible(false);
+//                                }
+//                                basemapLayerListviewAdapter.refreshData();
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                        return false;
+//                    }
+//                });
+//                pmp.show();
+//            }
+//        });
 
         /**
          * **********************************************************************************
@@ -229,6 +219,32 @@ public class LayerManagerWidget extends BaseWidget {
     public void inactive(){
         super.inactive();
     }
+
+    /**
+     * 根据json文件
+     */
+    private void initOperationalLayersWeb(){
+        String configPath = getOperationalLayersJsonPath("operationlayers.json");
+        OperationMapManager oprationMapManager = new OperationMapManager(context ,super.mapView, configPath);
+        List<OperationLayerInfo>  operationLayerInfoList= oprationMapManager.getOperationLayerInfos();
+        if (operationLayerInfoList==null) return;
+        Log.d(TAG, "initOperationalLayersWeb: " + operationLayerInfoList);
+        for (int i=0;i<operationLayerInfoList.size();i++){
+            OperationLayerInfo layerInfo = operationLayerInfoList.get(i);
+            String type = layerInfo.Type;
+            if(type.equals(OperationLayerInfo.LYAER_TYPE_ONLINE_TILEDLAYER)){
+                ArcGISTiledLayer tiledLayerBaseMap = new ArcGISTiledLayer(layerInfo.Path);
+                tiledLayerBaseMap.setOpacity((float) layerInfo.Opacity);
+                tiledLayerBaseMap.setName(layerInfo.Name);
+                tiledLayerBaseMap.setVisible(layerInfo.Visable);
+                Log.d(TAG, "initOperationalLayersWeb: add layer start");
+
+                mapView.getMap().getOperationalLayers().add(tiledLayerBaseMap);
+                Log.d(TAG, "initOperationalLayersWeb: add layer end");
+            }
+        }
+    }
+
 
     /**
      * 初始化业务图层-shapefile
@@ -327,198 +343,12 @@ public class LayerManagerWidget extends BaseWidget {
     }
 
     /**
-     * 初始化基础底图资源
-     */
-    private void initBaseMapResource() {
-        Log.d(TAG, "initBaseMapResource: start");
-//        String strMapUrl="http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer";
-//        ArcGISTiledMapServiceLayer arcGISTiledMapServiceLayer = new ArcGISTiledMapServiceLayer(strMapUrl);
-//        resourceConfig.mapView.addLayer(arcGISTiledMapServiceLayer);
-        String configPath = getBasemapPath("basemap.json");
-        BaseMapManager basemapManager = new BaseMapManager(context,super.mapView,configPath);
-        List<BasemapLayerInfo> basemapLayerInfoList= basemapManager.getBasemapLayerInfos();
-        if (basemapLayerInfoList==null) return;
-        for (int i=0;i<basemapLayerInfoList.size();i++){
-            BasemapLayerInfo layerInfo = basemapLayerInfoList.get(i);
-            String type = layerInfo.Type;
-            if(type.equals(BasemapLayerInfo.LYAER_TYPE_TPK)){//TPK
-                String path =getBasemapPath(layerInfo.Path);
-                if(FileUtils.isExist(path)){//判断是否存在
-                    TileCache tileCache = new TileCache(path);
-                    ArcGISTiledLayer localTiledLayer = new ArcGISTiledLayer(tileCache);
-                    localTiledLayer.setName(layerInfo.Name);
-                    localTiledLayer.setVisible(layerInfo.Visable);
-                    localTiledLayer.setOpacity((float) layerInfo.Opacity);
-                    super.mapView.getMap().getBasemap().getBaseLayers().add(localTiledLayer);
-                }else{
-                    Log.d(TAG,"底图文件(LocalTiledPackage)不存在,"+path);
-                    Toast.makeText(context, "底图文件(LocalTiledPackage)不存在,"+path, Toast.LENGTH_LONG).show();
-                    continue;
-                }
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_TIFF)){//Tiff
-                String path = getBasemapPath(layerInfo.Path);
-                if(FileUtils.isExist(path)) {//判断是否存在
-                    Raster raster = new Raster(path);
-                    RasterLayer rasterLayer = new RasterLayer(raster);
-                    rasterLayer.setName(layerInfo.Name);
-                    rasterLayer.setVisible(layerInfo.Visable);
-                    rasterLayer.setOpacity((float) layerInfo.Opacity);
-                    super.mapView.getMap().getBasemap().getBaseLayers().add(rasterLayer);
-                }else{
-                    Log.d(TAG,"底图文件(LocalGeoTIFF)不存在,"+path);
-                    Toast.makeText(context, "底图文件(LocalGeoTIFF)不存在,"+path, Toast.LENGTH_LONG).show();
-                    continue;
-                }
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_SERVERCACHE)){//Server缓存切片
-                String path = getBasemapPath(layerInfo.Path);
-                if(FileUtils.isExist(path)) {//判断是否存在
-                    TileCache tileCache = new TileCache(path);
-                    ArcGISTiledLayer localTiledLayer = new ArcGISTiledLayer(tileCache);
-                    localTiledLayer.setName(layerInfo.Name);
-                    localTiledLayer.setVisible(layerInfo.Visable);
-                    localTiledLayer.setOpacity((float) layerInfo.Opacity);
-                    super.mapView.getMap().getBasemap().getBaseLayers().add(localTiledLayer);
-                }else{
-                    Log.d(TAG,"底图文件(LocalServerCache)不存在,"+path);
-                    Toast.makeText(context, "底图文件(LocalServerCache)不存在,"+path, Toast.LENGTH_LONG).show();
-                    continue;
-                }
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_ONLINE_TILEDLAYER)){//在线瓦片
-                String url = layerInfo.Path;
-                ArcGISTiledLayer tiledMapServiceLayer = new ArcGISTiledLayer(url);
-                tiledMapServiceLayer.setName(layerInfo.Name);
-                tiledMapServiceLayer.setVisible(layerInfo.Visable);
-                tiledMapServiceLayer.setOpacity((float) layerInfo.Opacity);
-                super.mapView.getMap().getBasemap().getBaseLayers().add(tiledMapServiceLayer);
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_ONLINE_DYNAMICLAYER)) {//在线动态图层
-                String url = layerInfo.Path;
-                ArcGISMapImageLayer dynamicMapServiceLayer = new ArcGISMapImageLayer(url);
-                dynamicMapServiceLayer.setName(layerInfo.Name);
-                dynamicMapServiceLayer.setVisible(layerInfo.Visable);
-                dynamicMapServiceLayer.setOpacity((float) layerInfo.Opacity);
-                super.mapView.getMap().getBasemap().getBaseLayers().add(dynamicMapServiceLayer);
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_VTPK)){//VTPK
-                String path = getBasemapPath(layerInfo.Path);
-                if(FileUtils.isExist(path)) {//判断是否存在
-                    VectorTileCache vectorTileCache = new VectorTileCache(path);
-                    ArcGISVectorTiledLayer arcGISVectorTiledLayer = new ArcGISVectorTiledLayer(vectorTileCache);
-                    arcGISVectorTiledLayer.setName(layerInfo.Name);
-                    arcGISVectorTiledLayer.setVisible(layerInfo.Visable);
-                    arcGISVectorTiledLayer.setOpacity((float)layerInfo.Opacity);
-                    super.mapView.getMap().getBasemap().getBaseLayers().add(arcGISVectorTiledLayer);
-                }else{
-                    Log.d(TAG,"vtpk文件不存在,"+path);
-                    Toast.makeText(context, "vtpk文件不存在,"+path, Toast.LENGTH_LONG).show();
-                    continue;
-                }
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_TIANDITU_MAP)) {//天地图
-//                TianDiTuLayerInfo tdtInfo = new TianDiTuLayerInfo();
-//
-//                TianDiTuLayerInfo tdtInfo01 = tdtInfo.initwithlayerType(TianDiTuLayerInfo.TianDiTuLayerType.TDT_VECTOR,
-//                        TianDiTuLayerInfo.TianDiTuSpatialReferenceType.TDT_2000);
-//                TianDiTuLayer ltl1 = new TianDiTuLayer(tdtInfo01.getTileInfo(), tdtInfo01.getFullExtent());
-//                ltl1.setName(layerInfo.Name);
-//                ltl1.setVisible(layerInfo.Visable);
-//                ltl1.setOpacity((float) layerInfo.Opacity);
-//
-//                ltl1.setLayerInfo(tdtInfo01);
-                WebTiledLayer webTiledLayer = TianDiTuMethodsClass.CreateTianDiTuTiledLayer(TianDiTuMethodsClass.LayerType.TIANDITU_VECTOR_MERCATOR);
-                webTiledLayer.setName(layerInfo.Name);
-                webTiledLayer.setVisible(layerInfo.Visable);
-                webTiledLayer.setOpacity((float) layerInfo.Opacity);
-                RequestConfiguration requestConfiguration = new RequestConfiguration();
-                requestConfiguration.getHeaders().put("referer", "http://www.arcgis.com");
-                webTiledLayer.setRequestConfiguration(requestConfiguration);
-                webTiledLayer.loadAsync();
-
-                super.mapView.getMap().getBasemap().getBaseLayers().add(webTiledLayer);
-
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_TIANDITU_MAP_LABEL)){
-                WebTiledLayer webTiledLayer = TianDiTuMethodsClass.CreateTianDiTuTiledLayer(TianDiTuMethodsClass.LayerType.TIANDITU_VECTOR_ANNOTATION_CHINESE_2000);
-                webTiledLayer.setName(layerInfo.Name);
-                webTiledLayer.setVisible(layerInfo.Visable);
-                webTiledLayer.setOpacity((float) layerInfo.Opacity);
-                RequestConfiguration requestConfiguration = new RequestConfiguration();
-                requestConfiguration.getHeaders().put("referer", "http://www.arcgis.com");
-                webTiledLayer.setRequestConfiguration(requestConfiguration);
-                webTiledLayer.loadAsync();
-                super.mapView.getMap().getBasemap().getBaseLayers().add(webTiledLayer);
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_TIANDITU_IMAGE)) {//天地图影像图
-//                TianDiTuLayerInfo tdtInfo = new TianDiTuLayerInfo();
-//                TianDiTuLayerInfo tdtInfo01 = tdtInfo.initwithlayerType(TianDiTuLayerInfo.TianDiTuLayerType.TDT_IMAGE,
-//                        TianDiTuLayerInfo.TianDiTuSpatialReferenceType.TDT_2000);
-//                TianDiTuLayer ltl1 = new TianDiTuLayer(tdtInfo01.getTileInfo(), tdtInfo01.getFullExtent());
-//                ltl1.setName(layerInfo.Name);
-//                ltl1.setVisible(layerInfo.Visable);
-//                ltl1.setOpacity((float) layerInfo.Opacity);
-//                ltl1.setLayerInfo(tdtInfo01);
-//                super.mapView.getMap().getBasemap().getBaseLayers().add(ltl1);
-                WebTiledLayer webTiledLayer = TianDiTuMethodsClass.CreateTianDiTuTiledLayer(TianDiTuMethodsClass.LayerType.TIANDITU_IMAGE_MERCATOR);
-                webTiledLayer.setName(layerInfo.Name);
-                webTiledLayer.setVisible(layerInfo.Visable);
-                webTiledLayer.setOpacity((float) layerInfo.Opacity);
-
-                RequestConfiguration requestConfiguration = new RequestConfiguration();
-                requestConfiguration.getHeaders().put("referer", "http://www.arcgis.com");
-                webTiledLayer.setRequestConfiguration(requestConfiguration);
-                webTiledLayer.loadAsync();
-                super.mapView.getMap().getBasemap().getBaseLayers().add(webTiledLayer);
-
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_TIANDITU_IMAGE_LABEL)) {//天地图影像标注图层
-//                TianDiTuLayerInfo tdtannoInfo = new TianDiTuLayerInfo();
-////                TianDiTuLayerInfo tdtannoInfo02 = tdtannoInfo.initwithlayerType(TianDiTuLayerInfo.TianDiTuLayerType.TDT_IMAGE,
-////                        TianDiTuLayerInfo.TianDiTuLanguageType.TDT_CN, TianDiTuLayerInfo.TianDiTuSpatialReferenceType.TDT_2000);
-////                TianDiTuLayer ltl2 = new TianDiTuLayer(tdtannoInfo02.getTileInfo(), tdtannoInfo02.getFullExtent());
-////                ltl2.setName(layerInfo.Name);
-////                ltl2.setVisible(layerInfo.Visable);
-////                ltl2.setOpacity((float) layerInfo.Opacity);
-////                ltl2.setLayerInfo(tdtannoInfo02);
-////                super.mapView.getMap().getBasemap().getBaseLayers().add(ltl2);
-                WebTiledLayer webTiledLayer = TianDiTuMethodsClass.CreateTianDiTuTiledLayer(TianDiTuMethodsClass.LayerType.TIANDITU_IMAGE_ANNOTATION_CHINESE_2000);
-                webTiledLayer.setName(layerInfo.Name);
-                webTiledLayer.setVisible(layerInfo.Visable);
-                webTiledLayer.setOpacity((float) layerInfo.Opacity);
-                RequestConfiguration requestConfiguration = new RequestConfiguration();
-                requestConfiguration.getHeaders().put("referer", "http://www.arcgis.com");
-                webTiledLayer.setRequestConfiguration(requestConfiguration);
-                webTiledLayer.loadAsync();
-                super.mapView.getMap().getBasemap().getBaseLayers().add(webTiledLayer);
-
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_GOOGLE_VECTOR)) {//谷歌矢量
-                WebTiledLayer googleWebTiledLayer = GoogleWebTiledLayer.CreateGoogleLayer(GoogleWebTiledLayer.MapType.VECTOR);
-                googleWebTiledLayer.setName(layerInfo.Name);
-                googleWebTiledLayer.setVisible(layerInfo.Visable);
-                googleWebTiledLayer.setOpacity((float) layerInfo.Opacity);
-                super.mapView.getMap().getBasemap().getBaseLayers().add(googleWebTiledLayer);
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_GOOGLE_IMAGE)) {//谷歌影像
-                WebTiledLayer googleWebTiledLayer = GoogleWebTiledLayer.CreateGoogleLayer(GoogleWebTiledLayer.MapType.IMAGE);
-                googleWebTiledLayer.setName(layerInfo.Name);
-                googleWebTiledLayer.setVisible(layerInfo.Visable);
-                googleWebTiledLayer.setOpacity((float) layerInfo.Opacity);
-                super.mapView.getMap().getBasemap().getBaseLayers().add(googleWebTiledLayer);
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_GOOGLE_TERRAIN)) {//谷歌地形
-                WebTiledLayer googleWebTiledLayer = GoogleWebTiledLayer.CreateGoogleLayer(GoogleWebTiledLayer.MapType.TERRAIN);
-                googleWebTiledLayer.setName(layerInfo.Name);
-                googleWebTiledLayer.setVisible(layerInfo.Visable);
-                googleWebTiledLayer.setOpacity((float) layerInfo.Opacity);
-                super.mapView.getMap().getBasemap().getBaseLayers().add(googleWebTiledLayer);
-            }else if(type.equals(BasemapLayerInfo.LYAER_TYPE_GOOGLE_ROAD)) {//谷歌道路
-                WebTiledLayer googleWebTiledLayer = GoogleWebTiledLayer.CreateGoogleLayer(GoogleWebTiledLayer.MapType.ROAD);
-                googleWebTiledLayer.setName(layerInfo.Name);
-                googleWebTiledLayer.setVisible(layerInfo.Visable);
-                googleWebTiledLayer.setOpacity((float) layerInfo.Opacity);
-                super.mapView.getMap().getBasemap().getBaseLayers().add(googleWebTiledLayer);
-            }
-        }
-    }
-
-    /**
-     * 获取基础底图路径
+     * 获取业务图层json配置文件路径
      * @param path
      * @return
      */
-    private String getBasemapPath(String path){
-        return projectPath+ File.separator+"BaseMap"+File.separator + path;
+    private String getOperationalLayersJsonPath(String path) {
+        return projectPath+ File.separator+"OperationalLayers"+File.separator + path;
     }
 
     /**

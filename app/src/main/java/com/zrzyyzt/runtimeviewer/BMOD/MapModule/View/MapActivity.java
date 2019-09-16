@@ -27,6 +27,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.WidgetManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Map.MapManager;
@@ -174,6 +175,10 @@ public class MapActivity extends BaseActivity {
             //测量
             MenuItem measureMeneu= menu.add(Menu.NONE, Menu.FIRST + 3, 0, "测量");
             mWidgetEntityMenu.put(measureMeneu.getItemId(),"measure");
+
+            //添加业务图层
+            MenuItem addfeaturelayerMeneu= menu.add(Menu.NONE, Menu.FIRST + 4, 0, "添加业务");
+            mWidgetEntityMenu.put(addfeaturelayerMeneu.getItemId(),"addfeaturelayer");
 
             //根据配置文件初始化系统功能菜单栏
             if (mConfigEntity != null) {
@@ -364,7 +369,13 @@ public class MapActivity extends BaseActivity {
                         break;
                     case "measure":
                         resourceConfig.setMeasureToolViewVisibility();
-
+                        break;
+                    case "addfeaturelayer":
+                        String featureUrl ="http://61.178.152.45:6080/arcgis/rest/services/OneMap/jyjghjbntbhq/MapServer";
+                        ArcGISTiledLayer tiledLayerBaseMap = new ArcGISTiledLayer(featureUrl);
+                        tiledLayerBaseMap.setOpacity((float) 0.6);
+                        tiledLayerBaseMap.setName("基本农田保护");
+                        resourceConfig.mapView.getMap().getOperationalLayers().add(tiledLayerBaseMap);
                         break;
                 }
             }

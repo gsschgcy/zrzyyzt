@@ -7,16 +7,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.zrzyyzt.runtimeviewer.R;
-import com.zrzyyzt.runtimeviewer.View.MapLoactionView;
-import com.zrzyyzt.runtimeviewer.View.MapNorthView;
-import com.zrzyyzt.runtimeviewer.View.MapRotateView;
-import com.zrzyyzt.runtimeviewer.View.MapZoomView;
-import com.zrzyyzt.runtimeviewer.View.MeasureToolView;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLoactionView;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapNorthView;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapZoomView;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView;
 
 /**
  * 资源绑定注册类
@@ -50,11 +51,16 @@ public class ResourceConfig {
     public MapNorthView mapNorthView;
     public MapLoactionView mapLocationView;
 
+    public ImageView img_tdt_yx;
+    public ImageView img_tdt_sl;
+    public ImageView img_jyg_yx;
 
-    public View view_tdt_yx;
-    public View view_tdt_sl;
-    public View view_china_colour;
-    public View view_china_blue;
+    public ListView baseMapLayerListview;
+
+//    public View view_tdt_yx;
+//    public View view_tdt_sl;
+//    public View view_china_colour;
+//    public View view_china_blue;
 
     /**
      * 初始化资源列表
@@ -79,12 +85,13 @@ public class ResourceConfig {
         this.mapNorthView = (MapNorthView)activiy.findViewById(R.id.map_north_view);
         this.mapLocationView = activiy.findViewById(R.id.map_location_view);
 
-        this.view_tdt_yx = activiy.findViewById(R.id.basemap_tdt_yx);
-        this.view_tdt_sl = activiy.findViewById(R.id.basemap_tdt_sl);
-        this.view_china_colour = activiy.findViewById(R.id.basemap_china_colour);
-        this.view_china_blue = activiy.findViewById(R.id.basemap_china_blue);
-
-
+//        this.view_tdt_yx = activiy.findViewById(R.id.basemap_tdt_yx);
+//        this.view_tdt_sl = activiy.findViewById(R.id.basemap_tdt_sl);
+//        this.view_china_colour = activiy.findViewById(R.id.basemap_china_colour);
+//        this.view_china_blue = activiy.findViewById(R.id.basemap_china_blue);
+        img_tdt_yx = activiy.findViewById(R.id.tdt_yx);
+        img_tdt_sl = activiy.findViewById(R.id.tdt_sl);
+        img_jyg_yx = activiy.findViewById(R.id.jyg_yx);
     }
 
 

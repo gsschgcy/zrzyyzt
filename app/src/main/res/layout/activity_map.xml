@@ -17,16 +17,16 @@
             android:layout_height="fill_parent"
             android:layout_alignParentEnd="true"></com.esri.arcgisruntime.mapping.view.MapView>
 
-        <com.zrzyyzt.runtimeviewer.View.MapZoomView
+        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapZoomView
             android:id="@+id/map_zoom_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_alignParentEnd="true">
 
-        </com.zrzyyzt.runtimeviewer.View.MapZoomView>
+        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapZoomView>
 
-        <com.zrzyyzt.runtimeviewer.View.MapNorthView
+        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapNorthView
             android:id="@+id/map_north_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,9 +34,9 @@
             android:layout_marginTop="100dp"
             android:layout_marginRight="10dp">
 
-        </com.zrzyyzt.runtimeviewer.View.MapNorthView>
+        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapNorthView>
 
-        <com.zrzyyzt.runtimeviewer.View.MapRotateView
+        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView
             android:id="@+id/map_rotate_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,9 +44,9 @@
             android:layout_marginTop="150dp"
             android:layout_marginEnd="10dp">
 
-        </com.zrzyyzt.runtimeviewer.View.MapRotateView>
+        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView>
 
-        <com.zrzyyzt.runtimeviewer.View.MeasureToolView
+        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView
             android:id="@+id/measure_tool"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:layout_marginTop="200dp"
             android:layout_marginEnd="10dp">
 
-        </com.zrzyyzt.runtimeviewer.View.MeasureToolView>
+        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView>
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"

@@ -100,7 +100,6 @@ public class LayerListviewAdapter extends BaseAdapter {
 
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        // TODO Auto-generated method stub
                         switch (item.getItemId()) {
                             case R.id.menu_layer_tools_opacity://图层透明度
                                 ShowOpacityUtilView(layer);

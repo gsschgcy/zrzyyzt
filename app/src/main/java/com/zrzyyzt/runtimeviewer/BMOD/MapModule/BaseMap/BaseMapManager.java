@@ -1,4 +1,4 @@
-package com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.BaseMap;
+package com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseMap;
 
 import android.content.Context;
 
@@ -112,6 +112,18 @@ public class BaseMapManager {
                 }catch (Exception e){
 
                 }
+                try{
+                    basemapLayerInfo.Icon = obj.getString("icon");
+                }catch (Exception e){
+
+                }
+                try{
+                    basemapLayerInfo.Select_Icon = obj.getString("select_icon");
+                }catch (Exception e){
+
+                }
+
+
                 result.add(basemapLayerInfo);
             }
         }

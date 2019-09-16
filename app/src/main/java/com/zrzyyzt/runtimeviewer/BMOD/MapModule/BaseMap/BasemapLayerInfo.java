@@ -1,4 +1,4 @@
-package com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.BaseMap;
+package com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseMap;
 
 /**
  * 图层信息列表
@@ -34,4 +34,8 @@ public class BasemapLayerInfo {
     public boolean Visable;//是否可以显示
     public double Opacity;//图层透明度
     public String Render;
+    public String Icon;//图标
+    public String Select_Icon;//选择后的图标
+
+
 }

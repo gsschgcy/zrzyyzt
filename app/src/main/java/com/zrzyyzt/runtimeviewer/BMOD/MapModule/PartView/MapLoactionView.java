@@ -1,4 +1,4 @@
-package com.zrzyyzt.runtimeviewer.View;
+package com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView;
 
 import android.Manifest;
 import android.content.Context;
