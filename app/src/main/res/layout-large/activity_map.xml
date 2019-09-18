@@ -74,7 +74,7 @@
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView>
 
-        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLoactionView
+        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLocationView
             android:id="@+id/map_location_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:layout_marginTop="170dp"
             android:layout_marginRight="10dp" >
 
-        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLoactionView>
+        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLocationView>
 
         <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView
             android:id="@+id/measure_tool"

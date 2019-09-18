@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.esri.arcgisruntime.layers.FeatureLayer;
+import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.layers.Layer;
 import com.zrzyyzt.runtimeviewer.R;
 
@@ -74,13 +74,14 @@ public class LayerSpinnerAdapter extends BaseAdapter {
         holder.textView = (TextView) convertView.findViewById(R.id.widget_view_query_attributequery_spinner_item_txtName);
 
         //仅获取当前显示的layer
-        FeatureLayer layer =null;
+//        FeatureLayer layer =null;
+        ArcGISTiledLayer layer = null;
         int indexPositon=0;//计数
         for (int i=0;i<layerList.size();i++){
             Layer layerTpl = layerList.get(i);
             if (layerTpl.isVisible()){
                 if (indexPositon==position){
-                    layer = (FeatureLayer) layerTpl;
+                    layer = (ArcGISTiledLayer) layerTpl;
                 }
                 indexPositon++;
             }

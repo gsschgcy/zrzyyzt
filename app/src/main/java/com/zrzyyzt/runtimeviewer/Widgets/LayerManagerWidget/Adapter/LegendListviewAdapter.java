@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.data.Feature;
+import com.esri.arcgisruntime.data.FeatureTable;
+import com.esri.arcgisruntime.data.ServiceFeatureTable;
+import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
 import com.esri.arcgisruntime.symbology.Symbol;
@@ -80,18 +83,22 @@ public class LegendListviewAdapter extends BaseAdapter {
         holder.textView = (TextView) convertView.findViewById(R.id.widget_view_layer_managet_legent_item_txtName);
 
         //仅获取当前显示的layer
+        ArcGISTiledLayer arcGISTiledLayer = null;
+        FeatureTable featureTable = null;
         FeatureLayer layer =null;
         int indexPositon=0;//计数
         for (int i=0;i<layerList.size();i++){
             Layer layerTpl = layerList.get(i);
             if (layerTpl.isVisible()){
                 if (indexPositon==position){
-                    layer = (FeatureLayer) layerTpl;
+                    arcGISTiledLayer = (ArcGISTiledLayer) layerTpl;
+                    featureTable = new ServiceFeatureTable(arcGISTiledLayer.getUri());
+                    layer = new FeatureLayer(featureTable);
                 }
                 indexPositon++;
             }
         }
-        holder.textView.setText(layer.getName());
+        holder.textView.setText(featureTable.getDisplayName());
 
         //要素模板
         Feature feature = layer.getFeatureTable().createFeature();

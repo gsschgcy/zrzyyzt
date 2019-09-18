@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.zrzyyzt.runtimeviewer.R;
-import com.zrzyyzt.runtimeviewer.Listener.MapRotateClickListener;
 import com.zrzyyzt.runtimeviewer.Utils.Util;
-
+import com.zrzyyzt.runtimeviewer.Listener.MapRotateClickListener;
 
 public class MapRotateView extends LinearLayout {
     private LinearLayout rotateBgView,mapRotateLayout;

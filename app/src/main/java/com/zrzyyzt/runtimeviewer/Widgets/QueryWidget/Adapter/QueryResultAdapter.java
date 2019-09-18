@@ -13,9 +13,12 @@ import android.widget.TextView;
 import com.esri.arcgisruntime.data.Feature;
 import com.esri.arcgisruntime.geometry.Geometry;
 import com.esri.arcgisruntime.geometry.GeometryEngine;
-import com.esri.arcgisruntime.layers.FeatureLayer;
-import com.esri.arcgisruntime.layers.Layer;
+import com.esri.arcgisruntime.mapping.view.Graphic;
+import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.symbology.SimpleFillSymbol;
+import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
+import com.esri.arcgisruntime.symbology.SimpleRenderer;
 import com.zrzyyzt.runtimeviewer.R;
 
 import java.util.List;
@@ -36,11 +39,14 @@ public class QueryResultAdapter extends BaseAdapter {
     private List<Feature> list =null;
     private Context context;
     private MapView mapView;
+    private GraphicsOverlay identityGraphicOverlay;
 
     public QueryResultAdapter(Context c, List<Feature> list, MapView mapView) {
         this.list = list;
         this.context = c;
         this.mapView = mapView;
+        identityGraphicOverlay = new GraphicsOverlay();
+        this.mapView.getGraphicsOverlays().add(identityGraphicOverlay);
     }
 
     /**
@@ -92,11 +98,14 @@ public class QueryResultAdapter extends BaseAdapter {
      * 清空所有要素选择
      */
     public void clearAllFeatureSelect(){
-        List<Layer> layers = mapView.getMap().getOperationalLayers();
-        for (int i=0;i<layers.size();i++){
-            FeatureLayer featureLayer = (FeatureLayer)layers.get(i);
-            featureLayer.clearSelection();
-        }
+//        List<Layer> layers = mapView.getMap().getOperationalLayers();
+//        for (int i=0;i<layers.size();i++){
+//            ArcGISTiledLayer arcGISTiledLayer = (ArcGISTiledLayer)layers.get(i);
+//            FeatureTable featureTable =new ServiceFeatureTable(arcGISTiledLayer.getUri() + "/0");
+//            FeatureLayer featureLayer = new FeatureLayer(featureTable);
+//            featureLayer.clearSelection();
+//        }
+        this.identityGraphicOverlay.getGraphics().clear();
     }
 
     /**
@@ -105,14 +114,23 @@ public class QueryResultAdapter extends BaseAdapter {
      */
     public void setFeatureSelect(Feature feature) {
         //设置要素选中
-        FeatureLayer identifiedidLayer=feature.getFeatureTable().getFeatureLayer();
-        identifiedidLayer.setSelectionColor(Color.YELLOW);
-        identifiedidLayer.setSelectionWidth(20);
-        identifiedidLayer.selectFeature(feature);
+//        FeatureLayer identifiedidLayer=feature.getFeatureTable().getFeatureLayer();
+//        identifiedidLayer.setSelectionColor(Color.YELLOW);
+//        identifiedidLayer.setSelectionWidth(20);
+//        identifiedidLayer.selectFeature(feature);
+//
+
+
+        identityGraphicOverlay.getGraphics().clear();
+        Graphic graphic = new Graphic(feature.getGeometry(), feature.getAttributes());
+        SimpleLineSymbol simpleLineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.BLUE,(float)2);
+        SimpleRenderer simpleRenderer = new SimpleRenderer(new SimpleFillSymbol(SimpleFillSymbol.Style.NULL, Color.RED, simpleLineSymbol));
+        identityGraphicOverlay.setRenderer(simpleRenderer);
+        identityGraphicOverlay.getGraphics().add(graphic);
 
         Geometry buffer = GeometryEngine.buffer(feature.getGeometry(),1000);//缓冲500
         mapView.setViewpointGeometryAsync(buffer);
-//        mapView.setViewpointScaleAsync(50000);
+        mapView.setViewpointScaleAsync(50000);
     }
 
 }

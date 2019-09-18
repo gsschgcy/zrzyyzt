@@ -7,7 +7,16 @@ package com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.Bean;
 
 public class KeyAndValueBean {
     private String Key;
+    private String Alias;
     private String Value;
+
+    public String getAlias() {
+        return Alias;
+    }
+
+    public void setAlias(String alias) {
+        Alias = alias;
+    }
 
     public String getKey() {
         return Key;

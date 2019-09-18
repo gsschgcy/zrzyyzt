@@ -13,7 +13,7 @@ import android.widget.ToggleButton;
 
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.zrzyyzt.runtimeviewer.R;
-import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLoactionView;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLocationView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapNorthView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapZoomView;
@@ -49,7 +49,7 @@ public class ResourceConfig {
     public MeasureToolView measureToolView;
     public MapRotateView mapRotateView;
     public MapNorthView mapNorthView;
-    public MapLoactionView mapLocationView;
+    public MapLocationView mapLocationView;
 
     public ImageView img_tdt_yx;
     public ImageView img_tdt_sl;

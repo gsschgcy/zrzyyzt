@@ -1,6 +1,6 @@
 package com.zrzyyzt.runtimeviewer.Widgets.QueryWidget;
 
-import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +14,8 @@ import com.esri.arcgisruntime.data.Feature;
 import com.esri.arcgisruntime.data.FeatureQueryResult;
 import com.esri.arcgisruntime.data.Field;
 import com.esri.arcgisruntime.data.QueryParameters;
-import com.esri.arcgisruntime.layers.FeatureLayer;
+import com.esri.arcgisruntime.data.ServiceFeatureTable;
+import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.Adapter.LayerSpinnerAdapter;
@@ -49,6 +50,7 @@ public class QueryWidget extends BaseWidget {
     public void active() {
         super.active();//默认需要调用，以保证切换到其他widget时，本widget可以正确执行inactive()方法并关闭
         super.showWidget(mWidgetView);//加载UI并显示
+        Log.d(TAG, "active: initMapQuery start");
         initMapQuery();
     }
 
@@ -119,10 +121,13 @@ public class QueryWidget extends BaseWidget {
                 //获取查询图层
                 Object obj= spinnerLayerList.getSelectedItem();
                 if (obj!=null){
-                    final FeatureLayer featureLayer = (FeatureLayer)obj;
+                    ArcGISTiledLayer arcGISTiledLayer = (ArcGISTiledLayer)obj;
+                    ServiceFeatureTable featureTable =new ServiceFeatureTable(arcGISTiledLayer.getUri() + "/0");
+
+//                    final FeatureLayer featureLayer = new FeatureLayer(featureTable);
                     //获取模糊查询关键字
                     String search= txtQueryInfo.getText().toString();
-                    queryAttrubute(featureLayer, search, resultListview);
+                    queryAttribute(featureTable, search, resultListview);
                 }
             }
         });
@@ -162,92 +167,99 @@ public class QueryWidget extends BaseWidget {
 
     /**
      *  属性查询
-     * @param featureLayer
+     * @param featureTable
      * @param search
      * @param resultListview
      */
-    private void queryAttrubute(FeatureLayer featureLayer, String search, final ListView resultListview) {
-        final FeatureLayer mainFeatureLayer = featureLayer;
-        mainFeatureLayer.setSelectionWidth(15);
-        mainFeatureLayer.setSelectionColor(Color.YELLOW);
-
-        QueryParameters query = new QueryParameters();
-        String whereStr = GetWhereStrFunction(featureLayer,search);
-        query.setWhereClause(whereStr);
-        final ListenableFuture<FeatureQueryResult> featureQueryResult
-                = featureLayer.getFeatureTable().queryFeaturesAsync(query);
-        featureQueryResult.addDoneListener(new Runnable() {
+    private void queryAttribute(final ServiceFeatureTable featureTable, final String search, final ListView resultListview) {
+//        final FeatureLayer mainFeatureLayer = featureLayer;
+//        mainFeatureLayer.setSelectionWidth(15);
+//        mainFeatureLayer.setSelectionColor(Color.YELLOW);
+        final StringBuilder stringBuilder = new StringBuilder();
+        final QueryParameters query = new QueryParameters();
+//        String whereStr = GetWhereStrFunction(featureTable,search);
+        featureTable.loadAsync();
+        featureTable.addDoneLoadingListener(new Runnable() {
             @Override
             public void run() {
-                try {
 
-                    List<Feature> mapQueryResult = new ArrayList<>();//查询统计结果
-
-                    FeatureQueryResult result = featureQueryResult.get();
-                    Iterator<Feature> iterator = result.iterator();
-                    Feature feature;
-                    while (iterator.hasNext()) {
-                        feature = iterator.next();
-                        mapQueryResult.add(feature);
-                    }
-
-                    ToastUtils.showShort(context,"查询出"+mapQueryResult.size()+"个符合要求的结果");
-                    QueryResultAdapter queryResultAdapter = new QueryResultAdapter(context,mapQueryResult,mapView);
-                    resultListview.setAdapter(queryResultAdapter);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                List<Field> fields = featureTable.getFields();
+                Log.d(TAG, "GetWhereStrFunction: field size" + fields.size());
+                if(fields.size()<=0) {
+                    return;
                 }
+                boolean isNumber = isNumberFunction(search);
+                for (Field field : fields) {
+                    switch (field.getFieldType()) {
+                        case TEXT:
+                            stringBuilder.append(" upper(");
+                            stringBuilder.append(field.getName());
+                            stringBuilder.append(") LIKE '%");
+                            stringBuilder.append(search.toUpperCase());
+                            stringBuilder.append("%' or");
+                            break;
+                        case SHORT:
+                        case INTEGER:
+                        case FLOAT:
+                        case DOUBLE:
+                        case OID:
+                            if(isNumber == true)
+                            {
+                                stringBuilder.append(" upper(");
+                                stringBuilder.append(field.getName());
+                                stringBuilder.append(") = ");
+                                stringBuilder.append(search);
+                                stringBuilder.append(" or");
+                            }
+                            break;
+                        case UNKNOWN:
+                        case GLOBALID:
+                        case BLOB:
+                        case GEOMETRY:
+                        case RASTER:
+                        case XML:
+                        case GUID:
+                        case DATE:
+                            break;
+                    }
+                }
+                //删除最后一个or
+                String whereStr = stringBuilder.toString();
+                int indexOf = whereStr.lastIndexOf("or");
+                whereStr = whereStr.substring(0,indexOf);
+                query.setWhereClause(whereStr);
+                Log.d(TAG, "queryAttribute: " + whereStr);
+                final ListenableFuture<FeatureQueryResult> featureQueryResult
+                        = featureTable.queryFeaturesAsync(query);
+                featureQueryResult.addDoneListener(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            List<Feature> mapQueryResult = new ArrayList<>();//查询统计结果
+
+                            FeatureQueryResult result = featureQueryResult.get();
+                            Iterator<Feature> iterator = result.iterator();
+                            Feature feature;
+                            while (iterator.hasNext()) {
+                                feature = iterator.next();
+                                mapQueryResult.add(feature);
+                            }
+
+                            ToastUtils.showShort(context,"查询出"+mapQueryResult.size()+"个符合要求的结果");
+                            QueryResultAdapter queryResultAdapter = new QueryResultAdapter(context,mapQueryResult,mapView);
+                            resultListview.setAdapter(queryResultAdapter);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         });
+
+
     }
 
-    /**
-     * 获取模糊查询字符串
-     * @param featureLayer
-     * @param search
-     * @return
-     */
-    private String GetWhereStrFunction(FeatureLayer featureLayer, String search) {
-        StringBuilder stringBuilder = new StringBuilder();
-        List<Field> fields = featureLayer.getFeatureTable().getFields();
-        boolean isNumber = isNumberFunction(search);
-        for (Field field : fields) {
-            switch (field.getFieldType()) {
-                case TEXT:
-                    stringBuilder.append(" upper(");
-                    stringBuilder.append(field.getName());
-                    stringBuilder.append(") LIKE '%");
-                    stringBuilder.append(search.toUpperCase());
-                    stringBuilder.append("%' or");
-                    break;
-                case SHORT:
-                case INTEGER:
-                case FLOAT:
-                case DOUBLE:
-                case OID:
-                    if(isNumber == true)
-                    {
-                        stringBuilder.append(" upper(");
-                        stringBuilder.append(field.getName());
-                        stringBuilder.append(") = ");
-                        stringBuilder.append(search);
-                        stringBuilder.append(" or");
-                    }
-                    break;
-                case UNKNOWN:
-                case GLOBALID:
-                case BLOB:
-                case GEOMETRY:
-                case RASTER:
-                case XML:
-                case GUID:
-                case DATE:
-                    break;
-            }
-        }
-        String result = stringBuilder.toString();
-        return result.substring(0,result.length()-2);
-    }
 
     /**
      * 判断是否为数字

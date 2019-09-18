@@ -21,7 +21,7 @@ import com.zrzyyzt.runtimeviewer.Listener.MapLocationClickListener;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Utils.Util;
 
-public class MapLoactionView extends LinearLayout {
+public class MapLocationView extends LinearLayout {
     private MapView mMapView;
     private MapLocationClickListener mMapLocationClickListener;
 
@@ -41,11 +41,11 @@ public class MapLoactionView extends LinearLayout {
 
     private  Context mContext;
 
-    public MapLoactionView(Context context, @Nullable AttributeSet attrs) {
+    public MapLocationView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public MapLoactionView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MapLocationView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.map_location_view,this);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ViewAttr);
