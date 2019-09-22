@@ -21,7 +21,6 @@ public class DialogUtils {
     private static final int REQUEST_READEXTERNALSTORAGE_PERMISSION = 2;
 
     private static final String FRAGMENT_DIALOG = "dialog";
-
     /**
      * 系统弹窗提示信息
      */

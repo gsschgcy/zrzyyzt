@@ -101,6 +101,6 @@ public class SystemDirPath {
      * @return
      */
     public static String getPrintScreenPath(Context context){
-        return  getMainWorkSpacePath(context) + PrintScreenPath;
+        return  getProjectPath(context) + PrintScreenPath;
     }
 }

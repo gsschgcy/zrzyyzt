@@ -21,11 +21,20 @@ import java.util.List;
  */
 public class ConfigEntity 
 {
+	private String appName = null; //应用名称
 	private String runtimrKey = null;//许可信息
 	private String ipAddress = null; //ip地址
 	private String workspacePath = null;//工作空间路径
 
 	private List<WidgetEntity> mListWidget = new ArrayList<WidgetEntity>();
+
+	public String getAppName() {
+		return appName;
+	}
+
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
 
 	public String getRuntimrKey() {
 		return runtimrKey;

@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.zrzyyzt.runtimeviewer.Common.ToolBarHelper;
+import com.zrzyyzt.runtimeviewer.R;
 
 /**
  * Activity基类
@@ -26,6 +27,10 @@ public class BaseActivity extends AppCompatActivity {
 
         mToolBarHelper = new ToolBarHelper(this,layoutResID) ;
         toolbar = mToolBarHelper.getToolBar() ;
+
+//        toolbar.setNavigationIcon(R.mipmap.ic_menu);
+        toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.ic_menu_white));
+
         setContentView(mToolBarHelper.getContentView());
         /*把 activity_toolbar 设置到Activity 中*/
         setSupportActionBar(toolbar);

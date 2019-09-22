@@ -40,6 +40,7 @@ import com.zrzyyzt.runtimeviewer.Config.Entity.WidgetEntity;
 import com.zrzyyzt.runtimeviewer.Config.SystemDirPath;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Utils.DialogUtils;
+import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Utils.TimeUtils;
 
 import java.io.File;
@@ -80,10 +81,12 @@ public class MapActivity extends BaseActivity {
         setContentView(R.layout.activity_map);
         context = this;
 
+
+
         Intent intent = getIntent();
         DirName = intent.getStringExtra("DirName");
         DirPath = intent.getStringExtra("DirPath");
-        titleTextView.setText(DirName);//显示工程文件夹名称
+//        titleTextView.setText(mConfigEntity.getAppName());//显示工程文件夹名称
 
 
         resourceConfig = new ResourceConfig(context);//初始化应用程序资源列表
@@ -125,6 +128,9 @@ public class MapActivity extends BaseActivity {
     private void init() {
         //读取应用程序配置信息
         mConfigEntity = AppConfig.getConfig(context);
+
+        titleTextView.setText(mConfigEntity.getAppName());//显示工程文件夹名称
+
         //初始化底图组件信息-利用配置文件
         mMapManager = new MapManager(context, resourceConfig, mConfigEntity,DirPath);
 
@@ -403,12 +409,13 @@ public class MapActivity extends BaseActivity {
         //生成路径
 //        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
 //        String dirName = "erweima16";
-//        File appDir = new File(root , dirName);
-//        if (!appDir.exists()) {
-//            appDir.mkdirs();
+//        File fileDir = new File(root , dirName);
+//        if (!fileDir.exists()) {
+//            fileDir.mkdirs();
 //        }
 
-        String appDir =  SystemDirPath.getPrintScreenPath(context);
+        String fileDir =  SystemDirPath.getPrintScreenPath(context);
+        FileUtils.createChildFilesDir(fileDir);
 
         //文件名为时间
 //        long timeStamp = System.currentTimeMillis();
@@ -425,7 +432,7 @@ public class MapActivity extends BaseActivity {
         }
 
         //获取文件
-        File file = new File(appDir, fileName);
+        File file = new File(fileDir, fileName);
         FileOutputStream fos = null;
 
 
@@ -444,6 +451,7 @@ public class MapActivity extends BaseActivity {
             //通知系统相册刷新
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                     Uri.fromFile(new File(file.getPath()))));
+            ToastUtils.showShort(context,"已保存到 " + fileDir + "/"+ fileName);
             return 2;
         } catch (FileNotFoundException e) {
             e.printStackTrace();

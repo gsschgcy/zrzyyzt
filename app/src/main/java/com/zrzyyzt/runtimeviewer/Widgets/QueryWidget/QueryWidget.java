@@ -184,7 +184,7 @@ public class QueryWidget extends BaseWidget {
             public void run() {
 
                 List<Field> fields = featureTable.getFields();
-                Log.d(TAG, "GetWhereStrFunction: field size" + fields.size());
+//                Log.d(TAG, "GetWhereStrFunction: field size" + fields.size());
                 if(fields.size()<=0) {
                     return;
                 }
@@ -228,7 +228,7 @@ public class QueryWidget extends BaseWidget {
                 int indexOf = whereStr.lastIndexOf("or");
                 whereStr = whereStr.substring(0,indexOf);
                 query.setWhereClause(whereStr);
-                Log.d(TAG, "queryAttribute: " + whereStr);
+//                Log.d(TAG, "queryAttribute: " + whereStr);
                 final ListenableFuture<FeatureQueryResult> featureQueryResult
                         = featureTable.queryFeaturesAsync(query);
                 featureQueryResult.addDoneListener(new Runnable() {

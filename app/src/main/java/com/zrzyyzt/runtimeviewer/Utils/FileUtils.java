@@ -259,7 +259,6 @@ public class FileUtils {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                // TODO 自动生成的 catch 块
                 e.printStackTrace();
             }
         }
@@ -270,7 +269,6 @@ public class FileUtils {
             out.write(Content.getBytes("GB2312"));
             out.close();
         } catch (Exception e) {
-            // TODO: handle exception
             return false;
         }
         return true;

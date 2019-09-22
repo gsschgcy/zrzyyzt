@@ -49,7 +49,8 @@
             android:id="@+id/map_zoom_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
             android:layout_alignParentRight="true">
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapZoomView>
@@ -59,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="100dp"
             android:layout_marginRight="10dp">
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapNorthView>
@@ -69,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="140dp"
             android:layout_marginRight="10dp">
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView>
@@ -79,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="170dp"
+            android:layout_marginTop="180dp"
             android:layout_marginRight="10dp" >
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLocationView>
@@ -89,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="210dp"
+            android:layout_marginTop="220dp"
             android:layout_marginRight="10dp"
             android:visibility="gone">
 

@@ -1,30 +1,27 @@
 package com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.esri.arcgisruntime.geometry.Envelope;
-import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.mapping.Bookmark;
 import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.R;
-import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Adapter.BookmarkListviewAdapter;
+import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Entity.BookmarkEntity;
+import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Entity.Extent;
+import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Entity.SpatialReference;
+import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Manager.BookmarkManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-
-import gisluq.lib.Util.ToastUtils;
 
 
 public class BookmarkWidget extends BaseWidget {
@@ -33,11 +30,12 @@ public class BookmarkWidget extends BaseWidget {
     public View bookmarkView;
 
     public ListView bookmarkListView = null;
-    public List<Bookmark> bookmarkList = null;
-
+    private List<Bookmark> bookmarkList = null;
+    private List<BookmarkEntity>  bookmarkEntityList = null;
     private Context context;
     private BookmarkListviewAdapter bookmarkviewAdapter = null;
 
+    private BookmarkManager bookmarkManager = null;
 
     @Override
     public void active() {
@@ -56,114 +54,27 @@ public class BookmarkWidget extends BaseWidget {
         LayoutInflater mLayoutInflater = LayoutInflater.from(super.context);
         bookmarkView = mLayoutInflater.inflate(R.layout.widget_view_bookmark,null);
 
-        JSONArray jsonArray = loadBookmarkListConfig();
+        bookmarkManager = new BookmarkManager(projectPath);
+        bookmarkEntityList = bookmarkManager.getBookmarkList2();
 
-        try{
-            bookmarkList = getBookmarkList(jsonArray);
-        }catch (JSONException ex){
-            ex.printStackTrace();
+        if(bookmarkEntityList!=null){
+            bookmarkList = bookmarkManager.getEsriBookmarkList(bookmarkEntityList);
         }
+
+//        JSONArray jsonArray = bookmarkManager.loadBookmarkListConfig();
+//
+//        try{
+//            bookmarkList = bookmarkManager.getBookmarkList(jsonArray);
+//        }catch (JSONException ex){
+//            ex.printStackTrace();
+//        }
         initView();
-    }
-
-    /*
-     *Json2Bookmark
-     */
-    private List<Bookmark> getBookmarkList(JSONArray jsonArray) throws JSONException {
-        List<Bookmark> result = null;
-        int num = jsonArray.length();
-        if(num>0) {
-            result = new ArrayList<>();
-            for (int i = 0; i < num; i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                String title = "";
-                double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-                int wkid=0;
-
-                //name
-                try {
-                    title = obj.getString("name");
-                } catch (Exception e) {
-
-                }
-
-                //extent
-                try{
-                    JSONObject extent = obj.getJSONObject("extent");
-                    try {
-                        x1 = extent.getDouble("xmin");
-                    } catch (Exception e) {
-
-                    }
-                    try {
-                        y1 = extent.getDouble("ymin");
-                    } catch (Exception e) {
-
-                    }
-
-                    try {
-                        x2 = extent.getDouble("xmax");
-                    } catch (Exception e) {
-
-                    }
-                    try {
-                        y2 = extent.getDouble("ymax");
-                    } catch (Exception e) {
-
-                    }
-                    try{
-                        JSONObject sr = extent.getJSONObject("spatialReference");
-                        try {
-                            wkid = sr.getInt("wkid");
-                        }catch (Exception e){
-
-                        }
-                    }catch (Exception ex){
-
-                    }
-
-                }catch (Exception e){
-
-                }
-                Log.d(TAG, "getBookmarkList: "+ title+","+x1+","+y1+","+x2+","+y2+","+wkid);
-                Envelope envelope = new Envelope(x1, y1, x2, y2, SpatialReference.create(wkid));
-                Viewpoint viewpoint = new Viewpoint(envelope);
-//                bookmark.setViewpoint(viewpoint);
-//                bookmark.setName(tilte);
-                result.add(new Bookmark(title,viewpoint));
-            }
-        }
-        return result;
-    }
-
-    /*
-     *加载bookmark的json配置文件
-     */
-    private JSONArray loadBookmarkListConfig() {
-        String path = getJSONPath();
-
-        String json = FileUtils.openTxt(path, "UTF-8");
-
-        JSONArray jsonArrayBookmark = null;
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            jsonArrayBookmark = jsonObject.getJSONArray("bookmarks");
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }
-        return jsonArrayBookmark;
-    }
-
-
-    private String getJSONPath() {
-        String path = projectPath+ File.separator+"Json"+File.separator + "bookmarks.json";
-        return path;
     }
 
     private void initView() {
         Log.i(TAG, "initView: " + bookmarkList);
         this.bookmarkListView = (ListView)bookmarkView.findViewById(R.id.widget_view_bookmark_bookmarkListview);
-        bookmarkviewAdapter = new BookmarkListviewAdapter(context, bookmarkList, super.mapView);
+        bookmarkviewAdapter = new BookmarkListviewAdapter(context, bookmarkEntityList, super.mapView, projectPath);
         this.bookmarkListView.setAdapter(bookmarkviewAdapter);
 
         TextView btnAdd = (TextView) bookmarkView.findViewById(R.id.widget_view_bookmark_btn_add);
@@ -171,17 +82,55 @@ public class BookmarkWidget extends BaseWidget {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShort(context,"add");
+                final EditText editText = new EditText(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("输入收藏书签名称");
+                builder.setView(editText);
+                builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Viewpoint currentViewpoint = mapView.getCurrentViewpoint(Viewpoint.Type.BOUNDING_GEOMETRY);
+                        //mapview添加书签
+//                        bookmarkList.add(new Bookmark(editText.getText().toString(),currentViewpoint));
+                        Log.d(TAG, "onClick: extent sp " + currentViewpoint.getTargetGeometry().getSpatialReference().getWkid());
+                        //将书签保存到存储
+//                        double[] webMercatorCoords = CoordinateConversion.lonLat2WebMercator(currentViewpoint.getTargetGeometry().getExtent().getXMin(),
+//                                currentViewpoint.getTargetGeometry().getExtent().getYMin());
+//                        double[] webMercatorCoords2 = CoordinateConversion.lonLat2WebMercator(currentViewpoint.getTargetGeometry().getExtent().getXMax(),
+//                                currentViewpoint.getTargetGeometry().getExtent().getYMax());
+//
+//                        int wkid = currentViewpoint.getTargetGeometry().getExtent().getSpatialReference().getWkid();
+//                        Extent extent = new Extent(webMercatorCoords[0],
+//                                webMercatorCoords[1],
+//                                webMercatorCoords2[0],
+//                                webMercatorCoords2[1],
+//                                new SpatialReference(102100));
+                        Envelope envelope = currentViewpoint.getTargetGeometry().getExtent();
+                        Extent extent = new Extent(envelope.getXMin(),
+                                envelope.getYMin(),
+                                envelope.getXMax(),
+                                envelope.getYMax(),
+                                new SpatialReference(envelope.getSpatialReference().getWkid()));
+
+                        bookmarkEntityList.add(new BookmarkEntity(editText.getText().toString(),extent));
+                        String s = bookmarkManager.BookmarkList2String(bookmarkEntityList);
+                        boolean flag = bookmarkManager.saveBookmarkListConfig(s);
+                        Log.d(TAG, "bookmark2string: save file is" + flag);
+                        bookmarkviewAdapter.refreshData();
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
             }
         });
 
-        TextView btnClear = (TextView) bookmarkView.findViewById(R.id.widget_view_bookmark_btn_clear);
+//        TextView btnClear = (TextView) bookmarkView.findViewById(R.id.widget_view_bookmark_btn_clear);
 
-        btnClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.showShort(context,"clear");
-            }
-        });
+//        btnClear.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ToastUtils.showShort(context,"clear");
+//            }
+//        });
     }
 }

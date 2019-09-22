@@ -119,13 +119,12 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
         MenuItem reItem= menu.add(Menu.NONE, Menu.FIRST + 1, 0, "刷新");
         reItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);//显示到状态栏
 
 //        MenuItem menuItemSetting= menu.add(Menu.NONE, Menu.FIRST + 2, 0, "锁屏设置");
         MenuItem menuItemAbout= menu.add(Menu.NONE, Menu.FIRST + 3, 0, "关于");
-
+        menuItemAbout.setIcon(R.mipmap.ic_menu);
         return true;
     }
 
