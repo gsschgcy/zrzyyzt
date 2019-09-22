@@ -34,6 +34,7 @@
 * GloabApp —— 应用程序全局信息Application
 * Permission —— 权限控制
 * Utils —— 工具类
+* Listener  —— 地图事件
 * Widget —— 功能组件文件夹
   * Common —— 公共功能
   * LayerManagerWidget —— 图层管理
