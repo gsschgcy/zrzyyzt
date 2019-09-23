@@ -64,6 +64,7 @@ public class MapActivity extends BaseActivity {
     private static final String TAG = "MapActivity";
 
     private static final int PERMISSION_CODE = 42042;
+    private static final int BAIDUPANO_CODE = 42043;
     private Context context;
     private ResourceConfig resourceConfig;//UI资源绑定
 
@@ -175,7 +176,7 @@ public class MapActivity extends BaseActivity {
 
             //截图
             MenuItem printScreenMenu= menu.add(Menu.NONE, Menu.FIRST + 1, 0, "截屏");
-            mWidgetEntityMenu.put(printScreenMenu.getItemId(),"printscreen");
+            mWidgetEntityMenu.put(printScreenMenu.getItemId(),"printScreen");
 
             //拍照
             MenuItem cameraMeneu= menu.add(Menu.NONE, Menu.FIRST + 2, 0, "拍照");
@@ -372,7 +373,7 @@ public class MapActivity extends BaseActivity {
             }else if(object.getClass().equals(String.class)){
                 String name = (String)object;
                 switch (name){
-                    case "printscreen":
+                    case "printScreen":
                         Bitmap bitmap = mMapManager.getMapViewBitmap();
                         saveImageToGallery(bitmap);
                         break;
@@ -392,7 +393,7 @@ public class MapActivity extends BaseActivity {
                                 intent.putExtra("lat",point.getY());
                                 intent.putExtra("lon",point.getX());
                                 Log.d(TAG, "onSingleTapUp: lat " + point.getY() + " , lon" +point.getX());
-                                MapActivity.this.startActivity(intent);
+                                MapActivity.this.startActivityForResult(intent,BAIDUPANO_CODE);
                                 return super.onSingleTapUp(e);
                             }
                         });
@@ -530,9 +531,18 @@ public class MapActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode){
+            case BAIDUPANO_CODE:
+                resourceConfig.mapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context,resourceConfig.mapView));
+                Log.d(TAG, "onActivityResult: baidu quanjing result");
+                break;
+        }
         super.onActivityResult(requestCode, resultCode, data);
 		//预留处理拍照后回调问题
         //EventBus.getDefault().post(new MessageEvent("camera-"+requestCode,0));
+
+
     }
 
 
