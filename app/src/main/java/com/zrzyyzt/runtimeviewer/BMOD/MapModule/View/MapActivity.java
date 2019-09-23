@@ -20,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +28,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esri.arcgisruntime.geometry.Point;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
+import com.esri.arcgisruntime.mapping.view.DefaultMapViewOnTouchListener;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.WidgetManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Map.MapManager;
@@ -184,7 +187,11 @@ public class MapActivity extends BaseActivity {
 
             //添加业务图层
             MenuItem addfeaturelayerMeneu= menu.add(Menu.NONE, Menu.FIRST + 4, 0, "添加业务");
-            mWidgetEntityMenu.put(addfeaturelayerMeneu.getItemId(),"addfeaturelayer");
+            mWidgetEntityMenu.put(addfeaturelayerMeneu.getItemId(),"addFeatureLayer");
+
+            //全景地图
+            MenuItem panoramaviewMeneu= menu.add(Menu.NONE, Menu.FIRST + 5, 0, "全景地图");
+            mWidgetEntityMenu.put(panoramaviewMeneu.getItemId(),"panoramaView");
 
             //根据配置文件初始化系统功能菜单栏
             if (mConfigEntity != null) {
@@ -376,7 +383,22 @@ public class MapActivity extends BaseActivity {
                     case "measure":
                         resourceConfig.setMeasureToolViewVisibility();
                         break;
-                    case "addfeaturelayer":
+                    case "panoramaView":
+                        resourceConfig.mapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context,resourceConfig.mapView){
+                            @Override
+                            public boolean onSingleTapUp(MotionEvent e) {
+                                Point point = resourceConfig.mapView.screenToLocation(new android.graphics.Point((int) e.getX(), (int) e.getY()));
+                                Intent intent = new Intent(MapActivity.this, PanoMainActivity.class);
+                                intent.putExtra("lat",point.getY());
+                                intent.putExtra("lon",point.getX());
+                                Log.d(TAG, "onSingleTapUp: lat " + point.getY() + " , lon" +point.getX());
+                                MapActivity.this.startActivity(intent);
+                                return super.onSingleTapUp(e);
+                            }
+                        });
+
+                        break;
+                    case "addFeatureLayer":
                         String featureUrl ="http://61.178.152.45:6080/arcgis/rest/services/OneMap/jyjghjbntbhq/MapServer";
                         ArcGISTiledLayer tiledLayerBaseMap = new ArcGISTiledLayer(featureUrl);
                         tiledLayerBaseMap.setOpacity((float) 0.6);

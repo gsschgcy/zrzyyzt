@@ -93,6 +93,7 @@ public class DrawTool extends Subject {
 
         drawListener = new DrawTouchListener(this.mapView.getContext(),
                 this.mapView);
+
         defaultListener = new DefaultMapViewOnTouchListener(this.mapView.getContext(),
                 this.mapView);
         this.markerSymbol = DrawSymbol.markerSymbol;
