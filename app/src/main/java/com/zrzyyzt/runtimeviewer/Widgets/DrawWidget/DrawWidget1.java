@@ -220,7 +220,7 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
     @Override
     public void inactive() {
         super.inactive();
-        drawTool = null;
+//        drawTool = null;
     }
 
     @Override

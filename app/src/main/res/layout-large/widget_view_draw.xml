@@ -57,99 +57,88 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
                         <LinearLayout
                             android:id="@+id/widget_view_draw_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:background="@drawable/ic_item_touch"
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="10dp"
+                            android:padding="1dp"
                             android:layout_weight="1">
 
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:layout_weight="1"
                                 app:srcCompat="@mipmap/draw_text" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/widget_view_draw_point"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:background="@drawable/ic_item_touch"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="10dp"
+                            android:padding="1dp"
                             android:layout_weight="1">
 
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:layout_weight="1"
                                 app:srcCompat="@mipmap/draw_point" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/widget_view_draw_polyline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:background="@drawable/ic_item_touch"
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="10dp"
+                            android:padding="1dp"
                             android:layout_weight="1">
 
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:layout_weight="1"
                                 app:srcCompat="@mipmap/draw_polyline" />
                         </LinearLayout>
-
                         <LinearLayout
                             android:id="@+id/widget_view_draw_polygon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:background="@drawable/ic_item_touch"
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="10dp"
+                            android:padding="1dp"
                             android:layout_weight="1">
 
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:layout_weight="1"
                                 app:srcCompat="@mipmap/draw_polygon" />
 
                         </LinearLayout>
-
-
-
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
 
                         <LinearLayout
                             android:id="@+id/widget_view_draw_envelop"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:background="@drawable/ic_item_touch"
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="10dp"
+                            android:padding="1dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -163,12 +152,11 @@
                             android:id="@+id/widget_view_draw_freepolyline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:background="@drawable/ic_item_touch"
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="10dp"
+                            android:padding="1dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -176,17 +164,15 @@
                                 android:layout_height="40dp"
                                 app:srcCompat="@mipmap/draw_freehand_polyline" />
                         </LinearLayout>
-
                         <LinearLayout
                             android:id="@+id/widget_view_draw_freepolygon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:background="@drawable/ic_item_touch"
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="10dp"
+                            android:padding="1dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -194,18 +180,9 @@
                                 android:layout_height="40dp"
                                 app:srcCompat="@mipmap/draw_freehand_polygon" />
                         </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:background="@drawable/ic_item_touch"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="10dp"
-                            android:layout_weight="1">
-                        </LinearLayout>
+
                     </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -252,7 +229,7 @@
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="15dp"
                                 android:imeOptions="actionDone"
-                                android:hint="请输入标注内容">
+                                android:hint="输入内容">
 
                             </EditText>
                         </LinearLayout>

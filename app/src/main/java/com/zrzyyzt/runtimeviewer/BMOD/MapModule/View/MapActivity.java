@@ -392,7 +392,6 @@ public class MapActivity extends BaseActivity {
                                 Intent intent = new Intent(MapActivity.this, PanoMainActivity.class);
                                 intent.putExtra("lat",point.getY());
                                 intent.putExtra("lon",point.getX());
-                                Log.d(TAG, "onSingleTapUp: lat " + point.getY() + " , lon" +point.getX());
                                 MapActivity.this.startActivityForResult(intent,BAIDUPANO_CODE);
                                 return super.onSingleTapUp(e);
                             }
@@ -535,7 +534,6 @@ public class MapActivity extends BaseActivity {
         switch (requestCode){
             case BAIDUPANO_CODE:
                 resourceConfig.mapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context,resourceConfig.mapView));
-                Log.d(TAG, "onActivityResult: baidu quanjing result");
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
