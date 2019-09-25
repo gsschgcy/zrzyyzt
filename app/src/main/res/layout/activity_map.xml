@@ -45,7 +45,15 @@
             android:layout_marginEnd="10dp">
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView>
+        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLocationView
+            android:id="@+id/map_location_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="180dp"
+            android:layout_marginRight="10dp" >
 
+        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLocationView>
         <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView
             android:id="@+id/measure_tool"
             android:layout_width="wrap_content"
@@ -55,6 +63,7 @@
             android:layout_marginEnd="10dp">
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView>
+
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
@@ -114,29 +123,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="15dp"
-            android:orientation="vertical">
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="125dp"
+            android:orientation="horizontal">
 
-            <FrameLayout
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ic_bg_circle"
-                android:padding="7dp">
+            <ImageView
+                android:id="@+id/tdt_yx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:background="@drawable/shape_gray_square_bg"
+                android:src="@mipmap/img_c_hdpi">
 
-                <ToggleButton
-                    android:id="@+id/activity_map_togbtnLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/ic_location_btn_off"
-                    android:text="@string/txt_toggle"
-                    android:textOff=" "
-                    android:textOn=" " />
-            </FrameLayout>
+            </ImageView>
+            <ImageView
+                android:id="@+id/tdt_sl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="1dp"
+                android:background="@drawable/shape_gray_square_bg"
+                android:src="@mipmap/vec_c_hdpi">
 
+            </ImageView>
+            <ImageView
+                android:id="@+id/jyg_yx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="1dp"
+                android:background="@drawable/shape_gray_square_bg"
+                android:src="@mipmap/jyg_yx">
+            </ImageView>
         </LinearLayout>
     </RelativeLayout>
 

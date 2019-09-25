@@ -83,7 +83,7 @@ public class ResourceConfig {
         this.measureToolView =(MeasureToolView)activiy.findViewById(R.id.measure_tool);
         this.mapRotateView =(MapRotateView)activiy.findViewById(R.id.map_rotate_view);
         this.mapNorthView = (MapNorthView)activiy.findViewById(R.id.map_north_view);
-        this.mapLocationView = activiy.findViewById(R.id.map_location_view);
+        this.mapLocationView = (MapLocationView) activiy.findViewById(R.id.map_location_view);
 
 //        this.view_tdt_yx = activiy.findViewById(R.id.basemap_tdt_yx);
 //        this.view_tdt_sl = activiy.findViewById(R.id.basemap_tdt_sl);

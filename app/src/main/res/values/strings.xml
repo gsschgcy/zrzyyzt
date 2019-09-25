@@ -65,8 +65,11 @@
     <string name="draw_text_description">描述:先设置标绘内容和文字大小，然后点击地图窗口，即可添加文本标注</string>
     <string name="draw_description">描述:先选择标绘样式，然后点击地图窗口进行标绘</string>
     <string name="picture">拍照</string>
-    <string name="request_permission">拍照权限请求</string>
+    <string name="request_permission">权限请求</string>
 
+    <string name="description_info">描述信息</string>
+    <string name="camera_error">该设备不支持拍照</string>
+    <string name="intro_message">介绍信息</string>
     <string-array name="fontsizearr">
         <item>7</item>
         <item>8</item>

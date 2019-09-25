@@ -48,7 +48,9 @@ public class SystemDirPath {
         String path = configEntity.getWorkspacePath();
 
         if(SDPath == null){
-            String dataPath = Environment.getDataDirectory().getPath();
+//            String dataPath = Environment.getDataDirectory().getPath();
+            String dataPath = Environment.getExternalStorageDirectory().getPath();
+
             Log.d(TAG, "getMainWorkSpacePath: dataPath:" + dataPath);
             if (path!=null||(!path.equals(""))){
                 return dataPath + path;

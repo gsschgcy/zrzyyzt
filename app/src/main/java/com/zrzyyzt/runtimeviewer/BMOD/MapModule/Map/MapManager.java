@@ -180,6 +180,7 @@ public class MapManager {
 
         resourceConfig.mapNorthView.init(resourceConfig.mapView);
 
+        Log.d(TAG, "initMapResource: " + resourceConfig.mapLocationView);
         resourceConfig.mapLocationView.init(resourceConfig.mapView);
 //        if (basemapLayerInfoList != null){
 //            BaseMapLayerImageViewAdapter adapter = new BaseMapLayerImageViewAdapter(context, resourceConfig.mapView.getMap().getBasemap().getBaseLayers(), basemapLayerInfoList);
