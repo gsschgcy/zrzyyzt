@@ -71,7 +71,7 @@ public class ResourceConfig {
         this.txtMapScale =  (TextView)activiy.findViewById(R.id.activity_map_mapview_scale);
         this.baseWidgetView = activiy.findViewById(R.id.base_widget_view_baseview);
         this.imgCenterView = (ImageView)activiy.findViewById(R.id.activity_map_imgCenterView);
-        this.togbtnLocation = (ToggleButton) activiy.findViewById(R.id.activity_map_togbtnLocation);
+//        this.togbtnLocation = (ToggleButton) activiy.findViewById(R.id.activity_map_togbtnLocation);
 
         this.txtLocation = (TextView)activiy.findViewById(R.id.activity_map_mapview_locationInfo);
 

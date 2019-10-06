@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.View;
+package com.zrzyyzt.runtimeviewer.BMOD.CameraModule;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -35,7 +35,8 @@ import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.WidgetManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Map.MapManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource.ResourceConfig;
-import com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.View.CameraActivity;
+import com.zrzyyzt.runtimeviewer.BMOD.CameraModule.CameraActivity;
+import com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.PhotoListActivity;
 import com.zrzyyzt.runtimeviewer.Base.BaseActivity;
 import com.zrzyyzt.runtimeviewer.Config.AppConfig;
 import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
@@ -181,6 +182,10 @@ public class MapActivity extends BaseActivity {
             //拍照
             MenuItem cameraMeneu= menu.add(Menu.NONE, Menu.FIRST + 2, 0, "拍照");
             mWidgetEntityMenu.put(cameraMeneu.getItemId(),"camera");
+
+            //相册
+            MenuItem photoMeneu= menu.add(Menu.NONE, Menu.FIRST + 6, 0, "相册");
+            mWidgetEntityMenu.put(photoMeneu.getItemId(),"photo");
 
             //测量
             MenuItem measureMeneu= menu.add(Menu.NONE, Menu.FIRST + 3, 0, "测量");
@@ -380,6 +385,10 @@ public class MapActivity extends BaseActivity {
                     case "camera":
                         Intent cameraIntent = new Intent(MapActivity.this, CameraActivity.class);
                         this.startActivity(cameraIntent);
+                        break;
+                    case "photo":
+                        Intent photoIntent = new Intent(MapActivity.this, PhotoListActivity.class);
+                        this.startActivity(photoIntent);
                         break;
                     case "measure":
                         resourceConfig.setMeasureToolViewVisibility();

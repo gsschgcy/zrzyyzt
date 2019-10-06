@@ -71,6 +71,8 @@
     <string name="camera_error">该设备不支持拍照</string>
     <string name="intro_message">介绍信息</string>
     <string-array name="fontsizearr">
+        <item>5</item>
+        <item>6</item>
         <item>7</item>
         <item>8</item>
         <item>9</item>
@@ -80,5 +82,7 @@
         <item>13</item>
         <item>14</item>
         <item>15</item>
+        <item>16</item>
+        <item>17</item>
     </string-array>
 </resources>

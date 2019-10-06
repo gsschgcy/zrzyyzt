@@ -1,4 +1,4 @@
-package com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.View;
+package com.zrzyyzt.runtimeviewer.BMOD.CameraModule;
 
 import android.content.Context;
 import android.util.AttributeSet;

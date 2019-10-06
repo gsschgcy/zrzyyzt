@@ -63,7 +63,7 @@ public class DateUtils {
      * @param date
      * @return
      */
-    public static String getDataString(Date date){
+    public static String getDateString(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String str = formatter.format(date);
         return str;

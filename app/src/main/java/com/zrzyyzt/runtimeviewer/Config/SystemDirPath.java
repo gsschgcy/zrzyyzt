@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
+import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 
 import gisluq.lib.Util.SDCardUtils;
 
@@ -19,8 +20,9 @@ public class SystemDirPath {
 
     private static String Projects = "/Projects"; //系统工程文件夹
 
-    private static String PdfFilePath = "/pdfiles";
+    private static String PdfFilePath = "/PdfFiles";
     private static String PrintScreenPath = "/PrintScreen";
+    private static String CameraPath = "/Camera";
     private static String SystemConf = "/System"; //系统模板
     private static String lockViewConf = "/lockscreen.conf"; //锁屏配置文件信息
 
@@ -70,7 +72,9 @@ public class SystemDirPath {
      * @return
      */
     public static String getSystemConfPath(Context context){
-        return getMainWorkSpacePath(context) + SystemConf;
+        String path =getMainWorkSpacePath(context) + SystemConf;
+        FileUtils.createChildFilesDir(path);
+        return path;
     }
 
 
@@ -79,7 +83,9 @@ public class SystemDirPath {
      * @return
      */
     public static String getProjectPath(Context context){
-        return  getMainWorkSpacePath(context) + Projects;
+        String path =getMainWorkSpacePath(context) + Projects;
+        FileUtils.createChildFilesDir(path);
+        return  path;
     }
 
 
@@ -88,13 +94,17 @@ public class SystemDirPath {
      * @return
      */
     public static String getLockViewConfPath(Context context){
-        return  getMainWorkSpacePath(context)+ SystemConf + lockViewConf;
+        String path =getMainWorkSpacePath(context) + SystemConf + lockViewConf;
+        FileUtils.createChildFilesDir(path);
+        return  path;
     }
 
 
 
     public String getPdfFilePath(Context context) {
-        return getMainWorkSpacePath(context) + PdfFilePath;
+        String path =getProjectPath(context) + PdfFilePath;
+        FileUtils.createChildFilesDir(path);
+        return path;
     }
 
     /**
@@ -103,6 +113,19 @@ public class SystemDirPath {
      * @return
      */
     public static String getPrintScreenPath(Context context){
-        return  getProjectPath(context) + PrintScreenPath;
+        String path = getProjectPath(context) + PrintScreenPath;
+        FileUtils.createChildFilesDir(path);
+        return  path;
+    }
+
+    /**
+     * 获取拍照路径
+     * @param context
+     * @return
+     */
+    public static String getCameraPath(Context context){
+        String path = getProjectPath(context) + CameraPath;
+        FileUtils.createChildFilesDir(path);
+        return  path;
     }
 }

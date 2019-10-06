@@ -8,6 +8,10 @@ import android.widget.Toast;
 
 import com.baidu.lbsapi.BMapManager;
 import com.baidu.lbsapi.MKGeneralListener;
+import com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.DaoMaster;
+import com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.DaoSession;
+
+import org.greenrobot.greendao.database.Database;
 
 
 /**
@@ -17,6 +21,8 @@ public class MPApplication extends Application {
     private static final String TAG = "MPApplication";
     private static MPApplication mInstance = null;
     public BMapManager mBMapManager = null;
+
+    private DaoSession daoSession;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -31,6 +37,11 @@ public class MPApplication extends Application {
 
         mInstance = this;
         initEngineManager(this);
+
+        //init greendao(sqlite)
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "zrzyyztdb");
+        Database db = helper.getWritableDb();
+        daoSession = new DaoMaster(db).newSession();
 
     }
 
@@ -68,5 +79,9 @@ public class MPApplication extends Application {
                         .show();
             }
         }
+    }
+
+    public DaoSession getDaoSession() {
+        return daoSession;
     }
 }

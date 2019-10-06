@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.View;
+package com.zrzyyzt.runtimeviewer.BMOD.CameraModule;
 
 import android.Manifest;
 import android.app.Activity;
@@ -59,8 +59,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.DaoSession;
+import com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.PhotoEntityDao;
+import com.zrzyyzt.runtimeviewer.Entity.PhotoEntity;
+import com.zrzyyzt.runtimeviewer.GloabApp.MPApplication;
 import com.zrzyyzt.runtimeviewer.R;
-import com.zrzyyzt.runtimeviewer.Utils.TimeUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -73,6 +76,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import gisluq.lib.Util.DateUtils;
+
+import static com.zrzyyzt.runtimeviewer.Config.SystemDirPath.getCameraPath;
 
 public class Camera2BasicFragment extends Fragment
         implements View.OnClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -90,6 +97,10 @@ public class Camera2BasicFragment extends Fragment
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
+
+    private PhotoEntityDao photoDao;
+    private String photoName;
+    private String takeDateTime;
 
     /**
      * Tag for the {@link Log}.
@@ -304,6 +315,7 @@ public class Camera2BasicFragment extends Fragment
                             CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
                         // CONTROL_AE_STATE can be null on some devices
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
+
                         if (aeState == null ||
                                 aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
                             mState = STATE_PICTURE_TAKEN;
@@ -439,8 +451,12 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "onActivityCreated: picpath" + getActivity().getExternalFilesDir(null));
-        mFile = new File(getActivity().getExternalFilesDir(null), TimeUtils.getCurrentTime() + ".jpg");
+//        String cameraPath = getCameraPath(getActivity());
+//        Log.d(TAG, "onActivityCreated: cameraPath" + cameraPath);
+//        mFile = new File(cameraPath, TimeUtils.getCurrentTime() + ".jpg");
+
+        DaoSession daoSession = ((MPApplication) getActivity().getApplication()).getDaoSession();
+        photoDao = daoSession.getPhotoEntityDao();
     }
 
     @Override
@@ -782,6 +798,12 @@ public class Camera2BasicFragment extends Fragment
      * Initiate a still image capture.
      */
     private void takePicture() {
+        String photoFilePath = getCameraPath(getActivity());
+        takeDateTime = DateUtils.getTimeNow();
+        photoName = takeDateTime+ ".jpg";
+        mFile = new File(photoFilePath, photoName);
+        Log.d(TAG, "takePicture: " + mFile.getPath());
+
         lockFocus();
     }
 
@@ -843,7 +865,6 @@ public class Camera2BasicFragment extends Fragment
             // Orientation
             int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
-
             CameraCaptureSession.CaptureCallback CaptureCallback
                     = new CameraCaptureSession.CaptureCallback() {
 
@@ -852,7 +873,8 @@ public class Camera2BasicFragment extends Fragment
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
                     showToast("保存: " + mFile);
-                    Log.d(TAG, mFile.toString());
+                    Log.d(TAG, "camera file is" + mFile.toString());
+                    photoDao.insert(new PhotoEntity(null,photoName,mFile.getPath(),takeDateTime,true));
                     unlockFocus();
                 }
             };
@@ -904,7 +926,6 @@ public class Camera2BasicFragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.capture: {
-                Log.d(TAG, "onClick: capture start");
                 takePicture();
                 break;
             }
