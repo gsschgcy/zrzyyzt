@@ -67,6 +67,7 @@ public class ToolBarHelper {
         /*通过inflater获取toolbar的布局文件*/
         View toolbar = mInflater.inflate(R.layout.activity_toolbar, mContentView);
         mToolBar = (Toolbar) toolbar.findViewById(R.id.activity_baseview_toolbar_toolbarWidget);
+
     }
 
     @SuppressWarnings("ResourceType")
@@ -81,7 +82,7 @@ public class ToolBarHelper {
         typedArray.recycle();
         Log.d("init", "initUserView:  " + overly + " , " + toolBarSize);
         /*如果是悬浮状态，则不需要设置间距*/
-        params.topMargin = overly ? 0 : toolBarSize;
+        params.topMargin = overly ? 0 : 45;
         mContentView.addView(mUserView, params);
 
     }

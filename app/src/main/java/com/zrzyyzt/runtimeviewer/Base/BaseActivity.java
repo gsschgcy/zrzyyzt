@@ -34,6 +34,7 @@ public class BaseActivity extends AppCompatActivity {
         setContentView(mToolBarHelper.getContentView());
         /*把 activity_toolbar 设置到Activity 中*/
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         /*自定义的一些操作*/
         onCreateCustomToolBar(toolbar) ;
     }

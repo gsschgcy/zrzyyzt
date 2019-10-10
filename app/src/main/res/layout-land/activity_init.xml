@@ -26,18 +26,9 @@
             android:text="@string/app_title_name_mian"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="25dp"
-            android:text="@string/app_title_name_subhead"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+
     </LinearLayout>
 
     <LinearLayout

@@ -7,27 +7,47 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.View.MapActivity;
 import com.zrzyyzt.runtimeviewer.BMOD.SystemModule.LockviewActivity;
 import com.zrzyyzt.runtimeviewer.Config.AppWorksSpaceInit;
+import com.zrzyyzt.runtimeviewer.Config.SystemDirPath;
 import com.zrzyyzt.runtimeviewer.Permission.PermissionsActivity;
 import com.zrzyyzt.runtimeviewer.Permission.PermissionsChecker;
 import com.zrzyyzt.runtimeviewer.R;
+import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 
+import java.util.List;
+
+import gisluq.lib.LockPatternView.LockPatternView;
 import gisluq.lib.Util.AppUtils;
 
 /**
  *  应用程序初始化页面
  */
-public class InitActivity extends AppCompatActivity {
+public class InitActivity extends AppCompatActivity implements LockPatternView.OnPatternListener {
 
     private static String TAG = "InitActivity";
     private final int SPLASH_DISPLAY_LENGHT = 2000; // 延迟时间
     private Context context = null;
 
     private static final int REQUEST_CODE = 0; // 请求码
+
+    //锁屏
+    private LockPatternView lock_pattern = null;
+    private TextView titleTxt = null;
+
+    private static String txtTag0 = "请输入解锁手势";
+    private static String txtTag1 = "创建解锁手势";
+    private static String txtTag2 = "再次输入解锁手势";
+    private static String txtTag3 = "解锁手势设置完成";
+
+    private int tagIndex = 0;
+
+    private String lockViewMD = null;
+
     // 所需的全部权限
     private static final String[] PERMISSIONS = new String[]{
             Manifest.permission.INTERNET,
@@ -54,13 +74,30 @@ public class InitActivity extends AppCompatActivity {
             appInit();
         }
 
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                try {
+        this.lock_pattern = (LockPatternView)this.findViewById(R.id.activity_lock_view_pattern);
+        this.lock_pattern.setLockDefaultColorDeep(true);
+        this.lock_pattern.setOnPatternListener(this);
+
+        this.titleTxt = (TextView)this.findViewById(R.id.activity_lock_view_title);
+
+        //检查是否存在密码
+        String SysConf = SystemDirPath.getLockViewConfPath(context);
+        boolean isHave = FileUtils.isExist(SysConf);
+        if(isHave){
+            this.titleTxt.setText(txtTag0);//输入解锁手势
+            tagIndex=0;
+        }else{
+            this.titleTxt.setText(txtTag1);//创建解锁手势
+            tagIndex=1;
+        }
+
+//        new Handler().postDelayed(new Runnable() {
+//            public void run() {
+//                try {
                     //判断是否为平板设备
 //                    boolean ispad = SysUtils.isPad(context);
 //                    if (ispad){
-                        startActivity();
+//                        startActivity();
 //                    }else{
 //                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //                        builder.setMessage("检测到当前设备并非平板，继续安装此应用程序将会出现异常，是否任然继续安装此应用程序？");
@@ -83,11 +120,11 @@ public class InitActivity extends AppCompatActivity {
 //                        builder.setCancelable(false);//点击外部不消失
 //                        builder.create().show();
 //                    }
-                }catch (Exception e){
-                    Log.e(TAG,e.toString());
-                }
-            }
-        }, SPLASH_DISPLAY_LENGHT);
+//                }catch (Exception e){
+//                    Log.e(TAG,e.toString());
+//                }
+//            }
+//        }, SPLASH_DISPLAY_LENGHT);
 
         TextView textView = (TextView)this.findViewById(R.id.activity_init_versionTxt);
         String version = AppUtils.getVersionName(this);
@@ -135,4 +172,86 @@ public class InitActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    public void onPatternStart() {
+
+    }
+
+    @Override
+    public void onPatternCleared() {
+
+    }
+
+    @Override
+    public void onPatternCellAdded(List<LockPatternView.Cell> pattern) {
+
+    }
+
+    @Override
+    public void onPatternDetected(List<LockPatternView.Cell> pattern) {
+        String lockView = LockPatternView.patternToString(pattern);
+        if (tagIndex==0){
+            String SysConf = SystemDirPath.getLockViewConfPath(context);
+            String Md = FileUtils.openTxt(SysConf,"GB2312");
+            if(Md.equals(lockView)){
+                Toast.makeText(context, "解锁验证通过", Toast.LENGTH_SHORT).show();
+//                this.titleTxt.setText(txtTag1);
+
+//                Intent mainIntent = new Intent(context, MainActivity.class);
+//                context.startActivity(mainIntent);
+//                ((Activity)context).finish();
+
+                Intent intent = new Intent(context, MapActivity.class);
+                intent.putExtra("DirName","01-测试工程示例");
+                intent.putExtra("DirPath","/storage/emulated/0/RuntimeViewer/Projects/01-测试工程示例");
+                context.startActivity(intent);
+
+            }else{
+                tagIndex=-1;
+                Toast.makeText(context, "解锁验证失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if(tagIndex==1){
+            this.lockViewMD = lockView;
+            this.titleTxt.setText(txtTag2);
+        }else if(tagIndex==2){
+            String md = LockPatternView.patternToString(pattern);
+            if(md.equals(lockViewMD)){
+                this.titleTxt.setText(txtTag3);
+                tagIndex=0;
+                setLockViewMD(md);
+            }else{
+                tagIndex=0;
+                Toast.makeText(context, "两次输入密码不一致，请重新输入", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        titleTxt.setText(txtTag1);
+                    }
+                }, 1200);
+            }
+        }
+        tagIndex++;
+        this.lock_pattern.clearPattern();
+    }
+
+    /**
+     * 设置登陆秘钥
+     * @param lockViewMD
+     */
+    private void setLockViewMD(String lockViewMD) {
+        if(lockViewMD!=null){
+            //创建系统配置文件Sys.conf
+            String SysConf = SystemDirPath.getLockViewConfPath(context);
+            FileUtils.saveTxt(SysConf, lockViewMD);
+            Toast.makeText(context, "解锁图案设置成功", Toast.LENGTH_SHORT).show();
+            this.setResult(11);
+        }else {
+            Toast.makeText(context, "解锁图案设置失败", Toast.LENGTH_SHORT).show();
+            this.setResult(10);
+        }
+
+        this.finish();
+    }
 }

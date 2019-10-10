@@ -85,8 +85,6 @@ public class MapActivity extends BaseActivity {
         setContentView(R.layout.activity_map);
         context = this;
 
-
-
         Intent intent = getIntent();
         DirName = intent.getStringExtra("DirName");
         DirPath = intent.getStringExtra("DirPath");
@@ -167,7 +165,6 @@ public class MapActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
         boolean isPad = SysUtils.isPad(context);
         if (isPad){
             /***
