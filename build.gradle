@@ -30,6 +30,8 @@ subprojects{
         if(project.hasProperty("dependencies")){
             dependencies {
                 implementation "com.esri.arcgisruntime:arcgis-android:100.5.0"
+                implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+                implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
             }
         }
     }
