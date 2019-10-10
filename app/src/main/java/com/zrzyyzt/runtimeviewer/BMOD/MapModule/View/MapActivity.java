@@ -29,13 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.esri.arcgisruntime.geometry.Point;
-import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.mapping.view.DefaultMapViewOnTouchListener;
+import com.zrzyyzt.runtimeviewer.BMOD.CameraModule.CameraActivity;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.WidgetManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Map.MapManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource.ResourceConfig;
-import com.zrzyyzt.runtimeviewer.BMOD.CameraModule.CameraActivity;
 import com.zrzyyzt.runtimeviewer.BMOD.PhotoModule.PhotoListActivity;
 import com.zrzyyzt.runtimeviewer.Base.BaseActivity;
 import com.zrzyyzt.runtimeviewer.Config.AppConfig;
@@ -192,11 +191,11 @@ public class MapActivity extends BaseActivity {
             mWidgetEntityMenu.put(measureMeneu.getItemId(),"measure");
 
             //添加业务图层
-            MenuItem addfeaturelayerMeneu= menu.add(Menu.NONE, Menu.FIRST + 4, 0, "添加业务");
-            mWidgetEntityMenu.put(addfeaturelayerMeneu.getItemId(),"addFeatureLayer");
+//            MenuItem addfeaturelayerMeneu= menu.add(Menu.NONE, Menu.FIRST + 4, 0, "添加业务");
+//            mWidgetEntityMenu.put(addfeaturelayerMeneu.getItemId(),"addFeatureLayer");
 
             //全景地图
-            MenuItem panoramaviewMeneu= menu.add(Menu.NONE, Menu.FIRST + 5, 0, "全景地图");
+            MenuItem panoramaviewMeneu= menu.add(Menu.NONE, Menu.FIRST + 5, 0, "街景");
             mWidgetEntityMenu.put(panoramaviewMeneu.getItemId(),"panoramaView");
 
             //根据配置文件初始化系统功能菜单栏
@@ -406,13 +405,6 @@ public class MapActivity extends BaseActivity {
                             }
                         });
 
-                        break;
-                    case "addFeatureLayer":
-                        String featureUrl ="http://61.178.152.45:6080/arcgis/rest/services/OneMap/jyjghjbntbhq/MapServer";
-                        ArcGISTiledLayer tiledLayerBaseMap = new ArcGISTiledLayer(featureUrl);
-                        tiledLayerBaseMap.setOpacity((float) 0.6);
-                        tiledLayerBaseMap.setName("基本农田保护");
-                        resourceConfig.mapView.getMap().getOperationalLayers().add(tiledLayerBaseMap);
                         break;
                 }
             }
