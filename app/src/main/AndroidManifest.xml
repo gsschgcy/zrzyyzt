@@ -43,6 +43,7 @@
         <activity android:name=".BMOD.ProjectsModule.View.MainActivity" />
         <activity
             android:name=".BMOD.MapModule.View.MapActivity"
+            android:screenOrientation="landscape"
             android:configChanges="orientation|navigation|keyboardHidden|screenSize" />
         <activity android:name=".BMOD.SystemModule.AboutActivity" />
         <activity
