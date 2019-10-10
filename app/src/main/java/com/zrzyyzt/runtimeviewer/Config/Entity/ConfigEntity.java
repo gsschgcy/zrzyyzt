@@ -13,6 +13,8 @@
 package com.zrzyyzt.runtimeviewer.Config.Entity;
 
 
+import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Entity.Extent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class ConfigEntity
 	private String runtimrKey = null;//许可信息
 	private String ipAddress = null; //ip地址
 	private String workspacePath = null;//工作空间路径
+	private Extent extent = null;//初始化范围
+
+
 
 	private List<WidgetEntity> mListWidget = new ArrayList<WidgetEntity>();
 
@@ -58,6 +63,14 @@ public class ConfigEntity
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
+	}
+
+	public Extent getExtent() {
+		return extent;
+	}
+
+	public void setExtent(Extent extent) {
+		this.extent = extent;
 	}
 
 	public void setListWidget(List<WidgetEntity> list)

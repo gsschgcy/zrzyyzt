@@ -34,6 +34,24 @@ public class XmlParser {
 	private final static String XML_NODE_APPNAME= "appname";
 	private final static String XML_NODE_APPNAME_NAME = "name";
 
+	//xmin
+	private final static String XML_NODE_XMIN= "xmin";
+	private final static String XML_NODE_XMIN_NAME = "xmin";
+
+
+	//ymin
+	private final static String XML_NODE_YMIN= "ymin";
+	private final static String XML_NODE_YMIN_NAME = "ymin";
+
+	//xmax
+	private final static String XML_NODE_XMAX= "xmax";
+	private final static String XML_NODE_XMAX_NAME = "xmax";
+
+	//ymax
+	private final static String XML_NODE_YMAX= "ymax";
+	private final static String XML_NODE_YMAX_NAME = "ymax";
+
+
 	private final static String XML_NODE_RUNTIMEKEY = "runtimekey";
 	private final static String XML_NODE_RUNTIMEKEY_LICENSE = "license";
 

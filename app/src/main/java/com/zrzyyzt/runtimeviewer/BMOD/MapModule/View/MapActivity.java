@@ -195,6 +195,10 @@ public class MapActivity extends BaseActivity {
             MenuItem panoramaviewMeneu= menu.add(Menu.NONE, Menu.FIRST + 5, 0, "街景");
             mWidgetEntityMenu.put(panoramaviewMeneu.getItemId(),"panoramaView");
 
+            //全景地图
+            MenuItem finishMeneu= menu.add(Menu.NONE, Menu.FIRST + 7, 0, "退出");
+            mWidgetEntityMenu.put(finishMeneu.getItemId(),"finish");
+
             //根据配置文件初始化系统功能菜单栏
             if (mConfigEntity != null) {
                 final List<WidgetEntity> mListWidget = mConfigEntity.getListWidget();
@@ -402,6 +406,9 @@ public class MapActivity extends BaseActivity {
                             }
                         });
 
+                        break;
+                    case "finish":
+                        finish();
                         break;
                 }
             }

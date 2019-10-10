@@ -31,6 +31,9 @@ public class BaseActivity extends AppCompatActivity {
 //        toolbar.setNavigationIcon(R.mipmap.ic_menu);
         toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.ic_menu_white));
 
+        //设置返回按钮图标
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.home));
+
         setContentView(mToolBarHelper.getContentView());
         /*把 activity_toolbar 设置到Activity 中*/
         setSupportActionBar(toolbar);
@@ -46,8 +49,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            //状态栏返回按钮
-            finish();
+             //状态栏返回按钮
+//            finish();
+
             return true ;
         }
         return super.onOptionsItemSelected(item);

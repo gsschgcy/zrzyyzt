@@ -5,8 +5,8 @@
         <!-- Customize your theme here. -->
 <!--        <item name="colorPrimary">@color/colorPrimary</item>-->
 <!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <item name="colorPrimary">@color/dodgerblue</item>
-        <item name="colorPrimaryDark">@color/dodgerblue</item>
+        <item name="colorPrimary">@color/toolbarColor</item>
+        <item name="colorPrimaryDark">@color/toolbarColor</item>
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
