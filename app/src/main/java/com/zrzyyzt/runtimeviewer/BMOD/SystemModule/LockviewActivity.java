@@ -1,12 +1,14 @@
 package com.zrzyyzt.runtimeviewer.BMOD.SystemModule;
 
 import android.content.Context;
-import android.os.Handler;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.View.MapActivity;
 import com.zrzyyzt.runtimeviewer.Base.BaseActivity;
 import com.zrzyyzt.runtimeviewer.Config.SystemDirPath;
 import com.zrzyyzt.runtimeviewer.R;
@@ -102,7 +104,17 @@ public class LockviewActivity extends BaseActivity implements LockPatternView.On
             String Md = FileUtils.openTxt(SysConf,"GB2312");
             if(Md.equals(lockView)){
                 Toast.makeText(context, "解锁验证通过", Toast.LENGTH_SHORT).show();
-                this.titleTxt.setText(txtTag1);
+//                this.titleTxt.setText(txtTag1);
+
+//                Intent mainIntent = new Intent(context, MainActivity.class);
+//                context.startActivity(mainIntent);
+//                ((Activity)context).finish();
+
+                Intent intent = new Intent(context, MapActivity.class);
+                intent.putExtra("DirName","01-测试工程示例");
+                intent.putExtra("DirPath","/storage/emulated/0/RuntimeViewer/Projects/01-测试工程示例");
+                context.startActivity(intent);
+
             }else{
                 tagIndex=-1;
                 Toast.makeText(context, "解锁验证失败", Toast.LENGTH_SHORT).show();

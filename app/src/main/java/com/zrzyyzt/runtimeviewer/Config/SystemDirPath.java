@@ -95,7 +95,7 @@ public class SystemDirPath {
      */
     public static String getLockViewConfPath(Context context){
         String path =getMainWorkSpacePath(context) + SystemConf + lockViewConf;
-        FileUtils.createChildFilesDir(path);
+//        FileUtils.createChildFilesDir(path);
         return  path;
     }
 

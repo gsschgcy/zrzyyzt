@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import java.util.List;
  * 工程列表 item
  */
 public class ProjectGridAdapter extends BaseAdapter {
+
+    private static final String TAG = "ProjectGridAdapter";
 
     private static String PROJECT_IMAGE_NAME_JPG = "image.jpg";
     private static String PROJECT_IMAGE_NAME_PNG = "image.png";
@@ -101,6 +104,7 @@ public class ProjectGridAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: "+ projectInfo.DirName + "," + projectInfo.DirPath);
                 Intent intent = new Intent(context, MapActivity.class);
                 intent.putExtra("DirName",projectInfo.DirName);
                 intent.putExtra("DirPath",projectInfo.DirPath);

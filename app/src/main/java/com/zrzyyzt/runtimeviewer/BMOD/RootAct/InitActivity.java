@@ -4,13 +4,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.zrzyyzt.runtimeviewer.BMOD.ProjectsModule.View.MainActivity;
+import com.zrzyyzt.runtimeviewer.BMOD.SystemModule.LockviewActivity;
 import com.zrzyyzt.runtimeviewer.Config.AppWorksSpaceInit;
 import com.zrzyyzt.runtimeviewer.Permission.PermissionsActivity;
 import com.zrzyyzt.runtimeviewer.Permission.PermissionsChecker;
@@ -98,9 +98,26 @@ public class InitActivity extends AppCompatActivity {
      * 跳转
      */
     private void startActivity() {
-        Intent mainIntent = new Intent(context,MainActivity.class);
+//        Intent mainIntent = new Intent(context,MainActivity.class);
+//        context.startActivity(mainIntent);
+//        ((Activity)context).finish();
+
+        Intent mainIntent = new Intent(context, LockviewActivity.class);
         context.startActivity(mainIntent);
         ((Activity)context).finish();
+
+//        String passwordStr = PreferenceUtil.getGesturePassword(InitActivity.this);
+//        Intent intent;
+//        if (passwordStr == "") {
+//            Log.d("TAG", "true");
+//            intent = new Intent(InitActivity.this, LockviewActivity.class);
+//        } else {
+//            intent = new Intent(InitActivity.this, LoginActivity.class);
+//        }
+//        context.startActivity(intent);
+//        ((Activity)context).finish();
+
+
     }
 
     /**
