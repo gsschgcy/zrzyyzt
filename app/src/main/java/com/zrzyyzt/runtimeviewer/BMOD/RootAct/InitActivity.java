@@ -206,7 +206,7 @@ public class InitActivity extends AppCompatActivity implements LockPatternView.O
                 intent.putExtra("DirName","01-测试工程示例");
                 intent.putExtra("DirPath","/storage/emulated/0/RuntimeViewer/Projects/01-测试工程示例");
                 context.startActivity(intent);
-
+                finish();
             }else{
                 tagIndex=-1;
                 Toast.makeText(context, "解锁验证失败", Toast.LENGTH_SHORT).show();

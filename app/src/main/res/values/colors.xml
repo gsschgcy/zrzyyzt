@@ -3,6 +3,10 @@
 
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
+
+    <color name="toolbarColor">#303F4A</color>
+
+
     <color name="colorAccent">#D81B60</color>
     <color name="colorMain">#F05B48</color>
     <color name="colorMainLight">#f77d6d</color>

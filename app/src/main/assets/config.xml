@@ -7,6 +7,15 @@ App配置文件
     <!--App名称-->
 	<appname name="自然资源一张图移动应用系统" />
 
+	<extent id="1">
+        <xmin xmin="98.12001898511082"></xmin>
+        <ymin ymin="39.651550073342946"></ymin>
+        <xmax xmax="98.51777241291725"></xmax>
+        <ymax ymax="39.949262227551614"></ymax>
+        <srid srid="4490"></srid>
+    </extent>
+
+
     <!--Runtime 许可-->
 	<runtimekey license="ArcGIS Runtime许可信息"/>
 

@@ -18,6 +18,8 @@ import android.content.Context;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource.Constant;
 import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
 import com.zrzyyzt.runtimeviewer.Config.Entity.WidgetEntity;
+import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Entity.Extent;
+import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Entity.SpatialReference;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -33,6 +35,27 @@ public class XmlParser {
 
 	private final static String XML_NODE_APPNAME= "appname";
 	private final static String XML_NODE_APPNAME_NAME = "name";
+
+	//extent
+	private final static String XML_NODE_EXTENT= "extent";
+	private final static String XML_NODE_EXTENT_NAME = "id";
+
+	//xmin
+	private final static String XML_NODE_XMIN= "xmin";
+	private final static String XML_NODE_XMIN_NAME = "xmin";
+
+	//ymin
+	private final static String XML_NODE_YMIN= "ymin";
+	private final static String XML_NODE_YMIN_NAME = "ymin";
+
+	//xmax
+	private final static String XML_NODE_XMAX= "xmax";
+	private final static String XML_NODE_XMAX_NAME = "xmax";
+
+	//ymax
+	private final static String XML_NODE_YMAX= "ymax";
+	private final static String XML_NODE_YMAX_NAME = "ymax";
+
 
 	private final static String XML_NODE_RUNTIMEKEY = "runtimekey";
 	private final static String XML_NODE_RUNTIMEKEY_LICENSE = "license";
@@ -100,6 +123,21 @@ public class XmlParser {
 						}else if (XML_NODE_APPNAME.equals(nodeName)){//appname
 							String appname=pullParser.getAttributeValue(null,XML_NODE_APPNAME_NAME);
 							config.setAppName(appname);
+						}else if (XML_NODE_EXTENT.equals(nodeName)){//appname
+							String appname=pullParser.getAttributeValue(null,XML_NODE_EXTENT_NAME);
+							config.setExtent(new Extent(0,0,0,0, new SpatialReference(4490)));
+						}else if (XML_NODE_XMIN.equals(nodeName)){//appname
+							String xmin=pullParser.getAttributeValue(null,XML_NODE_XMIN_NAME);
+							config.getExtent().setXmin(Double.parseDouble(xmin));
+						}else if (XML_NODE_XMAX.equals(nodeName)){//appname
+							String xmax=pullParser.getAttributeValue(null,XML_NODE_XMAX_NAME);
+							config.getExtent().setXmax(Double.parseDouble(xmax));
+						}else if (XML_NODE_YMIN.equals(nodeName)){//appname
+							String ymin=pullParser.getAttributeValue(null,XML_NODE_YMIN_NAME);
+							config.getExtent().setYmin(Double.parseDouble(ymin));
+						}else if (XML_NODE_YMAX.equals(nodeName)){//appname
+							String ymax=pullParser.getAttributeValue(null,XML_NODE_YMAX_NAME);
+							config.getExtent().setYmax(Double.parseDouble(ymax));
 						}else if(XML_NODE_IPADDRESS.equals(nodeName)){//ipaddress
 							String address=pullParser.getAttributeValue(null,XML_NODE_IPADDRESS_ADDRESS);
 							config.setIpAddress(address);

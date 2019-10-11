@@ -28,7 +28,10 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esri.arcgisruntime.geometry.Envelope;
 import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.SpatialReference;
+import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.mapping.view.DefaultMapViewOnTouchListener;
 import com.zrzyyzt.runtimeviewer.BMOD.CameraModule.CameraActivity;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
@@ -195,6 +198,10 @@ public class MapActivity extends BaseActivity {
             MenuItem panoramaviewMeneu= menu.add(Menu.NONE, Menu.FIRST + 5, 0, "街景");
             mWidgetEntityMenu.put(panoramaviewMeneu.getItemId(),"panoramaView");
 
+            //全景地图
+            MenuItem finishMeneu= menu.add(Menu.NONE, Menu.FIRST + 7, 0, "退出");
+            mWidgetEntityMenu.put(finishMeneu.getItemId(),"finish");
+
             //根据配置文件初始化系统功能菜单栏
             if (mConfigEntity != null) {
                 final List<WidgetEntity> mListWidget = mConfigEntity.getListWidget();
@@ -331,13 +338,29 @@ public class MapActivity extends BaseActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home) {
-            exitActivity();
-            //如果这里不加上该句代码，一点击到后退键该界面就消失了，选择框就一闪掉了，选择不了
-            return true;
+//        if(item.getItemId()==android.R.id.home) {
+//            exitActivity();
+//            //如果这里不加上该句代码，一点击到后退键该界面就消失了，选择框就一闪掉了，选择不了
+//            return true;
+//        }
+
+        //点击返回按钮定位到设定范围
+        if (item.getItemId() == android.R.id.home){
+
+            ConfigEntity config = AppConfig.getConfig(this);
+            Envelope envelope = new Envelope(config.getExtent().getXmin(),
+                    config.getExtent().getYmin(),
+                    config.getExtent().getXmax(),
+                    config.getExtent().getYmax(),
+                    SpatialReference.create(config.getExtent().getSpatialReference().getWkid()));
+
+            Viewpoint vp = new Viewpoint(envelope);
+            resourceConfig.mapView.setViewpointAsync(vp);
+            return true ;
         }
 
         super.onOptionsItemSelected(item);
+
         Object object =  mWidgetEntityMenu.get(item.getItemId());
         if (object!=null){
             if (object.getClass().equals(WidgetEntity.class)){
@@ -402,6 +425,9 @@ public class MapActivity extends BaseActivity {
                             }
                         });
 
+                        break;
+                    case "finish":
+                        exitActivity();
                         break;
                 }
             }
