@@ -1,5 +1,6 @@
 package com.zrzyyzt.runtimeviewer.Base;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,11 +29,15 @@ public class BaseActivity extends AppCompatActivity {
         mToolBarHelper = new ToolBarHelper(this,layoutResID) ;
         toolbar = mToolBarHelper.getToolBar() ;
 
+        //设置菜单图标
 //        toolbar.setNavigationIcon(R.mipmap.ic_menu);
         toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.ic_menu_white));
 
         //设置返回按钮图标
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.home));
+
+        //设置为横屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         setContentView(mToolBarHelper.getContentView());
         /*把 activity_toolbar 设置到Activity 中*/

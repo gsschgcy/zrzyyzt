@@ -12,12 +12,11 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.esri.arcgisruntime.mapping.view.MapView;
-import com.zrzyyzt.runtimeviewer.R;
-import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLocationView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapNorthView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapZoomView;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView;
+import com.zrzyyzt.runtimeviewer.R;
 
 /**
  * 资源绑定注册类
@@ -49,7 +48,7 @@ public class ResourceConfig {
     public MeasureToolView measureToolView;
     public MapRotateView mapRotateView;
     public MapNorthView mapNorthView;
-    public MapLocationView mapLocationView;
+//    public MapLocationView mapLocationView;
 
     public ImageView img_tdt_yx;
     public ImageView img_tdt_sl;
@@ -83,7 +82,7 @@ public class ResourceConfig {
         this.measureToolView =(MeasureToolView)activiy.findViewById(R.id.measure_tool);
         this.mapRotateView =(MapRotateView)activiy.findViewById(R.id.map_rotate_view);
         this.mapNorthView = (MapNorthView)activiy.findViewById(R.id.map_north_view);
-        this.mapLocationView = (MapLocationView) activiy.findViewById(R.id.map_location_view);
+//        this.mapLocationView = (MapLocationView) activiy.findViewById(R.id.map_location_view);
 
 //        this.view_tdt_yx = activiy.findViewById(R.id.basemap_tdt_yx);
 //        this.view_tdt_sl = activiy.findViewById(R.id.basemap_tdt_sl);

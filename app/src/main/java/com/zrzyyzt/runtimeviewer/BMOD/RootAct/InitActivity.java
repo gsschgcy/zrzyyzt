@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -129,6 +130,13 @@ public class InitActivity extends AppCompatActivity implements LockPatternView.O
         TextView textView = (TextView)this.findViewById(R.id.activity_init_versionTxt);
         String version = AppUtils.getVersionName(this);
         textView.setText("版本号:"+version);
+
+        //获取dpi
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        textView.setText("版本号: 密度" +dm.density +",dpi "+ dm.densityDpi);
+
     }
 
     /**
