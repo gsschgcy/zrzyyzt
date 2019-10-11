@@ -12,58 +12,58 @@
         android:paddingRight="1dp"
         android:gravity="center"
         android:background="@drawable/map_shadow_bg">
-        <LinearLayout
-            android:id="@+id/measure_prev_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@drawable/zoom_button_topcorner">
-            <ImageView
-                android:id="@+id/measure_prev"
-                android:layout_width="@dimen/zoom_btn_size"
-                android:layout_height="@dimen/zoom_btn_size"
-                android:padding="@dimen/zoom_btn_padding"
-                android:src="@drawable/map_measure_prev"/>
-            <TextView
-                android:id="@+id/measure_prev_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/measure_prev_text"
-                android:textSize="@dimen/zoom_font_size"
-                android:paddingBottom="@dimen/zoom_btn_padding"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/spilt_line0"
-            android:layout_width="25dp"
-            android:layout_height="0.5dp"
-            android:background="#c5c5c5" />
-        <LinearLayout
-            android:id="@+id/measure_next_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@drawable/zoom_button_topcorner">
-            <ImageView
-                android:id="@+id/measure_next"
-                android:layout_width="@dimen/zoom_btn_size"
-                android:layout_height="@dimen/zoom_btn_size"
-                android:padding="@dimen/zoom_btn_padding"
-                android:src="@drawable/map_measure_next"/>
-            <TextView
-                android:id="@+id/measure_next_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/measure_next_text"
-                android:textSize="@dimen/zoom_font_size"
-                android:paddingBottom="@dimen/zoom_btn_padding"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/spilt_line1"
-            android:layout_width="25dp"
-            android:layout_height="0.5dp"
-            android:background="#c5c5c5" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/measure_prev_layout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical"-->
+<!--            android:background="@drawable/zoom_button_topcorner">-->
+<!--            <ImageView-->
+<!--                android:id="@+id/measure_prev"-->
+<!--                android:layout_width="@dimen/zoom_btn_size"-->
+<!--                android:layout_height="@dimen/zoom_btn_size"-->
+<!--                android:padding="@dimen/zoom_btn_padding"-->
+<!--                android:src="@drawable/map_measure_prev"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/measure_prev_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/measure_prev_text"-->
+<!--                android:textSize="@dimen/zoom_font_size"-->
+<!--                android:paddingBottom="@dimen/zoom_btn_padding"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/spilt_line0"-->
+<!--            android:layout_width="25dp"-->
+<!--            android:layout_height="0.5dp"-->
+<!--            android:background="#c5c5c5" />-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/measure_next_layout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical"-->
+<!--            android:background="@drawable/zoom_button_topcorner">-->
+<!--            <ImageView-->
+<!--                android:id="@+id/measure_next"-->
+<!--                android:layout_width="@dimen/zoom_btn_size"-->
+<!--                android:layout_height="@dimen/zoom_btn_size"-->
+<!--                android:padding="@dimen/zoom_btn_padding"-->
+<!--                android:src="@drawable/map_measure_next"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/measure_next_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/measure_next_text"-->
+<!--                android:textSize="@dimen/zoom_font_size"-->
+<!--                android:paddingBottom="@dimen/zoom_btn_padding"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/spilt_line1"-->
+<!--            android:layout_width="25dp"-->
+<!--            android:layout_height="0.5dp"-->
+<!--            android:background="#c5c5c5" />-->
         <LinearLayout
             android:id="@+id/measure_length_layout"
             android:layout_width="wrap_content"

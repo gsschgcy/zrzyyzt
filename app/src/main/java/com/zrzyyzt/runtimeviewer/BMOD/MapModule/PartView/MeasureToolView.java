@@ -27,13 +27,18 @@ public class MeasureToolView extends LinearLayout {
     private Context context;
     private ArcGisMeasure arcgisMeasure;
     private MapView mMapView;
-    private LinearLayout measureBgView,measurePrevlayout,measureNextlayout,measureLengthLayout,measureAreaLayout,measureClearLayout,measureEndLayout;
-    private ImageView prevImageView,nextImageView,lengthImageView,areaImageView,clearImageView,endImageView;
-    private TextView measurePrevText,measureNextText,measureLengthText,measureAreaText,measureClearText,measureEndText;
-    private int bgColor,fontColor,measurePrevImage,measureNextImage,measureLengthImage,measureAreaImage,measureClearImage,measureEndImage;
+//    measurePrevlayout,measureNextlayout,
+    private LinearLayout measureBgView,measureLengthLayout,measureAreaLayout,measureClearLayout,measureEndLayout;
+//    prevImageView,nextImageView,
+    private ImageView lengthImageView,areaImageView,clearImageView,endImageView;
+//    measurePrevText,measureNextText,
+    private TextView measureLengthText,measureAreaText,measureClearText,measureEndText;
+//    measurePrevImage,measureNextImage,
+    private int bgColor,fontColor,measureLengthImage,measureAreaImage,measureClearImage,measureEndImage;
     private int buttonWidth,buttonHeight,fontSize;
     private boolean isHorizontal,showText=false;
-    private String measurePrevStr,measureNextStr,measureLengthStr,measureAreaStr,measureClearStr,measureEndStr;
+//    measurePrevStr,measureNextStr,
+    private String measureLengthStr,measureAreaStr,measureClearStr,measureEndStr;
     private Variable.DrawType drawType=null;
     private Variable.Measure measureLengthType=Variable.Measure.M;
     private Variable.Measure measureAreaType=Variable.Measure.M2;
@@ -124,21 +129,21 @@ public class MeasureToolView extends LinearLayout {
     }
 
     private void initView(){
-        prevImageView= findViewById(R.id.measure_prev);
-        nextImageView= findViewById(R.id.measure_next);
+//        prevImageView= findViewById(R.id.measure_prev);
+//        nextImageView= findViewById(R.id.measure_next);
         lengthImageView= findViewById(R.id.measure_length);
         areaImageView= findViewById(R.id.measure_area);
         clearImageView= findViewById(R.id.measure_clear);
         endImageView= findViewById(R.id.measure_end);
         measureBgView= findViewById(R.id.measure_bg);
-        measurePrevlayout= findViewById(R.id.measure_prev_layout);
-        measureNextlayout= findViewById(R.id.measure_next_layout);
+//        measurePrevlayout= findViewById(R.id.measure_prev_layout);
+//        measureNextlayout= findViewById(R.id.measure_next_layout);
         measureLengthLayout= findViewById(R.id.measure_length_layout);
         measureAreaLayout= findViewById(R.id.measure_area_layout);
         measureClearLayout= findViewById(R.id.measure_clear_layout);
         measureEndLayout= findViewById(R.id.measure_end_layout);
-        measurePrevText= findViewById(R.id.measure_prev_text);
-        measureNextText= findViewById(R.id.measure_next_text);
+//        measurePrevText= findViewById(R.id.measure_prev_text);
+//        measureNextText= findViewById(R.id.measure_next_text);
         measureLengthText= findViewById(R.id.measure_length_text);
         measureAreaText= findViewById(R.id.measure_area_text);
         measureClearText= findViewById(R.id.measure_clear_text);
@@ -147,8 +152,8 @@ public class MeasureToolView extends LinearLayout {
         //measurePrevlayout.setVisibility(GONE);
         //measureNextlayout.setVisibility(GONE);
 
-        measurePrevlayout.setOnClickListener(listener);
-        measureNextlayout.setOnClickListener(listener);
+//        measurePrevlayout.setOnClickListener(listener);
+//        measureNextlayout.setOnClickListener(listener);
         measureLengthLayout.setOnClickListener(listener);
         measureAreaLayout.setOnClickListener(listener);
         measureClearLayout.setOnClickListener(listener);
@@ -160,16 +165,16 @@ public class MeasureToolView extends LinearLayout {
         buttonWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),35));
         buttonHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height, Util.valueToSp(getContext(),35));
         showText=ta.getBoolean(R.styleable.ViewAttr_show_text,false);
-        measurePrevStr=ta.getString(R.styleable.ViewAttr_measure_prev_text);
-        measureNextStr=ta.getString(R.styleable.ViewAttr_measure_next_text);
+//        measurePrevStr=ta.getString(R.styleable.ViewAttr_measure_prev_text);
+//        measureNextStr=ta.getString(R.styleable.ViewAttr_measure_next_text);
         measureLengthStr=ta.getString(R.styleable.ViewAttr_measure_length_text);
         measureAreaStr=ta.getString(R.styleable.ViewAttr_measure_area_text);
         measureClearStr=ta.getString(R.styleable.ViewAttr_measure_clear_text);
         measureEndStr=ta.getString(R.styleable.ViewAttr_measure_end_text);
         fontColor=ta.getResourceId(R.styleable.ViewAttr_font_color,R.color.gray);
         fontSize=ta.getInt(R.styleable.ViewAttr_font_size,12);
-        measurePrevImage=ta.getResourceId(R.styleable.ViewAttr_measure_prev_image,R.drawable.map_measure_prev);
-        measureNextImage=ta.getResourceId(R.styleable.ViewAttr_measure_next_image,R.drawable.map_measure_next);
+//        measurePrevImage=ta.getResourceId(R.styleable.ViewAttr_measure_prev_image,R.drawable.map_measure_prev);
+//        measureNextImage=ta.getResourceId(R.styleable.ViewAttr_measure_next_image,R.drawable.map_measure_next);
         measureLengthImage=ta.getResourceId(R.styleable.ViewAttr_measure_length_image,R.drawable.map_measure_length);
         measureAreaImage=ta.getResourceId(R.styleable.ViewAttr_measure_area_image,R.drawable.map_measure_area);
         measureClearImage=ta.getResourceId(R.styleable.ViewAttr_measure_clear_image,R.drawable.map_measure_clear);
@@ -179,16 +184,16 @@ public class MeasureToolView extends LinearLayout {
         setDpButtonWidth(buttonWidth);
         setDpButtonHeight(buttonHeight);
         setShowText(showText);
-        setMeasurePrevStr(measurePrevStr);
-        setMeasureNextStr(measureNextStr);
+//        setMeasurePrevStr(measurePrevStr);
+//        setMeasureNextStr(measureNextStr);
         setMeasureLengthStr(measureLengthStr);
         setMeasureAreaStr(measureAreaStr);
         setMeasureClearStr(measureClearStr);
         setMeasureEndStr(measureEndStr);
         setFontColor(fontColor);
         setFontSize(fontSize);
-        setMeasurePrevImage(measurePrevImage);
-        setMeasureNextImage(measureNextImage);
+//        setMeasurePrevImage(measurePrevImage);
+//        setMeasureNextImage(measureNextImage);
         setMeasureLengthImage(measureLengthImage);
         setMeasureAreaImage(measureAreaImage);
         setMeasureClearImage(measureClearImage);
@@ -248,8 +253,8 @@ public class MeasureToolView extends LinearLayout {
 
     private void setDpButtonWidth(int buttonWidth) {
         this.buttonWidth = buttonWidth;
-        prevImageView.getLayoutParams().width=buttonWidth;
-        nextImageView.getLayoutParams().width=buttonWidth;
+//        prevImageView.getLayoutParams().width=buttonWidth;
+//        nextImageView.getLayoutParams().width=buttonWidth;
         lengthImageView.getLayoutParams().width=buttonWidth;
         areaImageView.getLayoutParams().width=buttonWidth;
         clearImageView.getLayoutParams().width=buttonWidth;
@@ -258,8 +263,8 @@ public class MeasureToolView extends LinearLayout {
 
     private void setDpButtonHeight(int buttonHeight) {
         this.buttonHeight = buttonHeight;
-        prevImageView.getLayoutParams().height=buttonHeight;
-        nextImageView.getLayoutParams().height=buttonHeight;
+//        prevImageView.getLayoutParams().height=buttonHeight;
+//        nextImageView.getLayoutParams().height=buttonHeight;
         lengthImageView.getLayoutParams().height=buttonHeight;
         areaImageView.getLayoutParams().height=buttonHeight;
         clearImageView.getLayoutParams().height=buttonHeight;
@@ -293,25 +298,25 @@ public class MeasureToolView extends LinearLayout {
     public void setShowText(boolean showText){
         this.showText=showText;
         int view=showText?View.VISIBLE:View.GONE;
-        measurePrevText.setVisibility(view);
-        measureNextText.setVisibility(view);
+//        measurePrevText.setVisibility(view);
+//        measureNextText.setVisibility(view);
         measureLengthText.setVisibility(view);
         measureAreaText.setVisibility(view);
         measureClearText.setVisibility(view);
         measureEndText.setVisibility(view);
     }
 
-    public void setMeasurePrevStr(String measurePrevStr) {
-        if(measurePrevStr==null) return;
-        this.measurePrevStr = measurePrevStr;
-        measurePrevText.setText(measurePrevStr);
-    }
-
-    public void setMeasureNextStr(String measureNextStr) {
-        if(measureNextStr==null) return;
-        this.measureNextStr = measureNextStr;
-        measureNextText.setText(measureNextStr);
-    }
+//    public void setMeasurePrevStr(String measurePrevStr) {
+//        if(measurePrevStr==null) return;
+//        this.measurePrevStr = measurePrevStr;
+//        measurePrevText.setText(measurePrevStr);
+//    }
+//
+//    public void setMeasureNextStr(String measureNextStr) {
+//        if(measureNextStr==null) return;
+//        this.measureNextStr = measureNextStr;
+//        measureNextText.setText(measureNextStr);
+//    }
 
     public void setMeasureLengthStr(String measureLengthStr) {
         if(measureLengthStr==null) return;
@@ -340,8 +345,8 @@ public class MeasureToolView extends LinearLayout {
     public void setFontColor(int fontColor) {
         this.fontColor = fontColor;
         int color = getResources().getColor(fontColor);
-        measurePrevText.setTextColor(color);
-        measureNextText.setTextColor(color);
+//        measurePrevText.setTextColor(color);
+//        measureNextText.setTextColor(color);
         measureLengthText.setTextColor(color);
         measureAreaText.setTextColor(color);
         measureClearText.setTextColor(color);
@@ -350,23 +355,23 @@ public class MeasureToolView extends LinearLayout {
 
     public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
-        measurePrevText.setTextSize(fontSize);
-        measureNextText.setTextSize(fontSize);
+//        measurePrevText.setTextSize(fontSize);
+//        measureNextText.setTextSize(fontSize);
         measureLengthText.setTextSize(fontSize);
         measureAreaText.setTextSize(fontSize);
         measureClearText.setTextSize(fontSize);
         measureEndText.setTextSize(fontSize);
     }
 
-    public void setMeasurePrevImage(int measurePrevImage) {
-        this.measurePrevImage = measurePrevImage;
-        prevImageView.setImageDrawable(getResources().getDrawable(measurePrevImage));
-    }
-
-    public void setMeasureNextImage(int measureNextImage) {
-        this.measureNextImage = measureNextImage;
-        nextImageView.setImageDrawable(getResources().getDrawable(measureNextImage));
-    }
+//    public void setMeasurePrevImage(int measurePrevImage) {
+//        this.measurePrevImage = measurePrevImage;
+//        prevImageView.setImageDrawable(getResources().getDrawable(measurePrevImage));
+//    }
+//
+//    public void setMeasureNextImage(int measureNextImage) {
+//        this.measureNextImage = measureNextImage;
+//        nextImageView.setImageDrawable(getResources().getDrawable(measureNextImage));
+//    }
 
     public void setMeasureLengthImage(int measureLengthImage) {
         this.measureLengthImage = measureLengthImage;
