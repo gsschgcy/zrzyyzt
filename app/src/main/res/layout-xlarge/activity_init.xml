@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:foregroundGravity="center"
         android:gravity="center"
         android:orientation="vertical">
@@ -52,12 +52,12 @@
             android:visibility="visible"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="15dp" />
 
         <gisluq.lib.LockPatternView.LockPatternView
             android:id="@+id/activity_lock_view_pattern"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
             android:layout_gravity="center"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
