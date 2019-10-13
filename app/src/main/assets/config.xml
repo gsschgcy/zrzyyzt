@@ -40,6 +40,7 @@ App配置文件
         <widget label="文档管理"  classname="com.zrzyyzt.runtimeviewer.Widgets.DocManagerWidget.DocManagerWidget"
             icon="widget_caculate.png" select_icon="widget_caculate_select2.png" width="600" />
         <widget label="统计分析" classname="com.zrzyyzt.runtimeviewer.Widgets.StatisticsWidget.StatisticsWidget" width="800" />
+        <widget label="地名检索" classname="com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.PlaceNameSearchWidget" width="800" />
         <widget label="测试" classname="com.zrzyyzt.runtimeviewer.Widgets.HelloWorldWidget"  width="600" />
     </widgetcontainer>
 </configuration>

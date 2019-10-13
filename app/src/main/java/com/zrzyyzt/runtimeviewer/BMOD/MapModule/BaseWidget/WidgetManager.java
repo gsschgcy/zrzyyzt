@@ -1,5 +1,6 @@
 package com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -94,6 +95,7 @@ public class WidgetManager {
      * @param widget
      * @param entity
      */
+    @SuppressLint("RestrictedApi")
     private void instanceWidget(BaseWidget widget, WidgetEntity entity) {
         widget.context = context;
         widget.entity = entity;

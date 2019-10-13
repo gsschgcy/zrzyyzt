@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
+import com.esri.arcgisruntime.data.Field;
 import com.esri.arcgisruntime.data.ServiceFeatureTable;
 import com.esri.arcgisruntime.data.StatisticDefinition;
 import com.esri.arcgisruntime.data.StatisticRecord;
@@ -93,7 +94,7 @@ public class StatisticsWidget extends BaseWidget {
         final Spinner spinnerLayerList =mWidgetView.findViewById(R.id.widget_view_statistics_spinnerLayer);
         final Spinner spinnerFieldList=mWidgetView.findViewById(R.id.widget_view_statistics_spinnerfield);
         final Spinner spinnerTypeList=mWidgetView.findViewById(R.id.widget_view_statistics_spinnertype);
-        final TextView textView=mWidgetView.findViewById(R.id.widget_view_statistics_textview10);
+
 
         StLayerSpinnerAdapter stLayerSpinnerAdapter=new StLayerSpinnerAdapter(context,mapView.getMap().getOperationalLayers());
         spinnerLayerList.setAdapter(stLayerSpinnerAdapter);
@@ -124,9 +125,12 @@ public class StatisticsWidget extends BaseWidget {
                 if(obj!=null){
                     final ArcGISTiledLayer featureLayer = (ArcGISTiledLayer)obj;
                     ServiceFeatureTable featureTable =new ServiceFeatureTable(featureLayer.getUri()+"/0" );
-                    textView.setText(featureTable.getTableName());
-                    stFieldSpinnerAdapter[0] =new StFieldSpinnerAdapter(context,featureTable.getFields());
-                    spinnerFieldList.setAdapter(stFieldSpinnerAdapter[0]);
+                    //featureTable.setFeatureRequestMode(ServiceFeatureTable.FeatureRequestMode.MANUAL_CACHE);
+                    //final FeatureLayer featureLayer1 = new FeatureLayer(featureTable);
+                    //textView.setText(featureTable.getFields().size());
+                    //stFieldSpinnerAdapter[0] =new StFieldSpinnerAdapter(context,featureTable.getFields());
+                    //spinnerFieldList.setAdapter(stFieldSpinnerAdapter[0]);
+                    setStFields(featureTable,spinnerFieldList);
                 }
             }
 
@@ -146,7 +150,7 @@ public class StatisticsWidget extends BaseWidget {
                 }
                 Object object=spinnerLayerList.getSelectedItem();
                 if(object!=null){
-                    final FeatureLayer featureLayer=(FeatureLayer)object;
+                    final ArcGISTiledLayer featureLayer=(ArcGISTiledLayer)object;
                     final com.esri.arcgisruntime.data.Field field=(com.esri.arcgisruntime.data.Field)spinnerFieldList.getSelectedItem();
                     final String sataType=(String)spinnerTypeList.getSelectedItem();
                     //textView.setText(field.getName());
@@ -165,7 +169,9 @@ public class StatisticsWidget extends BaseWidget {
                     StatisticsQueryParameters queryParameters=new StatisticsQueryParameters(statisticDefinitions);
                     queryParameters.getGroupByFieldNames().add(field.getName());
 
-                    final ListenableFuture<StatisticsQueryResult> queryResultListenableFuture=featureLayer.getFeatureTable().queryStatisticsAsync(queryParameters);
+                    ServiceFeatureTable featureTable=new ServiceFeatureTable(featureLayer.getUri()+"/0");
+
+                    final ListenableFuture<StatisticsQueryResult> queryResultListenableFuture=featureTable.queryStatisticsAsync(queryParameters);
                     queryResultListenableFuture.addDoneListener(new Runnable() {
                         @Override
                         public void run() {
@@ -180,16 +186,10 @@ public class StatisticsWidget extends BaseWidget {
                                     if(statisticRecord.getGroup().isEmpty()){
                                         for (Map.Entry<String,Object> stat:statisticRecord.getStatistics().entrySet()){
                                             String strValue=stat.getKey()+":"+String.format(Locale.CHINESE,"%,.0f",(Double)stat.getValue());
-                                            //sTest=sTest+strValue;
-                                            //textView.setText("222");
-                                            //values.add(new SliceValue((float)stat.getValue(),randomColor()));
                                         }
                                     }else {
                                         for (Map.Entry<String, Object> group : statisticRecord.getGroup().entrySet()) {
                                             for (Map.Entry<String, Object> stat : statisticRecord.getStatistics().entrySet()) {
-                                                //String strValue = stat.getKey() + ":" + String.format(Locale.CHINESE, "%,.0f", (Double) stat.getValue());
-                                                //sTest = sTest + strValue;
-                                                //textView.setText("111");
                                                 double value= (Double) stat.getValue();
                                                 values.add(new SliceValue((float)value,randomColor()).setLabel(group.getValue().toString()));
                                             }
@@ -204,6 +204,21 @@ public class StatisticsWidget extends BaseWidget {
                         }
                     });
                 }
+            }
+        });
+    }
+    private void setStFields(final ServiceFeatureTable serviceFeatureTable,final Spinner fieldList) {
+        serviceFeatureTable.loadAsync();
+        serviceFeatureTable.addDoneLoadingListener(new Runnable() {
+            @Override
+            public void run() {
+                List<Field> list=serviceFeatureTable.getFields();
+                if(list.size()<0){
+                    return;
+                }
+                final StFieldSpinnerAdapter[] stFieldSpinnerAdapter = new StFieldSpinnerAdapter[1];
+                stFieldSpinnerAdapter[0] =new StFieldSpinnerAdapter(context,list);
+                fieldList.setAdapter(stFieldSpinnerAdapter[0]);
             }
         });
     }
@@ -245,7 +260,7 @@ public class StatisticsWidget extends BaseWidget {
         //中心圆的颜色（需setHasCenterCircle(true)，因为只有圆环才能看到中心圆）
         pieChartData.setCenterCircleColor(Color.WHITE);
         //中心圆所占饼图比例（0-1）
-        pieChartData.setCenterCircleScale(0.4f);
+        pieChartData.setCenterCircleScale(0.2f);
 
         //饼图各模块的间隔(默认为0)
         pieChartData.setSlicesSpacing(3);
