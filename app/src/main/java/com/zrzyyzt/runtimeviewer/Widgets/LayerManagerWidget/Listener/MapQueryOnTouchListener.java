@@ -46,9 +46,12 @@ public class MapQueryOnTouchListener extends DefaultMapViewOnTouchListener{
     private static final String TAG = "MapQueryOnTouchListener";
 
     private Context context;
+
     private View contextView;
     private TextView txtLayerName;
     private ListView listViewField;//字段列表
+    private TextView closeTextView;
+
     private GraphicsOverlay identityGraphicOverlay;
     private boolean isOnLongpress=false;
 
@@ -61,10 +64,23 @@ public class MapQueryOnTouchListener extends DefaultMapViewOnTouchListener{
         super(context, mapView);
         this.context = context;
         this.contextView = contextView;
-        this.txtLayerName = (TextView)contextView.findViewById(R.id.widget_view_query_mapquery_1_txtLayerName);
-        this.listViewField = (ListView)contextView.findViewById(R.id.widget_view_query_mapquery_1_fieldListview);
+        this.txtLayerName = contextView.findViewById(R.id.widget_view_query_mapquery_1_txtLayerName);
+        this.listViewField = contextView.findViewById(R.id.widget_view_query_mapquery_1_fieldListview);
+        this.closeTextView = contextView.findViewById(R.id.widget_view_query_mapquery_1_closebtn);
+
         this.mapView = mapView;
         this.callout  = this.mapView.getCallout();
+
+        this.closeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(callout!=null){
+                    if(callout.isShowing()){
+                        callout.dismiss();
+                    }
+                }
+            }
+        });
 
         this.identityGraphicOverlay = new GraphicsOverlay();
         this.mapView.getGraphicsOverlays().add(identityGraphicOverlay);
@@ -288,7 +304,11 @@ public class MapQueryOnTouchListener extends DefaultMapViewOnTouchListener{
         clearAllFeatureSelect();
 //        listViewField.setAdapter(null);
 //        txtLayerName.setText("未选中图层");
-
+        if(callout!=null){
+            if(callout.isShowing()){
+                callout.dismiss();
+            }
+        }
     }
 
 }

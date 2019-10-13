@@ -32,6 +32,15 @@
                 android:layout_weight="1"
                 android:text="未选中图层"
                 android:textColor="@color/colorPrimary" />
+            <TextView
+                android:id="@+id/widget_view_query_mapquery_1_closebtn"
+                android:textColor="@color/colorAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="@drawable/ic_item_touch_txtred"
+                android:text="@string/close"
+                android:gravity="right"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"

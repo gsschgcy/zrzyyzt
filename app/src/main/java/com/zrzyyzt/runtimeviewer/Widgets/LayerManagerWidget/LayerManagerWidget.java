@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -49,7 +48,9 @@ public class LayerManagerWidget extends BaseWidget {
     private LayerListviewAdapter featureLayerListviewAdapter =null;
     private LegendListviewAdapter legendListviewAdapter = null;
 
-    MapQueryOnTouchListener mapQueryOnTouchListener;
+    private MapQueryOnTouchListener mapQueryOnTouchListener;
+    private View.OnTouchListener defauleOnTouchListener;//默认点击事件
+
     @Override
     public void active() {
         super.active();
@@ -69,7 +70,7 @@ public class LayerManagerWidget extends BaseWidget {
     public void create() {
 
         context = super.context;
-
+        defauleOnTouchListener = super.mapView.getOnTouchListener();
 //        initBaseMapResource();//初始化底图
 //        initOperationalLayers();//初始化业务图层
         initOperationalLayersWeb();
@@ -210,20 +211,21 @@ public class LayerManagerWidget extends BaseWidget {
                 }
             }
         });
-        txtLegendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewContent.getChildAt(0)!=legendView){
-                    viewContent.removeAllViews();
-                    viewContent.addView(legendView);
-                    viewLayerListSelect.setVisibility(View.GONE);
-                    viewLegendSelect.setVisibility(View.VISIBLE);
 
-                    //打开窗口前先刷新数据面板
-                    legendListviewAdapter.refreshData();
-                }
-            }
-        });
+//        txtLegendBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (viewContent.getChildAt(0)!=legendView){
+//                    viewContent.removeAllViews();
+//                    viewContent.addView(legendView);
+//                    viewLayerListSelect.setVisibility(View.GONE);
+//                    viewLegendSelect.setVisibility(View.VISIBLE);
+//
+//                    //打开窗口前先刷新数据面板
+//                    legendListviewAdapter.refreshData();
+//                }
+//            }
+//        });
 
 
         final View mapQueryView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_query_mapquery_1,null);
@@ -242,12 +244,7 @@ public class LayerManagerWidget extends BaseWidget {
     private void returnDefault() {
 
         if (mapQueryOnTouchListener!=null){
-            super.mapView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return false;
-                }
-            });//窗口关闭恢复默认点击状态
+            super.mapView.setOnTouchListener(defauleOnTouchListener);//窗口关闭恢复默认点击状态
         }
         mapQueryOnTouchListener.clear();//清空当前选择
         mapView.setMagnifierEnabled(false);//放大镜
