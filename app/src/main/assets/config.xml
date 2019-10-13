@@ -27,8 +27,8 @@ App配置文件
     <widgetcontainer>
         <widget label="图层管理" classname="com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.LayerManagerWidget"
 	             icon="widget_layermanager.png" select_icon="widget_layermanager_select2.png" width="600"/>
-        <widget label="要素查询" classname="com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.QueryWidget"
-	            icon="widget_query.png" select_icon="widget_query_select2.png"  width="600"/>
+<!--        <widget label="要素查询" classname="com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.QueryWidget"-->
+<!--	            icon="widget_query.png" select_icon="widget_query_select2.png"  width="600"/>-->
 <!--        <widget label="要素编辑" classname="com.zrzyyzt.runtimeviewer.Widgets.FeatureEditWidget.FeatureEditWidget"-->
 <!--                icon="widget_featureedit.png" select_icon="widget_featureedit_select2.png"/>-->
 <!--        <widget label="测距量算" classname="com.zrzyyzt.runtimeviewer.Widgets.CalculateWidget.CaculateWidget"-->
