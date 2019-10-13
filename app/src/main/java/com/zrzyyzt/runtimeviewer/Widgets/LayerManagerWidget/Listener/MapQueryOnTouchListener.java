@@ -71,20 +71,15 @@ public class MapQueryOnTouchListener extends DefaultMapViewOnTouchListener{
         this.mapView = mapView;
         this.callout  = this.mapView.getCallout();
 
-        this.closeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(callout!=null){
-                    if(callout.isShowing()){
-                        callout.dismiss();
-                    }
-                }
-            }
-        });
-
         this.identityGraphicOverlay = new GraphicsOverlay();
         this.mapView.getGraphicsOverlays().add(identityGraphicOverlay);
 
+        this.closeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clear();
+            }
+        });
     }
 
     @Override
