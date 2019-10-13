@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LayerListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LegendListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Entity.OperationLayerInfo;
+import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Listener.MapQueryOnTouchListener;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Manager.OperationMapManager;
 
 import java.io.File;
@@ -47,11 +49,20 @@ public class LayerManagerWidget extends BaseWidget {
     private LayerListviewAdapter featureLayerListviewAdapter =null;
     private LegendListviewAdapter legendListviewAdapter = null;
 
+    MapQueryOnTouchListener mapQueryOnTouchListener;
     @Override
     public void active() {
         super.active();
         super.showWidget(mWidgetView);
-//        super.showMessageBox(super.name);
+        initMapQuery();
+    }
+
+    private void initMapQuery() {
+        mapView.setMagnifierEnabled(true);//放大镜
+        if (mapQueryOnTouchListener!=null){
+            super.mapView.setOnTouchListener(mapQueryOnTouchListener);
+        }
+        mapQueryOnTouchListener.clear();//清空当前选择
     }
 
     @Override
@@ -213,11 +224,33 @@ public class LayerManagerWidget extends BaseWidget {
                 }
             }
         });
+
+
+        final View mapQueryView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_query_mapquery_1,null);
+//        View viewBtnSelectFeature = mapQueryView.findViewById(R.id.widget_view_query_mapquery_linerBtnFeatureSelect);//要素选择
+//        TextView txtLayerName = (TextView)mapQueryView.findViewById(R.id.widget_view_query_mapquery_1_txtLayerName);
+//        ListView listViewField = (ListView)mapQueryView.findViewById(R.id.widget_view_query_mapquery_1_fieldListview);
+        mapQueryOnTouchListener = new MapQueryOnTouchListener(context, mapView,mapQueryView);
     }
 
     @Override
     public void inactive(){
         super.inactive();
+        returnDefault();
+    }
+
+    private void returnDefault() {
+
+        if (mapQueryOnTouchListener!=null){
+            super.mapView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });//窗口关闭恢复默认点击状态
+        }
+        mapQueryOnTouchListener.clear();//清空当前选择
+        mapView.setMagnifierEnabled(false);//放大镜
     }
 
     /**

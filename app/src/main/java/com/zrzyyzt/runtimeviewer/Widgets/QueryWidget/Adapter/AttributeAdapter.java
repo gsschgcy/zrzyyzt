@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class AttributeAdapter extends BaseAdapter {
 
+    private static final String TAG = "AttributeAdapter";
     public class AdapterHolder{//列表绑定项
         public View itemView;
         public TextView txtName;

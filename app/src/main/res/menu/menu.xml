@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/printScreen"
+        android:icon="@drawable/widget_caculate"
+        android:title="@string/printScreen"/>
+    <item
+        android:id="@+id/camera"
+        android:icon="@drawable/widget_caculate"
+        android:title="@string/camera"/>
+    <item
+        android:id="@+id/photo"
+        android:icon="@drawable/widget_caculate"
+        android:title="@string/photo"/>
+    <item
+        android:id="@+id/measure"
+        android:icon="@drawable/widget_caculate"
+        android:title="@string/measure"/>
+    <item
+        android:id="@+id/panorama"
+        android:icon="@drawable/widget_caculate"
+        android:title="@string/panorama"/>
+    <item
+        android:id="@+id/exit"
+        android:icon="@drawable/widget_caculate"
+        android:title="@string/exit"/>
+</menu>

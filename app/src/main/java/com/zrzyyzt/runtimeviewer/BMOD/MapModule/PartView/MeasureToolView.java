@@ -44,6 +44,7 @@ public class MeasureToolView extends LinearLayout {
     private Variable.Measure measureAreaType=Variable.Measure.M2;
     private DefaultMapViewOnTouchListener mapListener;
     private MeasureClickListener measureClickListener;
+
     public MeasureToolView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs,0);
     }

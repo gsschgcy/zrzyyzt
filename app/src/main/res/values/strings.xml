@@ -15,6 +15,15 @@
     <string name="string_help_text">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。\n\n最后点击两次后退按钮，即可返回。</string>
     <string name="quit">退出</string>
 
+    <!--    菜单-->
+    <string name="printScreen">截屏</string>
+    <string name="camera">拍照</string>
+    <string name="photo">相册</string>
+    <string name="measure">测量</string>
+    <string name="panorama">街景</string>
+    <string name="exit">退出</string>
+
+
     <!--地图窗口-->
     <string name="txt_location_info">(开启GPS) 坐标信息</string>
 
@@ -70,6 +79,13 @@
     <string name="description_info">描述信息</string>
     <string name="camera_error">该设备不支持拍照</string>
     <string name="intro_message">介绍信息</string>
+
+
+    <string name="query_result">查询结果</string>
+    <string name="query_result_context">内容</string>
+
+
+
     <string-array name="fontsizearr">
         <item>5</item>
         <item>6</item>

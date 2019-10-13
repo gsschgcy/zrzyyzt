@@ -82,7 +82,7 @@ public class ToolBarHelper {
         typedArray.recycle();
         Log.d("init", "initUserView:  " + overly + " , " + toolBarSize);
         /*如果是悬浮状态，则不需要设置间距*/
-        params.topMargin = overly ? 0 : 66;
+        params.topMargin = overly ? 0 : 60;
         mContentView.addView(mUserView, params);
 
     }

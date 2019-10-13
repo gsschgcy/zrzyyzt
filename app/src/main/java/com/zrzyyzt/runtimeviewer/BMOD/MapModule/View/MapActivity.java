@@ -156,8 +156,13 @@ public class MapActivity extends BaseActivity {
 //        toolbar.setNavigationIcon(null);//设置不显示回退按钮
         getLayoutInflater().inflate(R.layout.activity_toobar_view, toolbar);
         titleTextView = (TextView) toolbar.findViewById(R.id.activity_baseview_toobar_view_txtTitle);
-        titleTextView.setTextSize(18);
+        titleTextView.setTextSize(12);
         titleTextView.setPadding(0, 0, 0, 0);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -168,39 +173,13 @@ public class MapActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         boolean isPad = SysUtils.isPad(context);
+
         if (isPad){
             /***
              * 方案二模式，平板左侧菜单
              */
-
-            //截图
-            MenuItem printScreenMenu= menu.add(Menu.NONE, Menu.FIRST + 1, 0, "截屏");
-            mWidgetEntityMenu.put(printScreenMenu.getItemId(),"printScreen");
-
-            //拍照
-            MenuItem cameraMeneu= menu.add(Menu.NONE, Menu.FIRST + 2, 0, "拍照");
-            mWidgetEntityMenu.put(cameraMeneu.getItemId(),"camera");
-
-            //相册
-            MenuItem photoMeneu= menu.add(Menu.NONE, Menu.FIRST + 6, 0, "相册");
-            mWidgetEntityMenu.put(photoMeneu.getItemId(),"photo");
-
-            //测量
-            MenuItem measureMeneu= menu.add(Menu.NONE, Menu.FIRST + 3, 0, "测量");
-            mWidgetEntityMenu.put(measureMeneu.getItemId(),"measure");
-
-            //添加业务图层
-//            MenuItem addfeaturelayerMeneu= menu.add(Menu.NONE, Menu.FIRST + 4, 0, "添加业务");
-//            mWidgetEntityMenu.put(addfeaturelayerMeneu.getItemId(),"addFeatureLayer");
-
-            //全景地图
-            MenuItem panoramaviewMeneu= menu.add(Menu.NONE, Menu.FIRST + 5, 0, "街景");
-            mWidgetEntityMenu.put(panoramaviewMeneu.getItemId(),"panoramaView");
-
-            //全景地图
-            MenuItem finishMeneu= menu.add(Menu.NONE, Menu.FIRST + 7, 0, "退出");
-            mWidgetEntityMenu.put(finishMeneu.getItemId(),"finish");
 
             //根据配置文件初始化系统功能菜单栏
             if (mConfigEntity != null) {
@@ -357,6 +336,32 @@ public class MapActivity extends BaseActivity {
             Viewpoint vp = new Viewpoint(envelope);
             resourceConfig.mapView.setViewpointAsync(vp);
             return true ;
+        }else if(item.getItemId() == R.id.printScreen){
+            Bitmap bitmap = mMapManager.getMapViewBitmap();
+            saveImageToGallery(bitmap);
+        }else if(item.getItemId() == R.id.camera){
+            Intent cameraIntent = new Intent(MapActivity.this, CameraActivity.class);
+            this.startActivity(cameraIntent);
+        }else if(item.getItemId() == R.id.photo){
+            Intent photoIntent = new Intent(MapActivity.this, PhotoListActivity.class);
+            this.startActivity(photoIntent);
+        }else if(item.getItemId() == R.id.measure){
+            resourceConfig.setMeasureToolViewVisibility();
+        }else if(item.getItemId() == R.id.panorama){
+            ToastUtils.showLong(this,"点击屏幕，选择查看街景的位置");
+            resourceConfig.mapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context,resourceConfig.mapView){
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    Point point = resourceConfig.mapView.screenToLocation(new android.graphics.Point((int) e.getX(), (int) e.getY()));
+                    Intent intent = new Intent(MapActivity.this, PanoMainActivity.class);
+                    intent.putExtra("lat",point.getY());
+                    intent.putExtra("lon",point.getX());
+                    MapActivity.this.startActivityForResult(intent,BAIDUPANO_CODE);
+                    return super.onSingleTapUp(e);
+                }
+            });
+        }else if(item.getItemId() == R.id.exit){
+            exitActivity();
         }
 
         super.onOptionsItemSelected(item);
@@ -393,42 +398,6 @@ public class MapActivity extends BaseActivity {
                         }
                     });
                     pmp.show();
-                }
-            }else if(object.getClass().equals(String.class)){
-                String name = (String)object;
-                switch (name){
-                    case "printScreen":
-                        Bitmap bitmap = mMapManager.getMapViewBitmap();
-                        saveImageToGallery(bitmap);
-                        break;
-                    case "camera":
-                        Intent cameraIntent = new Intent(MapActivity.this, CameraActivity.class);
-                        this.startActivity(cameraIntent);
-                        break;
-                    case "photo":
-                        Intent photoIntent = new Intent(MapActivity.this, PhotoListActivity.class);
-                        this.startActivity(photoIntent);
-                        break;
-                    case "measure":
-                        resourceConfig.setMeasureToolViewVisibility();
-                        break;
-                    case "panoramaView":
-                        resourceConfig.mapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context,resourceConfig.mapView){
-                            @Override
-                            public boolean onSingleTapUp(MotionEvent e) {
-                                Point point = resourceConfig.mapView.screenToLocation(new android.graphics.Point((int) e.getX(), (int) e.getY()));
-                                Intent intent = new Intent(MapActivity.this, PanoMainActivity.class);
-                                intent.putExtra("lat",point.getY());
-                                intent.putExtra("lon",point.getX());
-                                MapActivity.this.startActivityForResult(intent,BAIDUPANO_CODE);
-                                return super.onSingleTapUp(e);
-                            }
-                        });
-
-                        break;
-                    case "finish":
-                        exitActivity();
-                        break;
                 }
             }
         }

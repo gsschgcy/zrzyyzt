@@ -95,6 +95,17 @@
             android:visibility="gone">
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView>
+
+        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapQueryResultView
+            android:id="@+id/map_query_result_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="visible">
+
+        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapQueryResultView>
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"

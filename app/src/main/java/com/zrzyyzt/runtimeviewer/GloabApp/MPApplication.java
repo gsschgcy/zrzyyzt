@@ -23,6 +23,9 @@ public class MPApplication extends Application {
     public BMapManager mBMapManager = null;
 
     private DaoSession daoSession;
+
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,6 +46,7 @@ public class MPApplication extends Application {
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
 
+        context = getApplicationContext();
     }
 
     public void initEngineManager(Context context) {
@@ -83,5 +87,9 @@ public class MPApplication extends Application {
 
     public DaoSession getDaoSession() {
         return daoSession;
+    }
+
+    public static Context getContext(){
+        return context;
     }
 }
