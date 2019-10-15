@@ -97,9 +97,13 @@ public class ResourceConfig {
     public void setMeasureToolViewVisibility() {
         if(measureToolView==null) return;
         Log.d(TAG, "setMeasureToolViewVisibility: " + measureToolView.getVisibility());
-        if(measureToolView.getVisibility() == View.VISIBLE)
+        if(measureToolView.getVisibility() == View.VISIBLE){
             measureToolView.setVisibility(View.GONE);
-        else if(measureToolView.getVisibility() == View.GONE)
+            measureToolView.inactivity();
+        }
+        else if(measureToolView.getVisibility() == View.GONE){
             measureToolView.setVisibility(View.VISIBLE);
+            measureToolView.init(mapView);
+        }
     }
 }
