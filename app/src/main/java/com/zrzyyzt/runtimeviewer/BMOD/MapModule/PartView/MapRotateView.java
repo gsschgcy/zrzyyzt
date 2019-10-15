@@ -48,8 +48,8 @@ public class MapRotateView extends LinearLayout {
 
     private void initAttr(TypedArray ta){
         bgColor=ta.getResourceId(R.styleable.ViewAttr_view_background, R.drawable.map_shadow_bg);
-        zoomWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),35));
-        zoomHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height,Util.valueToSp(getContext(),35));
+        zoomWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),30));
+        zoomHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height,Util.valueToSp(getContext(),30));
         showText=ta.getBoolean(R.styleable.ViewAttr_show_text,false);
         mapRotateNum=ta.getDimension(R.styleable.ViewAttr_map_rotate_num,90);
         mapRotateImage=ta.getResourceId(R.styleable.ViewAttr_map_rotate_image,R.drawable.map_rotate);

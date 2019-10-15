@@ -153,6 +153,7 @@ public class BaseWidgetControl {
      */
     public void setWidget(BaseWidget widget) {
         this.widget = widget;
+        this.widget.context = context;
         this.widget.setWidgetExtentView(baseWidgetExtentView);
         this.widget.active();//打开组件时执行active方法用于装载UI信息
     }

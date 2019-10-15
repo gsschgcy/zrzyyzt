@@ -72,6 +72,7 @@
     <string name="draw_text_text">文字</string>
 
     <string name="select_symbol_text">选择符号</string>
+    <string name="draw_setting">设置</string>
     <string name="draw_text_description">描述:先设置标绘内容和文字大小，然后点击地图窗口，即可添加文本标注</string>
     <string name="draw_description">描述:先选择标绘样式，然后点击地图窗口进行标绘</string>
     <string name="picture">拍照</string>

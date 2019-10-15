@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="85dp"
             android:layout_marginRight="10dp">
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapNorthView>
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="120dp"
             android:layout_marginRight="10dp">
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView>
@@ -96,16 +96,6 @@
 
         </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MeasureToolView>
 
-        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapQueryResultView
-            android:id="@+id/map_query_result_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:visibility="visible">
-
-        </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapQueryResultView>
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
@@ -122,20 +112,20 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
-                <TextView
-                    android:id="@+id/activity_map_mapview_locationInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/txt_location_info"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/activity_map_mapview_locationInfo"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/txt_location_info"-->
+<!--                    android:textAppearance="?android:attr/textAppearanceSmall"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="12sp" />-->
 
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:alpha="0.1"
-                    android:background="@color/light_gray" />
+<!--                <View-->
+<!--                    android:layout_width="fill_parent"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:alpha="0.1"-->
+<!--                    android:background="@color/light_gray" />-->
 
                 <TextView
                     android:id="@+id/activity_map_mapview_scale"
@@ -167,7 +157,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginRight="125dp"
+            android:layout_marginRight="115dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -183,7 +173,7 @@
                 android:id="@+id/tdt_sl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:padding="1dp"
                 android:background="@drawable/shape_gray_square_bg"
                 android:src="@mipmap/vec_c_hdpi">
@@ -193,7 +183,7 @@
                 android:id="@+id/jyg_yx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:padding="1dp"
                 android:background="@drawable/shape_gray_square_bg"
                 android:src="@mipmap/jyg_yx">

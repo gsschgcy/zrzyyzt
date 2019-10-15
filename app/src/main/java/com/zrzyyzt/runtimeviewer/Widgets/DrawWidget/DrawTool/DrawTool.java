@@ -2,6 +2,8 @@ package com.zrzyyzt.runtimeviewer.Widgets.DrawWidget.DrawTool;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,10 +26,13 @@ import com.esri.arcgisruntime.mapping.view.MapView;
 import com.esri.arcgisruntime.symbology.FillSymbol;
 import com.esri.arcgisruntime.symbology.LineSymbol;
 import com.esri.arcgisruntime.symbology.MarkerSymbol;
+import com.esri.arcgisruntime.symbology.PictureMarkerSymbol;
 import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
 import com.esri.arcgisruntime.symbology.TextSymbol;
+import com.zrzyyzt.runtimeviewer.R;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  *
@@ -40,6 +45,7 @@ public class DrawTool extends Subject {
     private static String TAG = "DrawTool";
 
     private MapView mapView;
+    private Context context;
     private SpatialReference spatialReference;
 
     private GraphicsOverlay mGraphicsLayerEditing;//绘制要素图层
@@ -51,6 +57,7 @@ public class DrawTool extends Subject {
 
     private LineSymbol lineSymbol;
     private FillSymbol fillSymbol;
+    private PictureMarkerSymbol pictureMarkerSymbol;
 //    private FillSymbol circleFillSymbol;
     private int drawType;//当前要素绘制类型
     private boolean active;
@@ -82,8 +89,10 @@ public class DrawTool extends Subject {
     public static final int FREEHAND_POLYGON = 7; //流状面
     public static final int FREEHAND_POLYLINE = 8; //流状线
     public static final int TEXT = 9;//文本
+    public static final int PICTURE = 10; //图标
 
-    public DrawTool(MapView mapView) {
+    public DrawTool(Context context, MapView mapView) {
+        this.context = context;
         this.mapView = mapView;
         this.mapView.setMagnifierEnabled(true);//允许使用放大镜
         this.mGraphicsLayerEditing = new GraphicsOverlay();
@@ -101,6 +110,17 @@ public class DrawTool extends Subject {
         this.fillSymbol = DrawSymbol.mFillSymbol;
 //        this.circleFillSymbol = DrawSymbol.mCircleFillSymbol;
         this.textSymbol = DrawSymbol.mTextSymbol;
+
+        BitmapDrawable pinDrawable = (BitmapDrawable) ContextCompat.getDrawable(context, R.mipmap.pin);
+        try {
+            this.pictureMarkerSymbol = PictureMarkerSymbol.createAsync(pinDrawable).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.pictureMarkerSymbol.setWidth(18);
+        this.pictureMarkerSymbol.setHeight(18);
         //TODO 设置透明度
 //        this.fillSymbol.setAlpha(90);
     }
@@ -120,6 +140,9 @@ public class DrawTool extends Subject {
                 break;
             case DrawTool.POINT:
                 Log.d(TAG, "activate: point");
+                break;
+            case DrawTool.PICTURE:
+                Log.d(TAG, "activate: picture");
                 break;
             case DrawTool.ENVELOPE:
                 this.envelopeGeometry = new EnvelopeBuilder(getSpatialReference());
@@ -223,7 +246,7 @@ public class DrawTool extends Subject {
         DrawTool.this.notifyEvent(e);
         int type = this.drawType;
         this.deactivate();
-        if(type==POINT || type==TEXT) {
+        if(type==POINT || type==TEXT || type == PICTURE) {
             this.activate(type);
         }
     }
@@ -493,7 +516,7 @@ public class DrawTool extends Subject {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            if (active && ( drawType==POINT || drawType == POLYGON || drawType == POLYLINE || drawType == TEXT)){
+            if (active && ( drawType==POINT || drawType == POLYGON || drawType == POLYLINE || drawType == TEXT || drawType == PICTURE)){
                 //检查是否为空
                 if(e == null) return false;
                 Point point = mapView.screenToLocation(new android.graphics.Point((int)e.getX(), (int)e.getY()));
@@ -506,6 +529,10 @@ public class DrawTool extends Subject {
                         Log.d(TAG, "onSingleTapUp: " + point.getX());
                         drawGraphic = new Graphic(point,new TextSymbol(textSymbolSize, textSymbolText, Color.RED,
                                 TextSymbol.HorizontalAlignment.CENTER, TextSymbol.VerticalAlignment.MIDDLE));
+                        sendDrawEndEvent();
+                        break;
+                    case DrawTool.PICTURE:
+                        drawGraphic = new Graphic(point, pictureMarkerSymbol);
                         sendDrawEndEvent();
                         break;
                     case DrawTool.POLYGON:

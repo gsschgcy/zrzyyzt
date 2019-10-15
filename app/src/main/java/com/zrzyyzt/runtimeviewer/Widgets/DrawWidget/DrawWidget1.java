@@ -44,6 +44,7 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
     private  View btnDrawText  = null;
     private  View btnDrawFreePolyline  = null;
     private  View btnDrawFreePolygon = null;
+    private View btnDrawPicture = null;
 
     private TextView textDescription = null;
 
@@ -78,6 +79,7 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
         btnDrawText = drawView.findViewById(R.id.widget_view_draw_text);
         btnDrawFreePolyline = drawView.findViewById(R.id.widget_view_draw_freepolyline);
         btnDrawFreePolygon = drawView.findViewById(R.id.widget_view_draw_freepolygon);
+        btnDrawPicture = drawView.findViewById(R.id.widget_view_draw_picture);
 
         viewList =new ArrayList<>();
         viewList.add(btnDrawPoint);
@@ -88,6 +90,7 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
         viewList.add(btnDrawText);
         viewList.add(btnDrawFreePolyline);
         viewList.add(btnDrawFreePolygon);
+        viewList.add(btnDrawPicture);
 
         textDescription = drawView.findViewById(R.id.widget_view_draw_description);
 
@@ -137,7 +140,7 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
         graphicsLayer = new GraphicsOverlay();
         mapView.getGraphicsOverlays().add(graphicsLayer);
 
-        this.drawTool = new DrawTool(mapView);
+        this.drawTool = new DrawTool(context, mapView);
         this.drawTool.addEventListener(this);
 
         //设置地图事件
@@ -155,6 +158,7 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
         btnDrawText.setOnClickListener(toolsOnClickListener);
         btnDrawFreePolyline.setOnClickListener(toolsOnClickListener);
         btnDrawFreePolygon.setOnClickListener(toolsOnClickListener);
+        btnDrawPicture.setOnClickListener(toolsOnClickListener);
 
         btnDrawClear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +197,9 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
                     break;
                 case R.id.widget_view_draw_text:
                     drawTool.activate(DrawTool.TEXT);
+                    break;
+                case R.id.widget_view_draw_picture:
+                    drawTool.activate(DrawTool.PICTURE);
                     break;
             }
         }

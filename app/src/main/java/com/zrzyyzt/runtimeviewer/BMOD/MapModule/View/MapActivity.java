@@ -53,7 +53,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -255,11 +254,13 @@ public class MapActivity extends BaseActivity {
                     try {
                         String name = widgetEntity.getIconName();
                         if (name != null) {
-                            InputStream is = getAssets().open(name);
-                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+//                            InputStream is = getAssets().open(name);
+//                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+                            int identifier = getResources().getIdentifier(name.replace(".png",""),"mipmap",getPackageName());
+                            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),identifier);
                             imageView.setImageBitmap(bitmap);
                         }
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 

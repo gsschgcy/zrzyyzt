@@ -52,7 +52,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
                         android:text="组件"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <Button
@@ -75,7 +75,7 @@
 
                 <RelativeLayout
                     android:id="@+id/base_widget_view_ContextView"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent">
 
                 </RelativeLayout>

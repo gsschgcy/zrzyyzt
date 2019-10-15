@@ -5,6 +5,7 @@ import android.graphics.Color;
 import com.esri.arcgisruntime.symbology.FillSymbol;
 import com.esri.arcgisruntime.symbology.LineSymbol;
 import com.esri.arcgisruntime.symbology.MarkerSymbol;
+import com.esri.arcgisruntime.symbology.PictureMarkerSymbol;
 import com.esri.arcgisruntime.symbology.SimpleFillSymbol;
 import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
 import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
@@ -35,5 +36,16 @@ public class DrawSymbol {
     public static FillSymbol mFillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.CROSS, Color.RED, mLineSymbol);
     public static LineSymbol mCircleLineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.RED, 2);
     public static FillSymbol mCircleFillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.SOLID, Color.RED, mCircleLineSymbol);
+
+    public static PictureMarkerSymbol mPinSourceSymbol;
+
+
+
+    //    try {
+//        mPinSourceSymbol = PictureMarkerSymbol.createAsync(pinDrawable).get();
+//    } catch (InterruptedException | ExecutionException e) {
+//        String error = "Error creating PictureMarkerSymbol: " + e.getMessage();
+//        Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+//    }
 
 }

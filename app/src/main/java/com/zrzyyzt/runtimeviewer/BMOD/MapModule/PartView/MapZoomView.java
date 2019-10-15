@@ -56,8 +56,8 @@ public class MapZoomView extends LinearLayout {
 
     private void initAttr(TypedArray ta){
         bgColor=ta.getResourceId(R.styleable.ViewAttr_view_background,R.drawable.map_shadow_bg);
-        zoomWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),35));
-        zoomHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height,Util.valueToSp(getContext(),35));
+        zoomWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),30));
+        zoomHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height,Util.valueToSp(getContext(),30));
         isHorizontal=ta.getBoolean(R.styleable.ViewAttr_is_horizontal,false);
         showText=ta.getBoolean(R.styleable.ViewAttr_show_text,false);
         zoomInNum=ta.getDimension(R.styleable.ViewAttr_zoom_in_num,2);

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,8 +24,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -178,8 +177,10 @@ public abstract class BaseWidget {
             try {
                 String name = entity.getSelectIcon();
                 if (name!=null){
-                    InputStream is = context.getAssets().open(name);
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+//                    InputStream is = context.getAssets().open(name);
+//                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    int identifier = context.getResources().getIdentifier(name.replace(".png",""), "mipmap", context.getPackageName());
+                    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),identifier);
                     if (imgWidgetIcon!=null){
                         imgWidgetIcon.setImageBitmap(bitmap);
                     }
@@ -187,7 +188,7 @@ public abstract class BaseWidget {
                 if (txtWidgetName!=null){
                     txtWidgetName.setTextColor(context.getColor(R.color.colorPrimaryDark));
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -208,12 +209,15 @@ public abstract class BaseWidget {
             try {
                 String name = entity.getIconName();
                 if (name!=null){
-                    InputStream is = context.getAssets().open(name);
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+//                    InputStream is = context.getAssets().open(name);
+//                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    int identifier = context.getResources().getIdentifier(name.replace(".png",""), "mipmap", context.getPackageName());
+                    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),identifier);
                     imgWidgetIcon.setImageBitmap(bitmap);
+
                 }
                 txtWidgetName.setTextColor(context.getColor(R.color.deep_gray));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

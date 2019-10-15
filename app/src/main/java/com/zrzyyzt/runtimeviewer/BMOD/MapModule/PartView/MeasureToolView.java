@@ -163,8 +163,8 @@ public class MeasureToolView extends LinearLayout {
 
     private void initAttr(TypedArray ta){
         bgColor=ta.getResourceId(R.styleable.ViewAttr_view_background,R.drawable.map_shadow_bg);
-        buttonWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),35));
-        buttonHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height, Util.valueToSp(getContext(),35));
+        buttonWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),30));
+        buttonHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height, Util.valueToSp(getContext(),30));
         showText=ta.getBoolean(R.styleable.ViewAttr_show_text,false);
 //        measurePrevStr=ta.getString(R.styleable.ViewAttr_measure_prev_text);
 //        measureNextStr=ta.getString(R.styleable.ViewAttr_measure_next_text);

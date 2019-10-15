@@ -77,8 +77,8 @@ public class MapNorthView extends LinearLayout {
     };
 
     private void initAttr(TypedArray ta){
-        zoomWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),35));
-        zoomHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height,Util.valueToSp(getContext(),35));
+        zoomWidth=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_width, Util.valueToSp(getContext(),30));
+        zoomHeight=ta.getDimensionPixelSize(R.styleable.ViewAttr_button_height,Util.valueToSp(getContext(),30));
         showText=ta.getBoolean(R.styleable.ViewAttr_show_text,false);
         mapNorthText=ta.getString(R.styleable.ViewAttr_map_location_text);
 
