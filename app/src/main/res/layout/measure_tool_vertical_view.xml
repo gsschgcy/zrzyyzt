@@ -69,7 +69,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/zoom_button_topcorner">
             <ImageView
                 android:id="@+id/measure_length"
                 android:layout_width="@dimen/zoom_btn_size"
@@ -94,7 +95,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/zoom_button_topcorner">
             <ImageView
                 android:id="@+id/measure_area"
                 android:layout_width="@dimen/zoom_btn_size"

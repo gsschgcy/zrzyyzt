@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +17,7 @@ import com.zrzyyzt.runtimeviewer.Utils.Util;
 import com.zrzyyzt.runtimeviewer.Listener.ZoomClickListener;
 
 public class MapZoomView extends LinearLayout {
-
+    private static final String TAG = "MapZoomView";
     private MapView mMapView;
     private ZoomClickListener zoomClickListener = null;
     private LinearLayout linearLayoutView;
@@ -134,6 +135,7 @@ public class MapZoomView extends LinearLayout {
     };
     private void setZoomDpWidth(int w){
         zoomWidth=w;
+        Log.d(TAG, "setDpButtonWidth: width" + zoomWidth);
         zoomInView.getLayoutParams().width=w;
         zoomOutView.getLayoutParams().width=w;
         LayoutParams linearParams =(LayoutParams) spiltLineView.getLayoutParams();

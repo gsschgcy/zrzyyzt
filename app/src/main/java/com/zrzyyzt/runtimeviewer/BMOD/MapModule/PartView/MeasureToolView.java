@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.zrzyyzt.runtimeviewer.Utils.Util;
 
 
 public class MeasureToolView extends LinearLayout {
+    private static final String TAG = "MeasureToolView";
     private Context context;
     private ArcGisMeasure arcgisMeasure;
     private MapView mMapView;
@@ -301,6 +303,7 @@ public class MeasureToolView extends LinearLayout {
 
     private void setDpButtonWidth(int buttonWidth) {
         this.buttonWidth = buttonWidth;
+        Log.d(TAG, "setDpButtonWidth: width" + buttonWidth);
 //        prevImageView.getLayoutParams().width=buttonWidth;
 //        nextImageView.getLayoutParams().width=buttonWidth;
         lengthImageView.getLayoutParams().width=buttonWidth;

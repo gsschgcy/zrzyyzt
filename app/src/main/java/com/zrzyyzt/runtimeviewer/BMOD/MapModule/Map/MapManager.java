@@ -89,6 +89,7 @@ public class MapManager {
         try {
             /**设置许可**/
             ArcGISRuntimeEnvironment.setLicense(configEntity.getRuntimrKey());
+            Log.d(TAG, "init: lisence" + configEntity.getRuntimrKey());
             String version = ArcGISRuntimeEnvironment.getAPIVersion();
             String lic = ArcGISRuntimeEnvironment.getLicense().getLicenseLevel().name();
             ToastUtils.showShort(context, "ArcGIS Runtime版本:" + version + "; 许可信息:" + lic);

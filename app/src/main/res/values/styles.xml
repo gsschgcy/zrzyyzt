@@ -10,15 +10,20 @@
         <item name="colorAccent">@color/colorAccent</item>
         <!-- 加入toolbar弹出菜单的风格 -->
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
-        <item name="popupMenuStyle">@style/OverflowMenuStyle</item>
+
+    </style>
+
+
+    <style name="MyTextAppearance">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="OverflowMenuStyle" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
         <!-- 是否覆盖锚点，默认为true，即盖住Toolbar -->
         <item name="overlapAnchor">false</item>
-
 <!--        <item name="android:dropDownWidth">100dp</item>-->
-        <item name="android:width">100dp</item>
+        <item name="android:width">40dp</item>
         <item name="android:paddingRight">5dp</item>
         <!-- 弹出层背景颜色 -->
         <item name="android:popupBackground">@color/white</item>

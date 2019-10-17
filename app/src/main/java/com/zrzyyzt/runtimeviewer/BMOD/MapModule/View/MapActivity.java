@@ -53,6 +53,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,6 +96,8 @@ public class MapActivity extends BaseActivity {
 
         resourceConfig = new ResourceConfig(context);//初始化应用程序资源列表
         init();//初始化应用程序
+
+
     }
 
 
@@ -136,7 +139,7 @@ public class MapActivity extends BaseActivity {
         titleTextView.setText(mConfigEntity.getAppName());//显示工程文件夹名称
 
         //初始化底图组件信息-利用配置文件
-        mMapManager = new MapManager(context, resourceConfig, mConfigEntity,DirPath);
+        mMapManager = new MapManager(context, resourceConfig, mConfigEntity, DirPath);
 
         //初始化应用程序组件
         mWidgetManager = new WidgetManager(context, resourceConfig, mMapManager, mConfigEntity, DirPath);
@@ -159,9 +162,23 @@ public class MapActivity extends BaseActivity {
         titleTextView.setPadding(0, 0, 0, 0);
     }
 
+
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
+    public boolean onMenuOpened(int featureId, Menu menu) {
+
+        //显示图标
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
+                try {
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
     }
 
     /**
@@ -173,6 +190,7 @@ public class MapActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu, menu);
+
         boolean isPad = SysUtils.isPad(context);
 
         if (isPad){
@@ -327,12 +345,12 @@ public class MapActivity extends BaseActivity {
         //点击返回按钮定位到设定范围
         if (item.getItemId() == android.R.id.home){
 
-            ConfigEntity config = AppConfig.getConfig(this);
-            Envelope envelope = new Envelope(config.getExtent().getXmin(),
-                    config.getExtent().getYmin(),
-                    config.getExtent().getXmax(),
-                    config.getExtent().getYmax(),
-                    SpatialReference.create(config.getExtent().getSpatialReference().getWkid()));
+//            ConfigEntity config = AppConfig.getConfig(this);
+            Envelope envelope = new Envelope(mConfigEntity.getExtent().getXmin(),
+                    mConfigEntity.getExtent().getYmin(),
+                    mConfigEntity.getExtent().getXmax(),
+                    mConfigEntity.getExtent().getYmax(),
+                    SpatialReference.create(mConfigEntity.getExtent().getSpatialReference().getWkid()));
 
             Viewpoint vp = new Viewpoint(envelope);
             resourceConfig.mapView.setViewpointAsync(vp);
