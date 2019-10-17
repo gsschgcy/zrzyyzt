@@ -16,6 +16,11 @@
     <string name="string_help_text">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。\n\n最后点击两次后退按钮，即可返回。</string>
     <string name="quit">退出</string>
 
+    <!--地名查询-->
+    <string name="address_search_hint">Enter address</string>
+    <string name="geo_locate_error">Geocode failed on address.</string>
+    <string name="location_not_found">No location with that name: </string>
+
     <!--    菜单-->
     <string name="printScreen">截屏</string>
     <string name="camera">拍照</string>

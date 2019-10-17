@@ -125,11 +125,6 @@ public class StatisticsWidget extends BaseWidget {
                 if(obj!=null){
                     final ArcGISTiledLayer featureLayer = (ArcGISTiledLayer)obj;
                     ServiceFeatureTable featureTable =new ServiceFeatureTable(featureLayer.getUri()+"/0" );
-                    //featureTable.setFeatureRequestMode(ServiceFeatureTable.FeatureRequestMode.MANUAL_CACHE);
-                    //final FeatureLayer featureLayer1 = new FeatureLayer(featureTable);
-                    //textView.setText(featureTable.getFields().size());
-                    //stFieldSpinnerAdapter[0] =new StFieldSpinnerAdapter(context,featureTable.getFields());
-                    //spinnerFieldList.setAdapter(stFieldSpinnerAdapter[0]);
                     setStFields(featureTable,spinnerFieldList);
                 }
             }
