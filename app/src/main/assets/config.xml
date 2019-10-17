@@ -17,7 +17,7 @@ App配置文件
 
 
     <!--Runtime 许可-->
-	<runtimekey license="Aruntimelite,1000,rud7589376584,none,MJJC7XLS100BNERL1153"/>
+	<runtimekey license="runtimelite,1000,rud7589376584,none,MJJC7XLS100BNERL1153"/>
 
     <ipaddress address="192.168.50.119"/>
     <!--系统工作空间目录-->
