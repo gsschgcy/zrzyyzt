@@ -34,6 +34,7 @@ public class MeasureToolView extends LinearLayout {
     private ImageView lengthImageView,areaImageView,clearImageView,endImageView;
 //    measurePrevText,measureNextText,
     private TextView measureLengthText,measureAreaText,measureClearText,measureEndText;
+    private TextView spiltLineView3, spiltLineView4,spiltLineView5;;
 //    measurePrevImage,measureNextImage,
     private int bgColor,fontColor,measureLengthImage,measureAreaImage,measureClearImage,measureEndImage;
     private int buttonWidth,buttonHeight,fontSize;
@@ -152,6 +153,12 @@ public class MeasureToolView extends LinearLayout {
         measureClearText= findViewById(R.id.measure_clear_text);
         measureEndText= findViewById(R.id.measure_end_text);
 
+
+        spiltLineView3 = (TextView) findViewById(R.id.spilt_line3);
+        spiltLineView4 = (TextView) findViewById(R.id.spilt_line4);
+        spiltLineView5 = (TextView) findViewById(R.id.spilt_line5);
+
+
         //measurePrevlayout.setVisibility(GONE);
         //measureNextlayout.setVisibility(GONE);
 
@@ -189,10 +196,10 @@ public class MeasureToolView extends LinearLayout {
         setShowText(showText);
 //        setMeasurePrevStr(measurePrevStr);
 //        setMeasureNextStr(measureNextStr);
-        setMeasureLengthStr(measureLengthStr);
-        setMeasureAreaStr(measureAreaStr);
-        setMeasureClearStr(measureClearStr);
-        setMeasureEndStr(measureEndStr);
+//        setMeasureLengthStr(measureLengthStr);
+//        setMeasureAreaStr(measureAreaStr);
+//        setMeasureClearStr(measureClearStr);
+//        setMeasureEndStr(measureEndStr);
         setFontColor(fontColor);
         setFontSize(fontSize);
 //        setMeasurePrevImage(measurePrevImage);
@@ -310,6 +317,13 @@ public class MeasureToolView extends LinearLayout {
         areaImageView.getLayoutParams().width=buttonWidth;
         clearImageView.getLayoutParams().width=buttonWidth;
         endImageView.getLayoutParams().width=buttonWidth;
+
+        LayoutParams linearParams =(LayoutParams) spiltLineView3.getLayoutParams();
+        linearParams.width = buttonWidth-20;
+        spiltLineView3.setLayoutParams(linearParams);
+        spiltLineView4.setLayoutParams(linearParams);
+        spiltLineView5.setLayoutParams(linearParams);
+
     }
 
     private void setDpButtonHeight(int buttonHeight) {
@@ -320,6 +334,12 @@ public class MeasureToolView extends LinearLayout {
         areaImageView.getLayoutParams().height=buttonHeight;
         clearImageView.getLayoutParams().height=buttonHeight;
         endImageView.getLayoutParams().height=buttonHeight;
+
+//        LayoutParams linearParams =(LayoutParams) spiltLineView3.getLayoutParams();
+//        linearParams.height = buttonHeight-20;
+//        spiltLineView3.setLayoutParams(linearParams);
+//        spiltLineView4.setLayoutParams(linearParams);
+//        spiltLineView5.setLayoutParams(linearParams);
     }
     public void setSpatialReference(SpatialReference spatialReference) {
         arcgisMeasure.setSpatialReference(spatialReference);
@@ -348,13 +368,27 @@ public class MeasureToolView extends LinearLayout {
 
     public void setShowText(boolean showText){
         this.showText=showText;
-        int view=showText?View.VISIBLE:View.GONE;
-//        measurePrevText.setVisibility(view);
-//        measureNextText.setVisibility(view);
-        measureLengthText.setVisibility(view);
-        measureAreaText.setVisibility(view);
-        measureClearText.setVisibility(view);
-        measureEndText.setVisibility(view);
+        int padding=Util.valueToSp(getContext(),8);
+        if(showText){
+            measureLengthText.setVisibility(View.VISIBLE);
+            measureAreaText.setVisibility(View.VISIBLE);
+            measureClearText.setVisibility(View.VISIBLE);
+            measureEndText.setVisibility(View.VISIBLE);
+            lengthImageView.setPadding(padding,padding,padding,0);
+            areaImageView.setPadding(padding,padding,padding,0);
+            clearImageView.setPadding(padding,padding,padding,0);
+            endImageView.setPadding(padding,padding,padding,0);
+        }else{
+            measureLengthText.setVisibility(View.GONE);
+            measureAreaText.setVisibility(View.GONE);
+            measureClearText.setVisibility(View.GONE);
+            measureEndText.setVisibility(View.GONE);
+            lengthImageView.setPadding(padding,padding,padding,padding);
+            areaImageView.setPadding(padding,padding,padding,padding);
+            clearImageView.setPadding(padding,padding,padding,padding);
+            endImageView.setPadding(padding,padding,padding,padding);
+        }
+
     }
 
 //    public void setMeasurePrevStr(String measurePrevStr) {
