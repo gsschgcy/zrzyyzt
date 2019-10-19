@@ -17,10 +17,12 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="3dp">
-            <lecho.lib.hellocharts.view.PieChartView
-                android:id="@+id/widget_view_statistics_piechartview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <ListView
+                android:id="@+id/widget_view_statistics_resultListview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

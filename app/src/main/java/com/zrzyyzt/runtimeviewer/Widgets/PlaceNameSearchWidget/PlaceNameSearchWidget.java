@@ -92,12 +92,13 @@ public class PlaceNameSearchWidget extends BaseWidget {
         //设置widget组件显示内容
         mWidgetView = mLayoutInflater.inflate(R.layout.widget_view_placenamesearch,null);
 
-        //final EditText queryContext=mWidgetView.findViewById(R.id.widget_view_placenamesearch_txtQueryInfo);
-        //final Button queryBtn=mWidgetView.findViewById(R.id.widget_view_placenamesearch_btnplacenamesearch);
         final ListView resultList=mWidgetView.findViewById(R.id.widget_view_placenamesearch_resultListview);
         final SearchView mAddressSearchView = mWidgetView.findViewById(R.id.widget_view_placenamesearch_addressSearchView);
+        mAddressSearchView.setQueryHint("输入查询关键字！");
+
         mAddressSearchView.setIconified(false);
-        mAddressSearchView.setFocusable(false);
+        mAddressSearchView.clearFocus();
+        //mAddressSearchView.setFocusable(false);
 
         BitmapDrawable pinDrawable = (BitmapDrawable) ContextCompat.getDrawable(context, R.drawable.placenamesearch_pin);
         try {
@@ -109,13 +110,13 @@ public class PlaceNameSearchWidget extends BaseWidget {
         mPinSourceSymbol.setWidth(19f);
         mPinSourceSymbol.setHeight(72f);
 
-        mMapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context, mMapView) {
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
-                identifyGraphic(motionEvent);
-                return true;
-            }
-        });
+//        mMapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context, mMapView) {
+//            @Override
+//            public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
+//                identifyGraphic(motionEvent);
+//                return true;
+//            }
+//        });
 
         mAddressSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -138,26 +139,6 @@ public class PlaceNameSearchWidget extends BaseWidget {
             }
         });
 
-//        queryBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String queryStr=queryContext.getText().toString();
-//                if(queryStr==null||queryStr.equals(""))
-//                {
-//                    return;
-//                }else{
-//                    poiBean=getPoi(queryContext.getText().toString());
-//                    if(poiBean!=null){
-//                        List<PoiBean.PoisBean> list=poiBean.getPois();
-//                        PoiResultAdapter poiResultAdapter=new PoiResultAdapter(context,list);
-//                        resultList.setAdapter(poiResultAdapter);
-//                    }
-//                    else {
-//                        Toast.makeText(MPApplication.getContext(), "查询关键字不符合查询要求！", Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//            }
-//        });
         resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -182,6 +163,7 @@ public class PlaceNameSearchWidget extends BaseWidget {
 
     private void identifyGraphic(MotionEvent motionEvent) {
         // get the screen point
+        Log.v("ffff","ggggg");
         android.graphics.Point screenPoint = new android.graphics.Point(Math.round(motionEvent.getX()),
                 Math.round(motionEvent.getY()));
         // from the graphics overlay, get graphics near the tapped location
@@ -260,7 +242,7 @@ public class PlaceNameSearchWidget extends BaseWidget {
         // add graphic to location layer
         mGraphicsOverlay.getGraphics().add(resultLocGraphic);
         // zoom map to result over 3 seconds
-        mMapView.setViewpointAsync(new Viewpoint(resultPoint.getExtent()), 3);
+        mMapView.setViewpointAsync(new Viewpoint(resultPoint.getExtent()), 0.5f);
         // set the graphics overlay to the map
         mMapView.getGraphicsOverlays().add(mGraphicsOverlay);
         showCallout(resultLocGraphic);
@@ -291,6 +273,7 @@ public class PlaceNameSearchWidget extends BaseWidget {
      */
     @Override
     public void inactive(){
+        Log.v("guanbi","111111111111111111");
         super.inactive();
         super.hideCenterView();
         mCallout.dismiss();

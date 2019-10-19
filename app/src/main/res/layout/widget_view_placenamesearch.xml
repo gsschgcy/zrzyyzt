@@ -15,10 +15,10 @@ android:padding="1dp">
             android:background="@color/lightgray"
             android:iconifiedByDefault="false"
             android:layout_centerHorizontal="true"
-            android:queryHint="@string/address_search_hint"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginRight="5dp"
+            android:textSize="10sp">
         </android.support.v7.widget.SearchView>
 </LinearLayout>
     <LinearLayout

@@ -17,14 +17,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
 
                 <TextView
                     android:id="@+id/textView8"
@@ -42,18 +42,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
 
                 <TextView
                     android:id="@+id/widget_view_statistics_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
                     android:text="统计字段：" />
 
@@ -67,14 +68,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
 
                 <TextView
                     android:id="@+id/widget_view_statistics_textview9"
@@ -95,13 +96,78 @@
                 android:id="@+id/widget_view_statistics_btnStatistics"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:background="@drawable/ic_touch_btn"
                 android:text="统计"
                 android:textColor="@color/white" />
         </LinearLayout>
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/widget_view_statistics_txtBtnChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/ic_item_touch_txtred"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="图表显示"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/widget_view_statistics_result_chart"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorPrimary" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/widget_view_statistics_txtBtnTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_item_touch_txtred"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="列表显示"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/widget_view_statistics_result_table"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorPrimary"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </LinearLayout>
     <RelativeLayout
         android:id="@+id/widget_view_statistics_result"
         android:layout_width="match_parent"

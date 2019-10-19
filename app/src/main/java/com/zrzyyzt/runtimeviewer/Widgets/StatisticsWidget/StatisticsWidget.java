@@ -5,7 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import com.esri.arcgisruntime.data.StatisticsQueryParameters;
 import com.esri.arcgisruntime.data.StatisticsQueryResult;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
+import com.esri.arcgisruntime.layers.Layer;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Widgets.StatisticsWidget.Adapter.StFieldSpinnerAdapter;
@@ -42,6 +45,10 @@ public class StatisticsWidget extends BaseWidget {
     public View mWidgetView = null;//
 
     public RelativeLayout viewContent;
+
+    private View chartView=null;
+
+    private View tableView=null;
 
     /**
      * 组件面板打开时，执行的操作
@@ -91,6 +98,11 @@ public class StatisticsWidget extends BaseWidget {
     private void  initWidgetView() {
         mWidgetView= LayoutInflater.from(super.context).inflate(R.layout.widget_view_statistics,null);
         viewContent=mWidgetView.findViewById(R.id.widget_view_statistics_result);
+        chartView=mWidgetView.findViewById(R.id.widget_view_statistics_result_chart);
+        tableView=mWidgetView.findViewById(R.id.widget_view_statistics_result_table);
+        TextView txtBtnChart=mWidgetView.findViewById(R.id.widget_view_statistics_txtBtnChart);
+        TextView txtBtnTable=mWidgetView.findViewById(R.id.widget_view_statistics_txtBtnTable);
+
         final Spinner spinnerLayerList =mWidgetView.findViewById(R.id.widget_view_statistics_spinnerLayer);
         final Spinner spinnerFieldList=mWidgetView.findViewById(R.id.widget_view_statistics_spinnerfield);
         final Spinner spinnerTypeList=mWidgetView.findViewById(R.id.widget_view_statistics_spinnertype);
@@ -111,6 +123,9 @@ public class StatisticsWidget extends BaseWidget {
         final View resultView=LayoutInflater.from(super.context).inflate(R.layout.widget_view_statistics_result,null);
         final PieChartView pieChartView=resultView.findViewById(R.id.widget_view_statistics_piechartview);
 
+        final View listView=LayoutInflater.from(super.context).inflate(R.layout.widget_view_statistics_table,null);
+        final ListView tabListView=listView.findViewById(R.id.widget_view_statistics_resultListview);
+
         final Button btnStatistics=mWidgetView.findViewById(R.id.widget_view_statistics_btnStatistics);
 
         //final PieChartView pieChartView=(PieChartView)mWidgetView.findViewById(R.id.widget_view_statistics_piechartview);
@@ -123,6 +138,7 @@ public class StatisticsWidget extends BaseWidget {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object obj=spinnerLayerList.getSelectedItem();
                 if(obj!=null){
+
                     final ArcGISTiledLayer featureLayer = (ArcGISTiledLayer)obj;
                     ServiceFeatureTable featureTable =new ServiceFeatureTable(featureLayer.getUri()+"/0" );
                     setStFields(featureTable,spinnerFieldList);
@@ -174,7 +190,7 @@ public class StatisticsWidget extends BaseWidget {
                                 StatisticsQueryResult statisticsQueryResult = queryResultListenableFuture.get();
                                 Iterator<StatisticRecord> statisticRecordIterator=statisticsQueryResult.iterator();
                                 List<SliceValue> values=new ArrayList<>();
-                                String sTest="";
+                                ArrayList<String> listTab=new ArrayList<>();
 
                                 while (statisticRecordIterator.hasNext()){
                                     StatisticRecord statisticRecord=statisticRecordIterator.next();
@@ -187,17 +203,48 @@ public class StatisticsWidget extends BaseWidget {
                                             for (Map.Entry<String, Object> stat : statisticRecord.getStatistics().entrySet()) {
                                                 double value= (Double) stat.getValue();
                                                 values.add(new SliceValue((float)value,randomColor()).setLabel(group.getValue().toString()));
+                                                listTab.add(group.getValue().toString()+":"+stat.getValue());
                                             }
                                         }
                                     }
                                 }
                                 initPieChart(pieChartView,values);
+                                if(listTab.size()>0){
+                                    ArrayAdapter<String> arrayAdapter=new ArrayAdapter<>(context,R.layout.widget_view_statistics_table_item,R.id.widget_view_statistics_table_item_txtName,listTab);
+                                    tabListView.setAdapter(arrayAdapter);
+                                }
+
                             }
                             catch (Exception e) {
                                 Log.e("统计发生错误","错误原因："+e.getMessage());
                             }
                         }
                     });
+                }
+            }
+        });
+        txtBtnChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(viewContent.getChildAt(0)!=resultView)
+                {
+                    viewContent.removeAllViews();
+                    viewContent.addView(resultView);
+                    chartView.setVisibility(View.VISIBLE);
+                    tableView.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        txtBtnTable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(viewContent.getChildAt(0)!=listView)
+                {
+                    viewContent.removeAllViews();
+                    viewContent.addView(listView);
+                    chartView.setVisibility(View.GONE);
+                    tableView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -239,7 +286,7 @@ public class StatisticsWidget extends BaseWidget {
         //文本内容是否显示在饼图外侧(默认为false)
         pieChartData.setHasLabelsOutside(false);
         //文本字体大小
-        pieChartData.setValueLabelTextSize(12);
+        pieChartData.setValueLabelTextSize(10);
         //文本文字颜色
         pieChartData.setValueLabelsTextColor(Color.WHITE);
         //设置文本背景颜色
