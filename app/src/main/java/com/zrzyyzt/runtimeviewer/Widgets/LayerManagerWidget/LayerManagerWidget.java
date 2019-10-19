@@ -19,6 +19,7 @@ import com.esri.arcgisruntime.data.ShapefileFeatureTable;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
+import com.esri.arcgisruntime.loadable.LoadStatus;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
@@ -299,10 +300,14 @@ public class LayerManagerWidget extends BaseWidget {
                 @Override
                 public void run() {
 
-                    //数据加载完毕后，添加到地图
-                    FeatureLayer mainShapefileLayer = new FeatureLayer(shapefileFeatureTable);
-                    mainShapefileLayer.setName(fileName);
-                    mapView.getMap().getOperationalLayers().add(mainShapefileLayer);
+                    if(shapefileFeatureTable.getLoadStatus() == LoadStatus.LOADED){
+                        //数据加载完毕后，添加到地图
+                        FeatureLayer mainShapefileLayer = new FeatureLayer(shapefileFeatureTable);
+                        mainShapefileLayer.setName(fileName);
+                        mapView.getMap().getOperationalLayers().add(mainShapefileLayer);
+                    }else{
+                        Log.d(TAG, "run: failed to load");
+                    }
                 }
             });
         }
