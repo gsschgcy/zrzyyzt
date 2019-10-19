@@ -12,11 +12,10 @@
             android:id="@+id/widget_view_layer_managet_item_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="1dp"
             android:background="@color/white"
             android:clickable="true"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/widget_view_layer_managet_item_cbxLayer"
@@ -24,12 +23,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:singleLine="true"
+                android:textSize="11dp"
                 android:text="XX图层" />
 
             <Button
                 android:id="@+id/widget_view_layer_managet_item_btnMore"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/ic_more_btn" />
 
         </LinearLayout>
