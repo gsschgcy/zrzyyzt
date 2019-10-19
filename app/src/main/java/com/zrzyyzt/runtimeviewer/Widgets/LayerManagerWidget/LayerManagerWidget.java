@@ -72,8 +72,10 @@ public class LayerManagerWidget extends BaseWidget {
         context = super.context;
         defauleOnTouchListener = super.mapView.getOnTouchListener();
 //        initBaseMapResource();//初始化底图
-//        initOperationalLayers();//初始化业务图层
-        initOperationalLayersWeb();
+
+        initOperationalLayers();//初始化业务图层
+
+        initOperationalLayersWeb();//初始化网络业务图层
 
         initGeoPackageLayers();//初始化业务图层 gpkg
 
@@ -281,18 +283,25 @@ public class LayerManagerWidget extends BaseWidget {
      */
     private void initOperationalLayers(){
         String path = getOperationalLayersPath();
+        Log.d(TAG, "initOperationalLayers: " + path);
         List<FileUtils.FileInfo> fileInfos = FileUtils.getFileListInfo(path,"shp");
-        if (fileInfos==null) return;
+        if (fileInfos==null || fileInfos.size()<=0) {
+
+            return;
+        }
         for (int i=0;i<fileInfos.size();i++) {
             FileUtils.FileInfo fileInfo = fileInfos.get(i);
-
+            final String fileName = fileInfo.FileName.replace(".shp","");
+            Log.d(TAG, "run: " + fileInfos.get(i) );
             final ShapefileFeatureTable shapefileFeatureTable = new ShapefileFeatureTable(fileInfo.FilePath);
             shapefileFeatureTable.loadAsync();//异步方式读取文件
             shapefileFeatureTable.addDoneLoadingListener(new Runnable() {
                 @Override
                 public void run() {
+
                     //数据加载完毕后，添加到地图
                     FeatureLayer mainShapefileLayer = new FeatureLayer(shapefileFeatureTable);
+                    mainShapefileLayer.setName(fileName);
                     mapView.getMap().getOperationalLayers().add(mainShapefileLayer);
                 }
             });
@@ -386,7 +395,7 @@ public class LayerManagerWidget extends BaseWidget {
      * @return
      */
     private String getOperationalLayersPath(){
-        return projectPath+ File.separator+"OperationalLayers"+File.separator;
+        return projectPath + File.separator + "OperationalLayers" + File.separator;
     }
 
     /**

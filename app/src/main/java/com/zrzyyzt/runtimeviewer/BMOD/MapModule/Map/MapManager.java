@@ -78,6 +78,9 @@ public class MapManager {
         //initBaseMapResource(); //初始化底图资源
 
         initMapResource();//初始化配置
+
+        //切换到天地图影像
+        changeBasemap("tdtyx");
     }
 
 
@@ -194,6 +197,7 @@ public class MapManager {
         resourceConfig.img_tdt_yx.setOnClickListener(listener);
     }
 
+    //添加地图切换事件
     View.OnClickListener listener = new View.OnClickListener() {
 
         @Override
