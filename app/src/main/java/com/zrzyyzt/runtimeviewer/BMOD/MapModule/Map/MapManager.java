@@ -71,7 +71,7 @@ public class MapManager {
 //        this.map = new ArcGISMap();//初始化
 //        resourceConfig.mapView.setMap(map);
         addBasemap();
-        addBasemapJygYx();
+//        addBasemapJygYx();
         addBasemapTdtSl();
         addBasemapTdtYx();
 

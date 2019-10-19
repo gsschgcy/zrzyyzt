@@ -74,7 +74,12 @@ public class AttributeAdapter extends BaseAdapter {
         holder.txtName = (TextView) convertView.findViewById(R.id.widget_view_query_mapquery_fielditem_txtName);
         holder.txtValue = (TextView)convertView.findViewById(R.id.widget_view_query_mapquery_fielditem_txtValue);
 
-        holder.txtName.setText(keyAndValueBeans.get(position).getAlias());
+        if(!keyAndValueBeans.get(position).getAlias().equalsIgnoreCase("")){
+            holder.txtName.setText(keyAndValueBeans.get(position).getAlias());
+        }else{
+            holder.txtName.setText(keyAndValueBeans.get(position).getKey());
+        }
+
         holder.txtValue.setText(keyAndValueBeans.get(position).getValue());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
