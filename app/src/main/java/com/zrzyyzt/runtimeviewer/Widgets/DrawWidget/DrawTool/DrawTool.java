@@ -94,7 +94,7 @@ public class DrawTool extends Subject {
     public DrawTool(Context context, MapView mapView) {
         this.context = context;
         this.mapView = mapView;
-        this.mapView.setMagnifierEnabled(true);//允许使用放大镜
+//        this.mapView.setMagnifierEnabled(true);//允许使用放大镜
         this.mGraphicsLayerEditing = new GraphicsOverlay();
         this.mapView.getGraphicsOverlays().add(this.mGraphicsLayerEditing);
         this.tempLayer = new GraphicsOverlay();
@@ -522,6 +522,7 @@ public class DrawTool extends Subject {
                 Point point = mapView.screenToLocation(new android.graphics.Point((int)e.getX(), (int)e.getY()));
                 switch (drawType) {
                     case DrawTool.POINT:
+                        Log.d(TAG, "onSingleTapUp:  point");
                         drawGraphic = new Graphic(point,markerSymbol);
                         sendDrawEndEvent();
                         break;

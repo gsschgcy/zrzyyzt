@@ -39,6 +39,7 @@
     <string name="zoom_rotate_text">旋转</string>
     <string name="map_north_text">指北</string>
     <string name="map_location_text">定位</string>
+    <string name="map_query_text">查询</string>
 
 
     <string name="measure_length_text">测距</string>

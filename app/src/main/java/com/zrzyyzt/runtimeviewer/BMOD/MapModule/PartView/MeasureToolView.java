@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -310,7 +309,6 @@ public class MeasureToolView extends LinearLayout {
 
     private void setDpButtonWidth(int buttonWidth) {
         this.buttonWidth = buttonWidth;
-        Log.d(TAG, "setDpButtonWidth: width" + buttonWidth);
 //        prevImageView.getLayoutParams().width=buttonWidth;
 //        nextImageView.getLayoutParams().width=buttonWidth;
         lengthImageView.getLayoutParams().width=buttonWidth;
@@ -354,7 +352,7 @@ public class MeasureToolView extends LinearLayout {
         arcgisMeasure.setAreaType(type);
     }
     public void setMeasureBackground(int bg) {
-        this.bgColor=bgColor;
+        this.bgColor=bg;
         measureBgView.setBackground(getResources().getDrawable(bg));
     }
 

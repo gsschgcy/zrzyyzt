@@ -26,7 +26,6 @@ import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LayerListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LegendListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Entity.OperationLayerInfo;
-import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Listener.MapQueryOnTouchListener;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Manager.OperationMapManager;
 
 import java.io.File;
@@ -49,29 +48,30 @@ public class LayerManagerWidget extends BaseWidget {
     private LayerListviewAdapter featureLayerListviewAdapter =null;
     private LegendListviewAdapter legendListviewAdapter = null;
 
-    private MapQueryOnTouchListener mapQueryOnTouchListener;
-    private View.OnTouchListener defauleOnTouchListener;//默认点击事件
+//    private MapQueryOnTouchListener mapQueryOnTouchListener;
+//    private View.OnTouchListener defauleOnTouchListener;//默认点击事件
 
     @Override
     public void active() {
         super.active();
         super.showWidget(mWidgetView);
-        initMapQuery();
+//        initMapQuery();
     }
 
     private void initMapQuery() {
-        mapView.setMagnifierEnabled(true);//放大镜
-        if (mapQueryOnTouchListener!=null){
-            super.mapView.setOnTouchListener(mapQueryOnTouchListener);
-        }
-        mapQueryOnTouchListener.clear();//清空当前选择
+//        mapView.setMagnifierEnabled(true);//放大镜
+//        if (mapQueryOnTouchListener!=null){
+//            super.mapView.setOnTouchListener(mapQueryOnTouchListener);
+//        }
+//        mapQueryOnTouchListener.clear();//清空当前选择
     }
 
     @Override
     public void create() {
 
         context = super.context;
-        defauleOnTouchListener = super.mapView.getOnTouchListener();
+//        defauleOnTouchListener = super.mapView.getOnTouchListener();
+
 //        initBaseMapResource();//初始化底图
 
         initOperationalLayers();//初始化业务图层
@@ -231,11 +231,11 @@ public class LayerManagerWidget extends BaseWidget {
 //        });
 
 
-        final View mapQueryView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_query_mapquery_1,null);
+//        final View mapQueryView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_query_mapquery_1,null);
 //        View viewBtnSelectFeature = mapQueryView.findViewById(R.id.widget_view_query_mapquery_linerBtnFeatureSelect);//要素选择
 //        TextView txtLayerName = (TextView)mapQueryView.findViewById(R.id.widget_view_query_mapquery_1_txtLayerName);
 //        ListView listViewField = (ListView)mapQueryView.findViewById(R.id.widget_view_query_mapquery_1_fieldListview);
-        mapQueryOnTouchListener = new MapQueryOnTouchListener(context, mapView,mapQueryView);
+//        mapQueryOnTouchListener = new MapQueryOnTouchListener(context, mapView, mapQueryView);
     }
 
     @Override
@@ -246,11 +246,11 @@ public class LayerManagerWidget extends BaseWidget {
 
     private void returnDefault() {
 
-        if (mapQueryOnTouchListener!=null){
-            super.mapView.setOnTouchListener(defauleOnTouchListener);//窗口关闭恢复默认点击状态
-        }
-        mapQueryOnTouchListener.clear();//清空当前选择
-        mapView.setMagnifierEnabled(false);//放大镜
+//        if (mapQueryOnTouchListener!=null){
+//            super.mapView.setOnTouchListener(defauleOnTouchListener);//窗口关闭恢复默认点击状态
+//        }
+//        mapQueryOnTouchListener.clear();//清空当前选择
+//        mapView.setMagnifierEnabled(false);//放大镜
     }
 
     /**

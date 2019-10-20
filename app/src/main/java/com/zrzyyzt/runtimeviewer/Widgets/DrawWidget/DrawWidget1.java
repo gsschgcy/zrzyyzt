@@ -27,6 +27,7 @@ import java.util.List;
 
 public class DrawWidget1 extends BaseWidget implements DrawEventListener {
 
+    private static final String TAG = "DrawWidget1";
     public View drawView ;
     private DrawTool drawTool;
     private GraphicsOverlay graphicsLayer = null;
@@ -58,7 +59,12 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
     public void active() {
         super.active();
         super.showWidget(drawView);
-
+        if(graphicsLayer == null){
+            graphicsLayer = new GraphicsOverlay();
+        }
+        if(!mapView.getGraphicsOverlays().contains(graphicsLayer)){
+            mapView.getGraphicsOverlays().add(graphicsLayer);
+        }
     }
 
     @Override
@@ -137,8 +143,6 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
             }
         });
 
-        graphicsLayer = new GraphicsOverlay();
-        mapView.getGraphicsOverlays().add(graphicsLayer);
 
         this.drawTool = new DrawTool(context, mapView);
         this.drawTool.addEventListener(this);
@@ -227,6 +231,8 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
     @Override
     public void inactive() {
         super.inactive();
+        mapView.getGraphicsOverlays().remove(graphicsLayer);
+        graphicsLayer.getGraphics().clear();
 //        drawTool = null;
     }
 
@@ -234,6 +240,7 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
     public void handleDrawEvent(DrawEvent event) throws FileNotFoundException {
         // 将画好的图形（已经实例化了Graphic），添加到drawLayer中并刷新显示
         this.graphicsLayer.getGraphics().add(event.getDrawGraphic());
+
         // 修改点击事件为默认
         this.mapView.setOnTouchListener(mapDefaultOnTouchListener);
     }

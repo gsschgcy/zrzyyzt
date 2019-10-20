@@ -42,6 +42,8 @@
         <attr name="measure_clear_image" format="reference"/>
         <attr name="measure_end_image" format="reference"/>
 
+        <attr name="map_query_image" format="reference"/>
+
         <attr name="map_query_result_text" format="string"/>
     </declare-styleable>
 </resources>

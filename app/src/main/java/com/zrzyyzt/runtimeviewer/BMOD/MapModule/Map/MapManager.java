@@ -20,12 +20,14 @@ import com.esri.arcgisruntime.layers.RasterLayer;
 import com.esri.arcgisruntime.layers.WebTiledLayer;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.LayerList;
+import com.esri.arcgisruntime.mapping.view.DefaultMapViewOnTouchListener;
 import com.esri.arcgisruntime.mapping.view.MapScaleChangedEvent;
 import com.esri.arcgisruntime.mapping.view.MapScaleChangedListener;
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.esri.arcgisruntime.raster.Raster;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseMap.BaseMapManager;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseMap.BasemapLayerInfo;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Listener.MapQueryListener;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource.ResourceConfig;
 import com.zrzyyzt.runtimeviewer.Common.Variable;
 import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
@@ -61,6 +63,7 @@ public class MapManager {
     private ArcGISMap map;//地图容器
 
     private List<BasemapLayerInfo> basemapLayerInfoList = null;
+
 
     public MapManager(Context context, ResourceConfig resourceConfig, ConfigEntity ce, String dirPath){
         this.context = context;
@@ -100,6 +103,8 @@ public class MapManager {
             ToastUtils.showShort(context, "ArcGIS Runtime 许可设置异常:" + e.getMessage());
         }
 
+        resourceConfig.mapDefualtListener = new DefaultMapViewOnTouchListener(context, resourceConfig.mapView);
+
         /***显示放大镜*/
         resourceConfig.mapView.setMagnifierEnabled(false);
         resourceConfig.mapView.setCanMagnifierPanMap(false);
@@ -137,12 +142,14 @@ public class MapManager {
         String scale = df.format(resourceConfig.mapView.getMapScale());
         resourceConfig.txtMapScale.setText("比例尺 1:" + scale);
 
+
         //根据缩放设置比例尺级别
         resourceConfig.mapView.addMapScaleChangedListener(new MapScaleChangedListener() {
             @Override
             public void mapScaleChanged(MapScaleChangedEvent mapScaleChangedEvent) {
                 String scale = df.format(resourceConfig.mapView.getMapScale());
                 resourceConfig.txtMapScale.setText("比例尺 1:" + scale);
+//                Log.d(TAG, "initMapResource: " + resourceConfig.mapView.getMap().getSpatialReference().getWkid());
             }
         });
 
@@ -176,7 +183,7 @@ public class MapManager {
 
         resourceConfig.measureToolView.init(resourceConfig.mapView);
         resourceConfig.measureToolView.setShowText(false);
-        resourceConfig.measureToolView.setSpatialReference(SpatialReference.create(3857));//TODO 配置文件读取
+        resourceConfig.measureToolView.setSpatialReference(SpatialReference.create(4490));//TODO 配置文件读取
         resourceConfig.measureToolView.setLengthType(Variable.Measure.KM);
         resourceConfig.measureToolView.setAreaType(Variable.Measure.KM2);
 
@@ -184,6 +191,8 @@ public class MapManager {
 
         resourceConfig.mapNorthView.init(resourceConfig.mapView);
 
+        resourceConfig.mapQueryListener = new MapQueryListener(context, resourceConfig.mapView, resourceConfig.mapQueryViewLayout);
+        resourceConfig.mapQueryView.init(resourceConfig.mapView, resourceConfig.mapDefualtListener, resourceConfig.mapQueryListener);
 //        Log.d(TAG, "initMapResource: " + resourceConfig.mapLocationView);
 //        resourceConfig.mapLocationView.init(resourceConfig.mapView);
 

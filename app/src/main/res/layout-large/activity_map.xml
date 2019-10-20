@@ -78,6 +78,14 @@
 
             </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapRotateView>
 
+            <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapQueryView
+                android:id="@+id/map_query_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+            </com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapQueryView>
+
             <!--        <com.zrzyyzt.runtimeviewer.BMOD.MapModule.PartView.MapLocationView-->
             <!--            android:id="@+id/map_location_view"-->
             <!--            android:layout_width="wrap_content"-->

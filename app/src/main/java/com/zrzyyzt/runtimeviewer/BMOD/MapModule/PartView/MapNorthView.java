@@ -100,7 +100,7 @@ public class MapNorthView extends LinearLayout {
 
     public void setShowText(boolean showText) {
         this.showText = showText;
-        int padding=Util.valueToSp(getContext(),10);
+        int padding=Util.valueToSp(getContext(),8);
         if(showText){
             mapNorthTextView.setVisibility(View.VISIBLE);
             mapNorthImageView.setPadding(padding,padding,padding,0);

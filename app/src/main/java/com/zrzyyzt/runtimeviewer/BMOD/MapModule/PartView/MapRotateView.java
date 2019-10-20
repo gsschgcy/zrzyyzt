@@ -121,7 +121,7 @@ public class MapRotateView extends LinearLayout {
 
     public void setShowText(boolean showText) {
         this.showText = showText;
-        int padding=Util.valueToSp(getContext(),10);
+        int padding=Util.valueToSp(getContext(),8);
         if(showText){
             mapRotateTextView.setVisibility(View.VISIBLE);
             mapRotateView.setPadding(padding,padding,padding,0);
