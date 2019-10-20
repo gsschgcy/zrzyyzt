@@ -17,57 +17,80 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
 
                 <TextView
-                    android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="查询图层：" />
 
                 <Spinner
-                    android:id="@+id/widget_view_query_attributequery_spinnerLayer"
+                    android:id="@+id/widget_view_query_attribute_spinnerLayer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:layout_weight="1" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="查询字段：" />
+
+                <Spinner
+                    android:id="@+id/widget_view_query_attribute_spinner_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin = "3dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
 
                 <EditText
                     android:id="@+id/widget_view_query_attributequery_txtQueryInfo"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="请输入查询关键字"
+                    android:textSize="14dp"
                     android:inputType="text"
-                    android:padding="5dp"
-                    android:textSize="14sp" />
+                    android:padding="5dp"/>
             </LinearLayout>
 
             <Button
-                android:id="@+id/widget_view_query_attributequery_btnQuery"
+                android:id="@+id/widget_view_query_attribute_btnQuery"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:background="@drawable/ic_touch_btn"
                 android:text="查询"
                 android:textColor="@color/white" />
@@ -102,7 +125,7 @@
                 android:background="@color/grey" />
 
             <ListView
-                android:id="@+id/widget_view_query_attributequery_resultListview"
+                android:id="@+id/widget_view_query_attribute_resultListview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

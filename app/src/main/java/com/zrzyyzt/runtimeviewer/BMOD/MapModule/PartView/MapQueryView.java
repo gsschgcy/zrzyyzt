@@ -19,6 +19,7 @@ import com.zrzyyzt.runtimeviewer.Utils.Util;
 public class MapQueryView extends LinearLayout {
     private MapView mMapView;
     private Context context;
+
     private DefaultMapViewOnTouchListener mapDefualtListener;
     private MapQueryListener mapQueryListener;
 
@@ -149,6 +150,7 @@ public class MapQueryView extends LinearLayout {
                     mMapView.setOnTouchListener(mapDefualtListener);
                     mapQueryBg.setBackground(context.getDrawable(R.drawable.map_shadow_bg));
                     mMapView.setMagnifierEnabled(false);
+                    mapQueryListener.clear();
                 }
 
             }
