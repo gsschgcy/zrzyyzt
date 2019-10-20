@@ -266,7 +266,7 @@ public class FileUtils {
             //#写数据到文件XXX.txt
             //创建一个文件输出流
             FileOutputStream out = new FileOutputStream(file, false);//true表示在文件末尾添加
-            out.write(Content.getBytes("GB2312"));
+            out.write(Content.getBytes("UTF-8"));
             out.close();
         } catch (Exception e) {
             return false;
