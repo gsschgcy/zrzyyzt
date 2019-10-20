@@ -16,8 +16,10 @@ App配置文件
     </extent>
 
 
+
     <!--Runtime 许可-->
-	<runtimekey license="runtimelite,1000,rud7589376584,none,MJJC7XLS100BNERL1153"/>
+	<runtimekey license=""/>
+<!--    <runtimekey license="runtimelite,1000,rud7589376584,none,MJJC7XLS100BNERL1153"/>-->
 
     <ipaddress address="192.168.50.119"/>
     <!--系统工作空间目录-->
@@ -39,8 +41,13 @@ App配置文件
                 icon="widget_bookmark_grey.png" select_icon="widget_bookmark_select2.png" width="600"/>
         <widget label="文档管理"  classname="com.zrzyyzt.runtimeviewer.Widgets.DocManagerWidget.DocManagerWidget"
             icon="widget_caculate.png" select_icon="widget_caculate_select2.png" width="600" />
-        <widget label="统计分析" classname="com.zrzyyzt.runtimeviewer.Widgets.StatisticsWidget.StatisticsWidget" width="800" />
-        <widget label="地名检索" classname="com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.PlaceNameSearchWidget" width="800" />
-        <widget label="测试" classname="com.zrzyyzt.runtimeviewer.Widgets.HelloWorldWidget"  width="600" />
+        <widget label="统计分析" classname="com.zrzyyzt.runtimeviewer.Widgets.StatisticsWidget.StatisticsWidget"
+            icon="widget_statistics_icon.png" select_icon="widget_statistics_select_icon.png" width="800" />
+        <widget label="地名检索" classname="com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.PlaceNameSearchWidget"
+            icon="widget_palcenamesearch_icon.png" select_icon="widget_placenamesearch_select_icon.png" width="800" />
+        <widget label="周边查询" classname="com.zrzyyzt.runtimeviewer.Widgets.PeripheralQueryWidget.PeripheralQueryWidget"
+            icon="widget_peripheralquery_icon.png" select_icon="widget_peripheralquery_select_icon.png" width="800" />
+        <widget label="关于App" classname="com.zrzyyzt.runtimeviewer.Widgets.AboutWidget.AboutWidget" width="800"
+            icon="widget_about.png" select_icon="widget_about_select.png"/>
     </widgetcontainer>
 </configuration>

@@ -1,6 +1,7 @@
 package com.zrzyyzt.runtimeviewer.Widgets.StatisticsWidget.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,13 +71,13 @@ public class StLayerSpinnerAdapter extends BaseAdapter {
 
         //仅获取当前显示的layer
         //FeatureLayer layer =null;
-        ArcGISTiledLayer layer = null;
+        Layer layer = null;
         int indexPositon=0;//计数
         for (int i=0;i<layerList.size();i++){
             Layer layerTpl = layerList.get(i);
             if (layerTpl.isVisible()){
                 if (indexPositon==position){
-                    layer = (ArcGISTiledLayer) layerTpl;
+                    layer = layerTpl;
                 }
                 indexPositon++;
             }

@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
+import com.esri.arcgisruntime.data.FeatureTable;
 import com.esri.arcgisruntime.data.Field;
 import com.esri.arcgisruntime.data.ServiceFeatureTable;
 import com.esri.arcgisruntime.data.StatisticDefinition;
@@ -108,6 +109,7 @@ public class StatisticsWidget extends BaseWidget {
         final Spinner spinnerTypeList=mWidgetView.findViewById(R.id.widget_view_statistics_spinnertype);
 
 
+
         StLayerSpinnerAdapter stLayerSpinnerAdapter=new StLayerSpinnerAdapter(context,mapView.getMap().getOperationalLayers());
         spinnerLayerList.setAdapter(stLayerSpinnerAdapter);
         spinnerLayerList.setSelection(0);
@@ -138,10 +140,16 @@ public class StatisticsWidget extends BaseWidget {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object obj=spinnerLayerList.getSelectedItem();
                 if(obj!=null){
-
-                    final ArcGISTiledLayer featureLayer = (ArcGISTiledLayer)obj;
-                    ServiceFeatureTable featureTable =new ServiceFeatureTable(featureLayer.getUri()+"/0" );
-                    setStFields(featureTable,spinnerFieldList);
+                    Layer layer=(Layer)obj;
+                    if(layer instanceof ArcGISTiledLayer){
+                        final ArcGISTiledLayer arcGISTiledLayer = (ArcGISTiledLayer)obj;
+                        ServiceFeatureTable featureTable =new ServiceFeatureTable(arcGISTiledLayer.getUri()+"/0" );
+                        setStFields(featureTable,spinnerFieldList);
+                    }else if(layer instanceof FeatureLayer) {
+                        final FeatureLayer featureLayer = (FeatureLayer)obj;
+                        stFieldSpinnerAdapter[0] =new StFieldSpinnerAdapter(context,featureLayer.getFeatureTable().getFields());
+                        spinnerFieldList.setAdapter(stFieldSpinnerAdapter[0]);
+                    }
                 }
             }
 
@@ -161,7 +169,8 @@ public class StatisticsWidget extends BaseWidget {
                 }
                 Object object=spinnerLayerList.getSelectedItem();
                 if(object!=null){
-                    final ArcGISTiledLayer featureLayer=(ArcGISTiledLayer)object;
+                    final Layer layer=(Layer)object;
+
                     final com.esri.arcgisruntime.data.Field field=(com.esri.arcgisruntime.data.Field)spinnerFieldList.getSelectedItem();
                     final String sataType=(String)spinnerTypeList.getSelectedItem();
                     //textView.setText(field.getName());
@@ -179,10 +188,16 @@ public class StatisticsWidget extends BaseWidget {
 
                     StatisticsQueryParameters queryParameters=new StatisticsQueryParameters(statisticDefinitions);
                     queryParameters.getGroupByFieldNames().add(field.getName());
+                    final ListenableFuture<StatisticsQueryResult> queryResultListenableFuture;
+                    if(layer instanceof ArcGISTiledLayer){
+                        final ArcGISTiledLayer arcGISTiledLayer=(ArcGISTiledLayer)object;
+                        ServiceFeatureTable featureTable=new ServiceFeatureTable(arcGISTiledLayer.getUri()+"/0");
+                        queryResultListenableFuture=featureTable.queryStatisticsAsync(queryParameters);
+                    }else {
+                        final FeatureLayer featureLayer=(FeatureLayer)object;
+                        queryResultListenableFuture=featureLayer.getFeatureTable().queryStatisticsAsync(queryParameters);
+                    }
 
-                    ServiceFeatureTable featureTable=new ServiceFeatureTable(featureLayer.getUri()+"/0");
-
-                    final ListenableFuture<StatisticsQueryResult> queryResultListenableFuture=featureTable.queryStatisticsAsync(queryParameters);
                     queryResultListenableFuture.addDoneListener(new Runnable() {
                         @Override
                         public void run() {
@@ -203,7 +218,7 @@ public class StatisticsWidget extends BaseWidget {
                                             for (Map.Entry<String, Object> stat : statisticRecord.getStatistics().entrySet()) {
                                                 double value= (Double) stat.getValue();
                                                 values.add(new SliceValue((float)value,randomColor()).setLabel(group.getValue().toString()));
-                                                listTab.add(group.getValue().toString()+":"+stat.getValue());
+                                                listTab.add("类型="+group.getValue().toString()+":"+(int)value+"条");
                                             }
                                         }
                                     }
@@ -249,6 +264,7 @@ public class StatisticsWidget extends BaseWidget {
             }
         });
     }
+
     private void setStFields(final ServiceFeatureTable serviceFeatureTable,final Spinner fieldList) {
         serviceFeatureTable.loadAsync();
         serviceFeatureTable.addDoneLoadingListener(new Runnable() {

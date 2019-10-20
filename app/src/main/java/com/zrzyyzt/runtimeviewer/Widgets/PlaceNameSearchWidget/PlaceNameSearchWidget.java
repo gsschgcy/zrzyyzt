@@ -94,8 +94,11 @@ public class PlaceNameSearchWidget extends BaseWidget {
 
         final ListView resultList=mWidgetView.findViewById(R.id.widget_view_placenamesearch_resultListview);
         final SearchView mAddressSearchView = mWidgetView.findViewById(R.id.widget_view_placenamesearch_addressSearchView);
+        TextView sTextView=mAddressSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        sTextView.setTextSize(14);
+        //sTextView.setBackgroundColor(Color.BLUE);
         mAddressSearchView.setQueryHint("输入查询关键字！");
-
+        mAddressSearchView.setIconifiedByDefault(false);
         mAddressSearchView.setIconified(false);
         mAddressSearchView.clearFocus();
         //mAddressSearchView.setFocusable(false);
@@ -126,6 +129,8 @@ public class PlaceNameSearchWidget extends BaseWidget {
                     List<PoiBean.PoisBean> list=poiBean.getPois();
                     PoiResultAdapter poiResultAdapter=new PoiResultAdapter(context,list);
                     resultList.setAdapter(poiResultAdapter);
+                    mAddressSearchView.clearFocus();
+                    //mAddressSearchView.onActionViewCollapsed();
                 }
                 else {
                     Toast.makeText(MPApplication.getContext(), "查询关键字不符合查询要求！", Toast.LENGTH_LONG).show();
@@ -163,7 +168,6 @@ public class PlaceNameSearchWidget extends BaseWidget {
 
     private void identifyGraphic(MotionEvent motionEvent) {
         // get the screen point
-        Log.v("ffff","ggggg");
         android.graphics.Point screenPoint = new android.graphics.Point(Math.round(motionEvent.getX()),
                 Math.round(motionEvent.getY()));
         // from the graphics overlay, get graphics near the tapped location
@@ -195,7 +199,11 @@ public class PlaceNameSearchWidget extends BaseWidget {
 
             String address="http://api.tianditu.gov.cn/search?";
             String key="1a2360bdad0e682aba76bfb388fcb849";
-            String postStr="postStr={\"keyWord\":\""+keyWord+"\",\"level\":\"14\",\"mapBound\":\"91.63,32.351,109.66,42.97\",\"queryType\":\"1\",\"count\":\"20\",\"start\":\"0\"}" ;
+            String level="14";
+            String mapBound="91.63,32.351,109.66,42.97";
+            String count="20";
+            String postStr="postStr={\"keyWord\":\""+keyWord+"\",\"level\":\""+level+"\"," +
+                    "\"mapBound\":\""+mapBound+"\",\"queryType\":\"1\",\"count\":\""+count+"\",\"start\":\"0\"}" ;
             String keyType="&type=query&tk="+key;
             String url=address+postStr+keyType;
 
@@ -273,10 +281,8 @@ public class PlaceNameSearchWidget extends BaseWidget {
      */
     @Override
     public void inactive(){
-        Log.v("guanbi","111111111111111111");
         super.inactive();
         super.hideCenterView();
-        mCallout.dismiss();
         mMapView.getGraphicsOverlays().clear();
         mMapView.refreshDrawableState();
     }
