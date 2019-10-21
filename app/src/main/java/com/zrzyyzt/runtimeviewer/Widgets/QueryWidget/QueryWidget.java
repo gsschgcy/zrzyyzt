@@ -381,7 +381,65 @@ public class QueryWidget extends BaseWidget {
         final StringBuilder stringBuilder = new StringBuilder();
         final QueryParameters query = new QueryParameters();
 
+        boolean isNumber = isNumberFunction(search);
 
+        switch (field.getFieldType()) {
+            case TEXT:
+                stringBuilder.append(" upper(");
+                stringBuilder.append(field.getName());
+                stringBuilder.append(") LIKE '%");
+                stringBuilder.append(search.toUpperCase());
+                stringBuilder.append("%'");
+                break;
+            case SHORT:
+            case INTEGER:
+            case FLOAT:
+            case DOUBLE:
+            case OID:
+                if (isNumber == true) {
+                    stringBuilder.append(field.getName());
+                    stringBuilder.append(" = ");
+                    stringBuilder.append(search);
+                }
+                break;
+            case UNKNOWN:
+            case GLOBALID:
+            case BLOB:
+            case GEOMETRY:
+            case RASTER:
+            case XML:
+            case GUID:
+            case DATE:
+                break;
+        }
+
+        String whereStr = stringBuilder.toString();
+        query.setWhereClause(whereStr);
+        final ListenableFuture<FeatureQueryResult> featureQueryResult
+                = featureTable.queryFeaturesAsync(query);
+        featureQueryResult.addDoneListener(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    List<Feature> mapQueryResult = new ArrayList<>();//查询统计结果
+
+                    FeatureQueryResult result = featureQueryResult.get();
+                    Iterator<Feature> iterator = result.iterator();
+                    Feature feature;
+                    while (iterator.hasNext()) {
+                        feature = iterator.next();
+                        mapQueryResult.add(feature);
+                    }
+
+                    ToastUtils.showShort(context,"查询出"+mapQueryResult.size()+"个符合要求的结果");
+                    QueryResultAdapter queryResultAdapter = new QueryResultAdapter(context,mapQueryResult,mapView);
+                    resultListview.setAdapter(queryResultAdapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 //        String whereStr = GetWhereStrFunction(featureTable,search);
 //        featureTable.loadAsync();
 //        featureTable.addDoneLoadingListener(new Runnable() {
