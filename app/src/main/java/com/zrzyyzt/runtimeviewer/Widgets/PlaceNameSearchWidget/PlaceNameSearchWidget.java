@@ -57,9 +57,7 @@ public class PlaceNameSearchWidget extends BaseWidget {
     public View mWidgetView = null;//
 
     private MapView mMapView;
-    private LocatorTask mLocatorTask;
     private GraphicsOverlay mGraphicsOverlay;
-    private GeocodeParameters mAddressGeocodeParameters;
     private PictureMarkerSymbol mPinSourceSymbol;
     private Callout mCallout;
     //public LocationClient mLocationClient = null;
@@ -281,9 +279,10 @@ public class PlaceNameSearchWidget extends BaseWidget {
      */
     @Override
     public void inactive(){
+
         super.inactive();
         super.hideCenterView();
-        mMapView.getGraphicsOverlays().clear();
+        mMapView.getGraphicsOverlays().remove(mGraphicsOverlay);
         mMapView.refreshDrawableState();
     }
 }
