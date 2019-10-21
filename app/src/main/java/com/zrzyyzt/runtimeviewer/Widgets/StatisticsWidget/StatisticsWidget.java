@@ -218,7 +218,15 @@ public class StatisticsWidget extends BaseWidget {
                                             for (Map.Entry<String, Object> stat : statisticRecord.getStatistics().entrySet()) {
                                                 double value= (Double) stat.getValue();
                                                 values.add(new SliceValue((float)value,randomColor()).setLabel(group.getValue().toString()));
-                                                listTab.add("类型="+group.getValue().toString()+":"+(int)value+"条");
+                                                if(sataType=="数量"){
+                                                    listTab.add("类型="+group.getValue().toString()+":"+(int)value+"条");
+                                                }
+                                                else if(sataType=="面积"){
+                                                    listTab.add("类型="+group.getValue().toString()+":"+(int)value+"平方米");
+                                                }
+                                                else {
+                                                    listTab.add("类型="+group.getValue().toString()+":"+(int)value+"米");
+                                                }
                                             }
                                         }
                                     }
