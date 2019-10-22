@@ -2,6 +2,7 @@ package com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,7 +124,7 @@ public class QueryResultAdapter extends BaseAdapter {
 
         identityGraphicOverlay.getGraphics().clear();
         Graphic graphic = new Graphic(feature.getGeometry(), feature.getAttributes());
-        SimpleLineSymbol simpleLineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.BLUE,(float)2);
+        SimpleLineSymbol simpleLineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, ContextCompat.getColor(context, R.color.cyan),(float)2);
         SimpleRenderer simpleRenderer = new SimpleRenderer(new SimpleFillSymbol(SimpleFillSymbol.Style.NULL, Color.RED, simpleLineSymbol));
         identityGraphicOverlay.setRenderer(simpleRenderer);
         identityGraphicOverlay.getGraphics().add(graphic);
