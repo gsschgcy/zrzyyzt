@@ -72,7 +72,11 @@
                 android:orientation="horizontal"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp">
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="关键字：" />
                 <EditText
                     android:id="@+id/widget_view_query_attributequery_txtQueryInfo"
                     android:layout_width="wrap_content"
