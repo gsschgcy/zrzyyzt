@@ -11,6 +11,7 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.esri.arcgisruntime.arcgisservices.LabelDefinition;
 import com.esri.arcgisruntime.data.FeatureCollection;
 import com.esri.arcgisruntime.data.FeatureCollectionTable;
 import com.esri.arcgisruntime.data.GeoPackage;
@@ -20,13 +21,22 @@ import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
 import com.esri.arcgisruntime.loadable.LoadStatus;
+import com.esri.arcgisruntime.symbology.SimpleFillSymbol;
+import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
+import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
+import com.esri.arcgisruntime.symbology.SimpleRenderer;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LayerListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LegendListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Entity.OperationLayerInfo;
+import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Entity.ShapefileInfo;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Manager.OperationMapManager;
+import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Manager.ShapefilesManager;
 
 import java.io.File;
 import java.util.List;
@@ -74,7 +84,9 @@ public class LayerManagerWidget extends BaseWidget {
 
 //        initBaseMapResource();//初始化底图
 
-        initOperationalLayers();//初始化业务图层
+        //initOperationalLayers();//初始化本地业务图层
+
+        initOperationalLayersFromJson();//根据json文件初始化本地业务图层
 
         initOperationalLayersWeb();//初始化网络业务图层
 
@@ -254,7 +266,7 @@ public class LayerManagerWidget extends BaseWidget {
     }
 
     /**
-     * 根据json文件
+     * 根据json文件加载web地图服务
      */
     private void initOperationalLayersWeb(){
         String configPath = getOperationalLayersJsonPath("operationlayers.json");
@@ -275,6 +287,81 @@ public class LayerManagerWidget extends BaseWidget {
                 mapView.getMap().getOperationalLayers().add(tiledLayerBaseMap);
                 Log.d(TAG, "initOperationalLayersWeb: add layer end");
             }
+        }
+    }
+    /**
+     * 根据json文件加载本地shapefile文件
+     */
+    private void initOperationalLayersFromJson(){
+
+        String configPath = getOperationalLayersJsonPath("shapefiles.json");
+        ShapefilesManager shapefilesManager = new ShapefilesManager(context ,super.mapView, configPath);
+        List<ShapefileInfo>  shapefileInfos= shapefilesManager.getShapefileInfos();
+        if (shapefileInfos==null) return;
+        Log.d(TAG, "initOperationalLayersFromJson: " + shapefileInfos);
+        for (int i=0;i<shapefileInfos.size();i++){
+            final ShapefileInfo layerInfo = shapefileInfos.get(i);
+            final String type = layerInfo.GeometryType;
+            Log.d(TAG, "initOperationalLayersFromJson: " + layerInfo.FilePath);
+            final ShapefileFeatureTable shapefileFeatureTable = new ShapefileFeatureTable(layerInfo.FilePath);
+            shapefileFeatureTable.loadAsync();//异步方式读取文件
+            shapefileFeatureTable.addDoneLoadingListener(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(shapefileFeatureTable.getLoadStatus() == LoadStatus.LOADED){
+                        //数据加载完毕后，添加到地图
+                        FeatureLayer mainShapefileLayer = new FeatureLayer(shapefileFeatureTable);
+                        SimpleRenderer simpleRenderer = new SimpleRenderer();
+
+                        if(type.equals(ShapefileInfo.GEOMETRY_TYPE_POLYLINE)){
+                            SimpleLineSymbol simpleLineSymbol = layerInfo.lineSymbol;
+//                            Log.d(TAG, "run: polyline symbol" + simpleLineSymbol.getStyle()
+//                                    + ",color " + simpleLineSymbol.getColor()
+//                                    + ",width " + simpleLineSymbol.getWidth());
+                            simpleRenderer= new SimpleRenderer(simpleLineSymbol);
+                        }else if(type.equals(ShapefileInfo.GEOMETRY_TYPE_POLYGON)){
+
+                            SimpleFillSymbol simpleFillSymbol = layerInfo.fillSymbol;
+//                            Log.d(TAG, "run: polyline symbol" + simpleFillSymbol.getStyle()
+//                                    + ",color " + simpleFillSymbol.getColor()
+//                                    + ",width " + simpleFillSymbol.getOutline().getWidth());
+                            simpleRenderer = new SimpleRenderer(simpleFillSymbol);
+
+                        }else if(type.equals(ShapefileInfo.GEOMETRY_TYPE_POINT)){
+                            SimpleMarkerSymbol simpleMarkerSymbol = layerInfo.markerSymbol;
+                            simpleRenderer = new SimpleRenderer(simpleMarkerSymbol);
+                        }
+
+                        if(layerInfo.labelDefinition1 != null){
+
+                            Log.d(TAG, "run: label is not null");
+                            JsonObject json = new JsonObject();
+
+                            JsonObject expressionInfo = new JsonObject();
+                            expressionInfo.add("expression", new JsonPrimitive(layerInfo.labelDefinition1.getLabelExpressionInfo().getExpression()));
+
+                            json.add("labelExpressionInfo", expressionInfo);
+
+                            json.add("labelPlacement", new JsonPrimitive(layerInfo.labelDefinition1.getLabelPlacement()));
+
+                            json.add("where", new JsonPrimitive(layerInfo.labelDefinition1.getWhere()));
+
+                            json.add("symbol", new JsonParser().parse(layerInfo.labelDefinition1.getSymbol().toJson()));
+
+                            LabelDefinition labelDefinition = LabelDefinition.fromJson(json.toString());
+                            mainShapefileLayer.getLabelDefinitions().add(labelDefinition);
+                            mainShapefileLayer.setLabelsEnabled(true);
+                        }
+                        mainShapefileLayer.setRenderer(simpleRenderer);
+                        mainShapefileLayer.setName(layerInfo.Name);
+                        mapView.getMap().getOperationalLayers().add(mainShapefileLayer);
+                    }else{
+                        Log.d(TAG, "run: failed to load");
+                    }
+                }
+            });
+
         }
     }
 
