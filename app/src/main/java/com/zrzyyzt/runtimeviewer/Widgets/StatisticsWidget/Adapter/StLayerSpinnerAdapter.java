@@ -14,6 +14,7 @@ import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
 import com.zrzyyzt.runtimeviewer.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StLayerSpinnerAdapter extends BaseAdapter {
@@ -28,7 +29,7 @@ public class StLayerSpinnerAdapter extends BaseAdapter {
     private Context context;
 
     public StLayerSpinnerAdapter(Context c,List<Layer> list) {
-        this.layerList = list;
+        this.layerList =list ;
         this.context = c;
     }
 
@@ -36,18 +37,29 @@ public class StLayerSpinnerAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    private List<Layer> getList(List<Layer> listLayer) {
+        List<Layer> list=new ArrayList<>();
+        for(int i=0;i<listLayer.size();i++) {
+            Layer layer=listLayer.get(i);
+            if(layer.isVisible()){
+                list.add(layer);
+            }
+        }
+        return list;
+    }
 
     @Override
     public int getCount() {
-        int num=0;
-        for (int i=0;i<layerList.size();i++){
-            Layer layer = layerList.get(i);
-            if (layer.isVisible()){
-                num++;
-            }
-
-        }
-        return num;
+//        int num=0;
+//        for (int i=0;i<layerList.size();i++){
+//            Layer layer = layerList.get(i);
+//            if (layer.isVisible()){
+//                num++;
+//            }
+//
+//        }
+//        return num;
+        return  layerList.size();
     }
 
     @Override
@@ -71,18 +83,19 @@ public class StLayerSpinnerAdapter extends BaseAdapter {
 
         //仅获取当前显示的layer
         //FeatureLayer layer =null;
-        Layer layer = null;
-        int indexPositon=0;//计数
-        for (int i=0;i<layerList.size();i++){
-            Layer layerTpl = layerList.get(i);
-            if (layerTpl.isVisible()){
-                if (indexPositon==position){
-                    layer = layerTpl;
-                }
-                indexPositon++;
-            }
-        }
-        holder.textView.setText(layer.getName());
+//        Layer layer = null;
+//        int indexPositon=0;//计数
+//        for (int i=0;i<layerList.size();i++){
+//            Layer layerTpl = layerList.get(i);
+//            if (layerTpl.isVisible()){
+//                if (indexPositon==position){
+//                    layer = layerTpl;
+//                }
+//                indexPositon++;
+//            }
+//        }
+//        holder.textView.setText(layer.getName());
+        holder.textView.setText(layerList.get(position).getName());
 
         return convertView;
     }

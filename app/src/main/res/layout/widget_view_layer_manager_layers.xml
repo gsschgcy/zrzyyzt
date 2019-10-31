@@ -8,7 +8,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_weight="1">
 
         <LinearLayout
@@ -25,9 +24,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="10dp"
                     android:text="业务图层"
-                    android:textSize="11dp"
+                    android:textSize="14sp"
                     android:textStyle="normal|bold" />
 
                 <Button
@@ -41,8 +39,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:background="@color/grey" />
 
             <ListView

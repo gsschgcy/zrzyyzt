@@ -5,6 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:background="@color/light_gray"
     android:padding="5dp">
 
     <ScrollView
@@ -26,11 +27,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="2dp"
                         android:text="@string/draw_tool"
-                        android:textSize="12dp"
+                        android:textSize="14sp"
                         android:textStyle="normal|bold"
                         android:layout_weight="1"/>
 
@@ -38,12 +36,11 @@
                         android:id="@+id/widget_view_draw_clear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_item_touch_txtred"
                         android:clickable="true"
                         android:gravity="right"
                         android:padding="5dp"
                         android:text="@string/clear"
-                        android:textSize="12dp"
+                        android:textSize="12sp"
                         android:textColor="@color/colorAccent" />
                 </LinearLayout>
 
@@ -69,7 +66,7 @@
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="1dp"
+                            android:layout_marginLeft="5dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -84,7 +81,7 @@
                             android:background="@drawable/ic_item_touch"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="1dp"
+                            android:layout_marginLeft="12dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -100,7 +97,7 @@
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="1dp"
+                            android:layout_marginLeft="12dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -116,7 +113,7 @@
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="1dp"
+                            android:layout_marginLeft="12dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -140,7 +137,7 @@
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="1dp"
+                            android:layout_marginLeft="5dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -158,7 +155,7 @@
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="1dp"
+                            android:layout_marginLeft="12dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -174,7 +171,7 @@
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="1dp"
+                            android:layout_marginLeft="12dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -190,7 +187,7 @@
                             android:clickable="true"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:padding="1dp"
+                            android:layout_marginLeft="12dp"
                             android:layout_weight="1">
 
                             <ImageView
@@ -214,6 +211,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:layout_margin="3dp"
                     android:text="@string/draw_setting"
                     android:textStyle="normal|bold" />
 
@@ -231,39 +229,46 @@
                         android:orientation="vertical">
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:gravity="center_vertical"
-                                android:textSize="12dp"
-                                android:text="标注内容">
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/white">
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center_vertical"-->
+<!--                                android:gravity="center_vertical"-->
+<!--                                android:textSize="12dp"-->
+<!--                                android:text="标注内容">-->
 
-                            </TextView>
+<!--                            </TextView>-->
+
                             <EditText
                                 android:id="@+id/widget_view_draw_text_content"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="30dp"
+                                android:background="@drawable/bg_widget_peripheralquery_edittxt"
                                 android:layout_gravity="center_vertical"
                                 android:gravity="center_vertical"
-                                android:textSize="12dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
+                                android:textSize="14sp"
                                 android:imeOptions="actionDone"
-                                android:hint="输入内容">
+                                android:hint="输入标注内容">
 
                             </EditText>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="35dp"
+                            android:background="@color/white"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="5dp">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:gravity="center_vertical"
-                                android:textSize="12dp"
+                                android:textSize="14sp"
                                 android:text="文字大小">
 
                             </TextView>

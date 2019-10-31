@@ -37,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 
 import gisluq.lib.Util.ToastUtils;
 
@@ -119,8 +120,16 @@ public class PeripheralQueryWidget extends BaseWidget {
                        return;
                    }
                    radius=queryRadius.getText().toString();
+
                    if(radius==null){
                        radius="500";
+                   }
+                   else {
+                       Boolean resultbool= isNumberFunction(radius);
+                       if(!resultbool){
+                           ToastUtils.showLong(context,"输入的缓冲半径不是有效的数字！");
+                           return;
+                       }
                    }
 
                    PoiBean poiBean=getPoi(keyWords,radius);
@@ -128,6 +137,7 @@ public class PeripheralQueryWidget extends BaseWidget {
                        List<PoiBean.PoisBean> list=poiBean.getPois();
                        PoiResultAdapter poiResultAdapter=new PoiResultAdapter(context,list);
                        queryList.setAdapter(poiResultAdapter);
+
                    }
                    else {
                        Toast.makeText(MPApplication.getContext(), "查询关键字不符合查询要求！", Toast.LENGTH_LONG).show();
@@ -139,9 +149,12 @@ public class PeripheralQueryWidget extends BaseWidget {
         mapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context,mapView){
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                locationPoint = mapView.screenToLocation(new android.graphics.Point((int) e.getX(), (int) e.getY()));
-                identifyGraphic(locationPoint);
-                return true;
+                if(!txtPoi.getText().toString().equals("")){
+                    locationPoint = mapView.screenToLocation(new android.graphics.Point((int) e.getX(), (int) e.getY()));
+                    identifyGraphic(locationPoint);
+                    return true;
+                }
+               return false;
             }
         });
 
@@ -220,7 +233,35 @@ public class PeripheralQueryWidget extends BaseWidget {
             }
         });
     }
-
+    public boolean isNumberFunction(String string) {
+        boolean result = false;
+        Pattern pattern = Pattern.compile("^[-+]?[0-9]");
+        if(pattern.matcher(string).matches()){
+            //数字
+            result = true;
+        } else {
+            //非数字
+        }
+        //带小数的
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append('^');
+        stringBuilder.append('[');
+        stringBuilder.append("-+");
+        stringBuilder.append("]?[");
+        stringBuilder.append("0-9]+(");
+        stringBuilder.append('\\');
+        stringBuilder.append(".[0-9");
+        stringBuilder.append("]+)");
+        stringBuilder.append("?$");
+        Pattern pattern1 = Pattern.compile(stringBuilder.toString());
+        if(pattern1.matcher(string).matches()){
+            //数字
+            result = true;
+        } else {
+            //非数字
+        }
+        return  result;
+    }
     private void identifyGraphic(Point point) {
         if (mMapView.getCallout() != null && mMapView.getCallout().isShowing()) {
             mMapView.getCallout().dismiss();

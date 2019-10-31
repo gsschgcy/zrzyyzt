@@ -282,7 +282,10 @@ public class PlaceNameSearchWidget extends BaseWidget {
 
         super.inactive();
         super.hideCenterView();
-        mMapView.getGraphicsOverlays().remove(mGraphicsOverlay);
-        mMapView.refreshDrawableState();
+        if(mGraphicsOverlay!=null){
+            mMapView.getGraphicsOverlays().remove(mGraphicsOverlay);
+            mMapView.refreshDrawableState();
+            mCallout.dismiss();
+        }
     }
 }

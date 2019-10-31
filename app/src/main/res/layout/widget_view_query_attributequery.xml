@@ -66,12 +66,14 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_margin = "3dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,12 +82,15 @@
                 <EditText
                     android:id="@+id/widget_view_query_attributequery_txtQueryInfo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/bg_widget_peripheralquery_edittxt"
                     android:layout_weight="1"
                     android:hint="请输入查询关键字"
-                    android:textSize="14dp"
+                    android:imeOptions="actionDone"
+                    android:textSize="14sp"
                     android:inputType="text"
-                    android:padding="5dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
             </LinearLayout>
 
             <Button

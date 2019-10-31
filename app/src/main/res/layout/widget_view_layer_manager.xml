@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp"
+    android:background="@color/light_gray">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +32,8 @@
                 android:padding="10dp"
                 android:text="图层列表"
                 android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="14sp"/>
 
             <View
                 android:id="@+id/widget_view_layer_manager_viewLayerList"
@@ -42,33 +44,34 @@
                 android:background="@color/colorPrimary" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1">
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginLeft="2dp"-->
+<!--            android:layout_weight="1">-->
 
-            <TextView
-                android:id="@+id/widget_view_layer_manager_txtBtnLegend"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_item_touch_txtred"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="图例"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/widget_view_layer_manager_txtBtnLegend"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/ic_item_touch_txtred"-->
+<!--                android:clickable="true"-->
+<!--                android:gravity="center"-->
+<!--                android:padding="10dp"-->
+<!--                android:text="图例"-->
+<!--                android:textColor="@color/colorPrimaryDark"-->
+<!--                android:textStyle="bold"
+                    android:textSize="14sp"/>-->
 
-            <View
-                android:id="@+id/widget_view_layer_manager_viewLegend"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:background="@color/colorPrimary"
-                android:visibility="gone" />
-        </RelativeLayout>
+<!--            <View-->
+<!--                android:id="@+id/widget_view_layer_manager_viewLegend"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="3dp"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:background="@color/colorPrimary"-->
+<!--                android:visibility="gone" />-->
+<!--        </RelativeLayout>-->
 
     </LinearLayout>
 

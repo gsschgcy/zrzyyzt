@@ -52,13 +52,13 @@ public class LayerSpinnerAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         int num=0;
-        for (int i=0;i<layerList.size();i++){
-            Layer layer = layerList.get(i);
-            if (layer.isVisible()){
-                num++;
-            }
-        }
-        return num;
+//        for (int i=0;i<layerList.size();i++){
+//            Layer layer = layerList.get(i);
+//            if (layer.isVisible()){
+//                num++;
+//            }
+//        }
+        return layerList.size();
     }
 
     @Override
@@ -82,28 +82,28 @@ public class LayerSpinnerAdapter extends BaseAdapter {
         holder.textView = (TextView) convertView.findViewById(R.id.widget_view_query_attributequery_spinner_item_txtName);
 
         //仅获取当前显示的layer
-        FeatureLayer featureLayer =null;
-        ArcGISTiledLayer arcGISTiledLayer = null;
-        int indexPositon=0;//计数
-        for (int i=0;i<layerList.size();i++){
-            Layer layerTpl = layerList.get(i);
-            if (layerTpl.isVisible()){
-                if (indexPositon==position){
-                    if(layerTpl instanceof ArcGISTiledLayer){
-                        arcGISTiledLayer = (ArcGISTiledLayer) layerTpl;
-                        curLayerType = ARCGISTILEDLAYER;
-                        curLayerName = arcGISTiledLayer.getName();
-                    }else if(layerTpl instanceof FeatureLayer){
-                        featureLayer = (FeatureLayer) layerTpl;
-                        curLayerType = FEATURELAYER;
-                        curLayerName = featureLayer.getName();
-                    }
-
-                }
-                indexPositon++;
-            }
-        }
-        holder.textView.setText(curLayerName);
+//        FeatureLayer featureLayer =null;
+//        ArcGISTiledLayer arcGISTiledLayer = null;
+//        int indexPositon=0;//计数
+//        for (int i=0;i<layerList.size();i++){
+//            Layer layerTpl = layerList.get(i);
+//            if (layerTpl.isVisible()){
+//                if (indexPositon==position){
+//                    if(layerTpl instanceof ArcGISTiledLayer){
+//                        arcGISTiledLayer = (ArcGISTiledLayer) layerTpl;
+//                        curLayerType = ARCGISTILEDLAYER;
+//                        curLayerName = arcGISTiledLayer.getName();
+//                    }else if(layerTpl instanceof FeatureLayer){
+//                        featureLayer = (FeatureLayer) layerTpl;
+//                        curLayerType = FEATURELAYER;
+//                        curLayerName = featureLayer.getName();
+//                    }
+//
+//                }
+//                indexPositon++;
+//            }
+//        }
+        holder.textView.setText(layerList.get(position).getName());
 
         return convertView;
     }

@@ -131,7 +131,7 @@ public class QueryResultAdapter extends BaseAdapter {
 
         Geometry buffer = GeometryEngine.buffer(feature.getGeometry(),1000);//缓冲500
         mapView.setViewpointGeometryAsync(buffer);
-        mapView.setViewpointScaleAsync(50000);
+        mapView.setViewpointScaleAsync(1000);
     }
 
 }

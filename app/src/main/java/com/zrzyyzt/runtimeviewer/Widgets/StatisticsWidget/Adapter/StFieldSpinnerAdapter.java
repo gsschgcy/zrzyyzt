@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.esri.arcgisruntime.data.Field;
+import com.esri.arcgisruntime.layers.Layer;
 import com.zrzyyzt.runtimeviewer.R;
 
 import java.util.List;
@@ -58,8 +59,18 @@ public class StFieldSpinnerAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(context).inflate(R.layout.widget_view_ststistics_field_spinner_item, null);
         holder.textView = (TextView) convertView.findViewById(R.id.widget_view_statistics_field_spinner_item_txtName);
 
+//        Field field = null;
+//        int indexPositon=0;//计数
+//        for (int i=0;i<fieldList.size();i++){
+//            Field fieldTpl = fieldList.get(i);
+//            if (!fieldTpl.getName().toUpperCase().equals("FID")){
+//                if (indexPositon==position){
+//                    field = fieldTpl;
+//                }
+//                indexPositon++;
+//            }
+//        }
         holder.textView.setText(fieldList.get(position).getName());
-
         return convertView;
     }
 }

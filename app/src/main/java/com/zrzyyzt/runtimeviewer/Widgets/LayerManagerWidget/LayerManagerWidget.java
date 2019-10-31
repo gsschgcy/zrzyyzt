@@ -1,6 +1,7 @@
 package com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,27 +17,33 @@ import com.esri.arcgisruntime.data.FeatureCollection;
 import com.esri.arcgisruntime.data.FeatureCollectionTable;
 import com.esri.arcgisruntime.data.GeoPackage;
 import com.esri.arcgisruntime.data.GeoPackageFeatureTable;
+import com.esri.arcgisruntime.data.Geodatabase;
+import com.esri.arcgisruntime.data.GeodatabaseFeatureTable;
 import com.esri.arcgisruntime.data.ShapefileFeatureTable;
+import com.esri.arcgisruntime.geometry.Envelope;
+import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
 import com.esri.arcgisruntime.loadable.LoadStatus;
+import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.symbology.SimpleFillSymbol;
 import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
-import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
 import com.esri.arcgisruntime.symbology.SimpleRenderer;
+import com.esri.arcgisruntime.symbology.TextSymbol;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
+import com.zrzyyzt.runtimeviewer.Config.AppConfig;
+import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LayerListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LegendListviewAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Entity.OperationLayerInfo;
-import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Entity.ShapefileInfo;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Manager.OperationMapManager;
-import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Manager.ShapefilesManager;
 
 import java.io.File;
 import java.util.List;
@@ -84,11 +91,11 @@ public class LayerManagerWidget extends BaseWidget {
 
 //        initBaseMapResource();//初始化底图
 
-        //initOperationalLayers();//初始化本地业务图层
+        initOperationalGdbLayers();//初始化Geo图层
 
-        initOperationalLayersFromJson();//根据json文件初始化本地业务图层
+        initOperationalLayers();//初始化业务图层
 
-        initOperationalLayersWeb();//初始化网络业务图层
+        //initOperationalLayersWeb();//初始化网络业务图层
 
         initGeoPackageLayers();//初始化业务图层 gpkg
 
@@ -96,6 +103,9 @@ public class LayerManagerWidget extends BaseWidget {
 
         initWidgetView();//初始化UI
 
+        Point point=new Point(107.3625770,35.333313);
+        Viewpoint vp = new Viewpoint(point.getExtent());
+        mapView.setViewpointCenterAsync(point,20000);
     }
 
     /**
@@ -107,21 +117,21 @@ public class LayerManagerWidget extends BaseWidget {
          * 布局容器
          */
         mWidgetView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_layer_manager,null);
-        TextView txtLayerListBtn = (TextView)mWidgetView.findViewById(R.id.widget_view_layer_manager_txtBtnLayerList);
-        final View viewLayerListSelect = mWidgetView.findViewById(R.id.widget_view_layer_manager_viewLayerList);
-        TextView txtLegendBtn = (TextView)mWidgetView.findViewById(R.id.widget_view_layer_manager_txtBtnLegend);
-        final View viewLegendSelect = mWidgetView.findViewById(R.id.widget_view_layer_manager_viewLegend);
+//        TextView txtLayerListBtn = (TextView)mWidgetView.findViewById(R.id.widget_view_layer_manager_txtBtnLayerList);
+//        final View viewLayerListSelect = mWidgetView.findViewById(R.id.widget_view_layer_manager_viewLayerList);
+//        TextView txtLegendBtn = (TextView)mWidgetView.findViewById(R.id.widget_view_layer_manager_txtBtnLegend);
+//        final View viewLegendSelect = mWidgetView.findViewById(R.id.widget_view_layer_manager_viewLegend);
         final RelativeLayout viewContent = mWidgetView.findViewById(R.id.widget_view_layer_manager_contentView);//内容区域
 
         /**
          * **********************************************************************************
          * 图例
          */
-        final View legendView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_layer_manager_legend,null);
-        ListView listViewLenged = legendView.findViewById(R.id.widget_view_layer_manager_legend_layerListview);
-        legendListviewAdapter = new LegendListviewAdapter(context,super.mapView.getMap().getOperationalLayers());
-        listViewLenged.setAdapter(legendListviewAdapter);
-        TextView textViewNoLegend = (TextView) legendView.findViewById(R.id.widget_view_layer_manager_legend_txtNoLegend);
+//        final View legendView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_layer_manager_legend,null);
+//        ListView listViewLenged = legendView.findViewById(R.id.widget_view_layer_manager_legend_layerListview);
+//        legendListviewAdapter = new LegendListviewAdapter(context,super.mapView.getMap().getOperationalLayers());
+//        listViewLenged.setAdapter(legendListviewAdapter);
+//        TextView textViewNoLegend = (TextView) legendView.findViewById(R.id.widget_view_layer_manager_legend_txtNoLegend);
 
         /**
          * **********************************************************************************
@@ -214,18 +224,18 @@ public class LayerManagerWidget extends BaseWidget {
          * 布局容器事件
          */
         viewContent.addView(layerManagerView);//默认显示图层列表
-        txtLayerListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewContent.getChildAt(0)!=layerManagerView){
-                    viewContent.removeAllViews();
-                    viewContent.addView(layerManagerView);
-//                    txtLayerListBtn.setTextColor();
-                    viewLayerListSelect.setVisibility(View.VISIBLE);
-                    viewLegendSelect.setVisibility(View.GONE);
-                }
-            }
-        });
+//        txtLayerListBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (viewContent.getChildAt(0)!=layerManagerView){
+//                    viewContent.removeAllViews();
+//                    viewContent.addView(layerManagerView);
+////                    txtLayerListBtn.setTextColor();
+//                    viewLayerListSelect.setVisibility(View.VISIBLE);
+////                    viewLegendSelect.setVisibility(View.GONE);
+//                }
+//            }
+//        });
 
 //        txtLegendBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -266,7 +276,7 @@ public class LayerManagerWidget extends BaseWidget {
     }
 
     /**
-     * 根据json文件加载web地图服务
+     * 根据json文件
      */
     private void initOperationalLayersWeb(){
         String configPath = getOperationalLayersJsonPath("operationlayers.json");
@@ -287,81 +297,6 @@ public class LayerManagerWidget extends BaseWidget {
                 mapView.getMap().getOperationalLayers().add(tiledLayerBaseMap);
                 Log.d(TAG, "initOperationalLayersWeb: add layer end");
             }
-        }
-    }
-    /**
-     * 根据json文件加载本地shapefile文件
-     */
-    private void initOperationalLayersFromJson(){
-
-        String configPath = getOperationalLayersJsonPath("shapefiles.json");
-        ShapefilesManager shapefilesManager = new ShapefilesManager(context ,super.mapView, configPath);
-        List<ShapefileInfo>  shapefileInfos= shapefilesManager.getShapefileInfos();
-        if (shapefileInfos==null) return;
-        Log.d(TAG, "initOperationalLayersFromJson: " + shapefileInfos);
-        for (int i=0;i<shapefileInfos.size();i++){
-            final ShapefileInfo layerInfo = shapefileInfos.get(i);
-            final String type = layerInfo.GeometryType;
-            Log.d(TAG, "initOperationalLayersFromJson: " + layerInfo.FilePath);
-            final ShapefileFeatureTable shapefileFeatureTable = new ShapefileFeatureTable(layerInfo.FilePath);
-            shapefileFeatureTable.loadAsync();//异步方式读取文件
-            shapefileFeatureTable.addDoneLoadingListener(new Runnable() {
-                @Override
-                public void run() {
-
-                    if(shapefileFeatureTable.getLoadStatus() == LoadStatus.LOADED){
-                        //数据加载完毕后，添加到地图
-                        FeatureLayer mainShapefileLayer = new FeatureLayer(shapefileFeatureTable);
-                        SimpleRenderer simpleRenderer = new SimpleRenderer();
-
-                        if(type.equals(ShapefileInfo.GEOMETRY_TYPE_POLYLINE)){
-                            SimpleLineSymbol simpleLineSymbol = layerInfo.lineSymbol;
-//                            Log.d(TAG, "run: polyline symbol" + simpleLineSymbol.getStyle()
-//                                    + ",color " + simpleLineSymbol.getColor()
-//                                    + ",width " + simpleLineSymbol.getWidth());
-                            simpleRenderer= new SimpleRenderer(simpleLineSymbol);
-                        }else if(type.equals(ShapefileInfo.GEOMETRY_TYPE_POLYGON)){
-
-                            SimpleFillSymbol simpleFillSymbol = layerInfo.fillSymbol;
-//                            Log.d(TAG, "run: polyline symbol" + simpleFillSymbol.getStyle()
-//                                    + ",color " + simpleFillSymbol.getColor()
-//                                    + ",width " + simpleFillSymbol.getOutline().getWidth());
-                            simpleRenderer = new SimpleRenderer(simpleFillSymbol);
-
-                        }else if(type.equals(ShapefileInfo.GEOMETRY_TYPE_POINT)){
-                            SimpleMarkerSymbol simpleMarkerSymbol = layerInfo.markerSymbol;
-                            simpleRenderer = new SimpleRenderer(simpleMarkerSymbol);
-                        }
-
-                        if(layerInfo.labelDefinition1 != null){
-
-                            Log.d(TAG, "run: label is not null");
-                            JsonObject json = new JsonObject();
-
-                            JsonObject expressionInfo = new JsonObject();
-                            expressionInfo.add("expression", new JsonPrimitive(layerInfo.labelDefinition1.getLabelExpressionInfo().getExpression()));
-
-                            json.add("labelExpressionInfo", expressionInfo);
-
-                            json.add("labelPlacement", new JsonPrimitive(layerInfo.labelDefinition1.getLabelPlacement()));
-
-                            json.add("where", new JsonPrimitive(layerInfo.labelDefinition1.getWhere()));
-
-                            json.add("symbol", new JsonParser().parse(layerInfo.labelDefinition1.getSymbol().toJson()));
-
-                            LabelDefinition labelDefinition = LabelDefinition.fromJson(json.toString());
-                            mainShapefileLayer.getLabelDefinitions().add(labelDefinition);
-                            mainShapefileLayer.setLabelsEnabled(true);
-                        }
-                        mainShapefileLayer.setRenderer(simpleRenderer);
-                        mainShapefileLayer.setName(layerInfo.Name);
-                        mapView.getMap().getOperationalLayers().add(mainShapefileLayer);
-                    }else{
-                        Log.d(TAG, "run: failed to load");
-                    }
-                }
-            });
-
         }
     }
 
@@ -391,7 +326,77 @@ public class LayerManagerWidget extends BaseWidget {
                         //数据加载完毕后，添加到地图
                         FeatureLayer mainShapefileLayer = new FeatureLayer(shapefileFeatureTable);
                         mainShapefileLayer.setName(fileName);
+
+                        if(mainShapefileLayer.getName().trim().equals("泾川宗地")) {
+                            SimpleLineSymbol lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.RED, 2.0f);
+                            SimpleFillSymbol fillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.NULL, Color.YELLOW, lineSymbol);
+
+                            // create the Renderer
+                            SimpleRenderer renderer = new SimpleRenderer(fillSymbol);
+                            mainShapefileLayer.setRenderer(renderer);
+
+                            TextSymbol democratTextSymbol = new TextSymbol();
+                            democratTextSymbol.setSize(10);
+                            democratTextSymbol.setColor(Color.BLUE);
+                            democratTextSymbol.setHaloColor(Color.WHITE);
+                            democratTextSymbol.setHaloWidth(2);
+
+                            JsonObject json = new JsonObject();
+                            // use a custom label expression combining some of the feature's fields
+                            JsonObject expressionInfo = new JsonObject();
+                            expressionInfo.add("expression", new JsonPrimitive("$feature.权利人"));
+                            //expressionInfo.add("expression", new JsonPrimitive("$feature.QLRMC + \"\\n \" + $feature.BDCDYH "));
+                            json.add("labelExpressionInfo", expressionInfo);
+                            // position the label in the center of the feature
+                            json.add("labelPlacement", new JsonPrimitive("esriServerPolygonPlacementAlwaysHorizontal"));
+                            json.add("where", new JsonPrimitive("1 = 1"));
+                            json.add("symbol", new JsonParser().parse(democratTextSymbol.toJson()));
+
+                            LabelDefinition democratLabelDefinition = LabelDefinition.fromJson(json.toString());
+
+                            mainShapefileLayer.getLabelDefinitions().add(democratLabelDefinition);
+
+                        }
+                        else if(mainShapefileLayer.getName().trim().equals("泾川房屋")){
+                            SimpleLineSymbol lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.parseColor("#03a9f4"), 1.5f);
+                            SimpleFillSymbol fillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.NULL, Color.YELLOW, lineSymbol);
+
+                            // create the Renderer
+                            SimpleRenderer renderer = new SimpleRenderer(fillSymbol);
+                            mainShapefileLayer.setRenderer(renderer);
+                        }
+                        else if(mainShapefileLayer.getName().trim().equals("泾川矿产")){
+                            SimpleLineSymbol lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.YELLOW, 2.0f);
+                            SimpleFillSymbol fillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.NULL, Color.YELLOW, lineSymbol);
+
+                            // create the Renderer
+                            SimpleRenderer renderer = new SimpleRenderer(fillSymbol);
+                            mainShapefileLayer.setRenderer(renderer);
+
+                            TextSymbol democratTextSymbol = new TextSymbol();
+                            democratTextSymbol.setSize(10);
+                            democratTextSymbol.setColor(Color.BLUE);
+                            democratTextSymbol.setHaloColor(Color.WHITE);
+                            democratTextSymbol.setHaloWidth(2);
+
+                            JsonObject json = new JsonObject();
+                            // use a custom label expression combining some of the feature's fields
+                            JsonObject expressionInfo = new JsonObject();
+                            expressionInfo.add("expression", new JsonPrimitive("$feature.KSMC"));
+                            //expressionInfo.add("expression", new JsonPrimitive("$feature.QLRMC + \"\\n \" + $feature.BDCDYH "));
+                            json.add("labelExpressionInfo", expressionInfo);
+                            // position the label in the center of the feature
+                            json.add("labelPlacement", new JsonPrimitive("esriServerPolygonPlacementAlwaysHorizontal"));
+                            json.add("where", new JsonPrimitive("1 = 1"));
+                            json.add("symbol", new JsonParser().parse(democratTextSymbol.toJson()));
+
+                            LabelDefinition democratLabelDefinition = LabelDefinition.fromJson(json.toString());
+
+                            mainShapefileLayer.getLabelDefinitions().add(democratLabelDefinition);
+                        }
+                        mainShapefileLayer.setLabelsEnabled(true);
                         mapView.getMap().getOperationalLayers().add(mainShapefileLayer);
+                        //mapView.setViewpointAsync(new Viewpoint(mainShapefileLayer.getFullExtent()));
                     }else{
                         Log.d(TAG, "run: failed to load");
                     }
@@ -400,6 +405,28 @@ public class LayerManagerWidget extends BaseWidget {
         }
     }
 
+    /**
+     * 加载GDB
+     */
+    private void initOperationalGdbLayers(){
+        String path = getOperationalLayersPath()+File.separator+"111.geodatabase";
+        Log.d(TAG, "initOperationalGeoLayers: " + path);
+        final Geodatabase localGdb=new Geodatabase(path);
+        if(localGdb!=null) {
+            localGdb.loadAsync();
+            Log.d(TAG, "initOperationalGeoLayers: " + "111");
+            localGdb.addDoneLoadingListener(new Runnable() {
+                @Override
+                public void run() {
+                    for (final GeodatabaseFeatureTable geodatabaseFeatureTable:localGdb.getGeodatabaseFeatureTables()){
+                        FeatureLayer layer=new FeatureLayer(geodatabaseFeatureTable);
+                        mapView.getMap().getOperationalLayers().add(0,layer);
+                    }
+                }
+            });
+
+        }
+    }
     /**
      * 初始化GeoPackage图层
      */

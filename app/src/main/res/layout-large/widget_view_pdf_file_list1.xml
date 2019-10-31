@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:background="@color/light_gray">
 
     <ListView
         android:id="@+id/widget_view_pdf_pdfListView"

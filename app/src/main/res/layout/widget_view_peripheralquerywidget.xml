@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_gray"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"
-        android:background="@color/shadow"
+
         android:orientation="horizontal">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -38,15 +39,14 @@
                 android:layout_height="35dp"
                 android:layout_marginLeft="2dp"
                 android:padding="3dp"
-                android:background="@drawable/bg_widget_peripheralquery_btnquery"
+                android:background="@drawable/query_button_topcorner"
                 android:text="查询"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="@color/shadow"
         android:orientation="horizontal">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -116,7 +116,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="@color/shadow"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -185,7 +185,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="@color/shadow"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <RelativeLayout
             android:layout_width="match_parent"

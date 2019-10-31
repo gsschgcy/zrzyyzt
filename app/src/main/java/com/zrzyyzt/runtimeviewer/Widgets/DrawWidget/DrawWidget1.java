@@ -231,8 +231,11 @@ public class DrawWidget1 extends BaseWidget implements DrawEventListener {
     @Override
     public void inactive() {
         super.inactive();
-        mapView.getGraphicsOverlays().remove(graphicsLayer);
-        graphicsLayer.getGraphics().clear();
+        if(graphicsLayer!=null){
+            graphicsLayer.getGraphics().clear();
+            mapView.getGraphicsOverlays().remove(graphicsLayer);
+        }
+
 //        drawTool = null;
     }
 

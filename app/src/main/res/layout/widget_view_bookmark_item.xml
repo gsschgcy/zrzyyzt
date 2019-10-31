@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:textSize="11dp"
+                android:textSize="12sp"
                 android:text="@string/widget_txt_boomark_sample"
                 android:layout_weight="1"></TextView>
             <Button

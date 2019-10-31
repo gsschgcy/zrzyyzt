@@ -37,6 +37,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import de.codecrafters.tableview.SortableTableView;
+import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.model.TableColumnDpWidthModel;
+import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
+import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.view.PieChartView;
@@ -49,7 +54,7 @@ public class StatisticsWidget extends BaseWidget {
 
     private View chartView=null;
 
-    private View tableView=null;
+    private View tableView1=null;
 
     /**
      * 组件面板打开时，执行的操作
@@ -62,10 +67,10 @@ public class StatisticsWidget extends BaseWidget {
         super.active();//默认需要调用，以保证切换到其他widget时，本widget可以正确执行inactive()方法并关闭
         super.showWidget(mWidgetView);//加载UI并显示
 
-        //super.showMessageBox(super.name);//显示组件名称
+        super.showMessageBox(super.name);//显示组件名称
 
-        //super.mapView.getMap().getBasemap().getBaseLayers();
-        //super.mapView.getMap().getOperationalLayers();
+        super.mapView.getMap().getBasemap().getBaseLayers();
+        super.mapView.getMap().getOperationalLayers();
 
         //super.showCenterView();
         //super.showCollectPointBtn();
@@ -96,18 +101,19 @@ public class StatisticsWidget extends BaseWidget {
         //super.hideCollectPointBtn();
     }
 
+
     private void  initWidgetView() {
         mWidgetView= LayoutInflater.from(super.context).inflate(R.layout.widget_view_statistics,null);
         viewContent=mWidgetView.findViewById(R.id.widget_view_statistics_result);
         chartView=mWidgetView.findViewById(R.id.widget_view_statistics_result_chart);
-        tableView=mWidgetView.findViewById(R.id.widget_view_statistics_result_table);
+        tableView1=mWidgetView.findViewById(R.id.widget_view_statistics_result_table);
         TextView txtBtnChart=mWidgetView.findViewById(R.id.widget_view_statistics_txtBtnChart);
         TextView txtBtnTable=mWidgetView.findViewById(R.id.widget_view_statistics_txtBtnTable);
 
         final Spinner spinnerLayerList =mWidgetView.findViewById(R.id.widget_view_statistics_spinnerLayer);
         final Spinner spinnerFieldList=mWidgetView.findViewById(R.id.widget_view_statistics_spinnerfield);
         final Spinner spinnerTypeList=mWidgetView.findViewById(R.id.widget_view_statistics_spinnertype);
-
+        //final TableView resultTable=mWidgetView.findViewById(R.id.widget_view_statistics_result_table);
 
 
         StLayerSpinnerAdapter stLayerSpinnerAdapter=new StLayerSpinnerAdapter(context,mapView.getMap().getOperationalLayers());
@@ -117,7 +123,6 @@ public class StatisticsWidget extends BaseWidget {
         List<String>  typeList=new ArrayList<>();
         typeList.add("数量");
         typeList.add("面积");
-        typeList.add("长度");
         StTypeSpinnerAdapter stTypeSpinnerAdapter=new StTypeSpinnerAdapter(context,typeList);
         spinnerTypeList.setAdapter(stTypeSpinnerAdapter);
         spinnerTypeList.setSelection(0);
@@ -126,12 +131,17 @@ public class StatisticsWidget extends BaseWidget {
         final PieChartView pieChartView=resultView.findViewById(R.id.widget_view_statistics_piechartview);
 
         final View listView=LayoutInflater.from(super.context).inflate(R.layout.widget_view_statistics_table,null);
-        final ListView tabListView=listView.findViewById(R.id.widget_view_statistics_resultListview);
+        final SortableTableView<String[]> tableView=(SortableTableView<String[]>)listView.findViewById(R.id.widget_view_statistics_resulttableView);
+        tableView.setHeaderBackgroundColor(Color.parseColor("#008577"));
+
+        TableColumnDpWidthModel columnModel = new TableColumnDpWidthModel(context, 3, 200);
+        columnModel.setColumnWidth(0,80);
+        columnModel.setColumnWidth(1,120);
+        columnModel.setColumnWidth(2,160);
+        tableView.setColumnModel(columnModel);
 
         final Button btnStatistics=mWidgetView.findViewById(R.id.widget_view_statistics_btnStatistics);
 
-        //final PieChartView pieChartView=(PieChartView)mWidgetView.findViewById(R.id.widget_view_statistics_piechartview);
-        //initPieChart(pieChartView);
 
         final StFieldSpinnerAdapter[] stFieldSpinnerAdapter = new StFieldSpinnerAdapter[1];
 
@@ -186,6 +196,12 @@ public class StatisticsWidget extends BaseWidget {
                         statisticDefinitions.add(new StatisticDefinition("LENGTH", StatisticType.SUM,sataType));
                     }
 
+                    String[]header={"序号",field.getName(),sataType};
+                    SimpleTableHeaderAdapter simpleTableHeaderAdapter=new SimpleTableHeaderAdapter(context, header);
+                    simpleTableHeaderAdapter.setTextColor(Color.WHITE);
+                    simpleTableHeaderAdapter.setTextSize(12);
+                    tableView.setHeaderAdapter(simpleTableHeaderAdapter);
+
                     StatisticsQueryParameters queryParameters=new StatisticsQueryParameters(statisticDefinitions);
                     queryParameters.getGroupByFieldNames().add(field.getName());
                     final ListenableFuture<StatisticsQueryResult> queryResultListenableFuture;
@@ -204,9 +220,9 @@ public class StatisticsWidget extends BaseWidget {
                             try {
                                 StatisticsQueryResult statisticsQueryResult = queryResultListenableFuture.get();
                                 Iterator<StatisticRecord> statisticRecordIterator=statisticsQueryResult.iterator();
+                                List<String[]> data=new ArrayList<>();
                                 List<SliceValue> values=new ArrayList<>();
-                                ArrayList<String> listTab=new ArrayList<>();
-
+                                int index=1;
                                 while (statisticRecordIterator.hasNext()){
                                     StatisticRecord statisticRecord=statisticRecordIterator.next();
                                     if(statisticRecord.getGroup().isEmpty()){
@@ -214,27 +230,27 @@ public class StatisticsWidget extends BaseWidget {
                                             String strValue=stat.getKey()+":"+String.format(Locale.CHINESE,"%,.0f",(Double)stat.getValue());
                                         }
                                     }else {
+
                                         for (Map.Entry<String, Object> group : statisticRecord.getGroup().entrySet()) {
                                             for (Map.Entry<String, Object> stat : statisticRecord.getStatistics().entrySet()) {
                                                 double value= (Double) stat.getValue();
                                                 values.add(new SliceValue((float)value,randomColor()).setLabel(group.getValue().toString()));
                                                 if(sataType=="数量"){
-                                                    listTab.add("类型="+group.getValue().toString()+":"+(int)value+"条");
-                                                }
-                                                else if(sataType=="面积"){
-                                                    listTab.add("类型="+group.getValue().toString()+":"+(int)value+"平方米");
+                                                    data.add(new String[]{String.valueOf(index),group.getValue().toString(),String.valueOf((int)value)});
                                                 }
                                                 else {
-                                                    listTab.add("类型="+group.getValue().toString()+":"+(int)value+"米");
+                                                    data.add(new String[]{String.valueOf(index),group.getValue().toString(),String.format("%.2f",value)});
                                                 }
+                                                index=index+1;
                                             }
                                         }
                                     }
                                 }
                                 initPieChart(pieChartView,values);
-                                if(listTab.size()>0){
-                                    ArrayAdapter<String> arrayAdapter=new ArrayAdapter<>(context,R.layout.widget_view_statistics_table_item,R.id.widget_view_statistics_table_item_txtName,listTab);
-                                    tabListView.setAdapter(arrayAdapter);
+                                if(data.size()>0 ){
+                                    SimpleTableDataAdapter simpleTableDataAdapter=new SimpleTableDataAdapter(context,data);
+                                    simpleTableDataAdapter.setTextSize(12);
+                                    tableView.setDataAdapter(simpleTableDataAdapter);
                                 }
 
                             }
@@ -253,8 +269,8 @@ public class StatisticsWidget extends BaseWidget {
                 {
                     viewContent.removeAllViews();
                     viewContent.addView(resultView);
+                    tableView1.setVisibility(View.GONE);
                     chartView.setVisibility(View.VISIBLE);
-                    tableView.setVisibility(View.GONE);
                 }
             }
         });
@@ -267,7 +283,7 @@ public class StatisticsWidget extends BaseWidget {
                     viewContent.removeAllViews();
                     viewContent.addView(listView);
                     chartView.setVisibility(View.GONE);
-                    tableView.setVisibility(View.VISIBLE);
+                    tableView1.setVisibility(View.VISIBLE);
                 }
             }
         });
