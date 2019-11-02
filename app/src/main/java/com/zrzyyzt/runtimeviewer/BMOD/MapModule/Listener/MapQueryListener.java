@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +29,15 @@ import com.esri.arcgisruntime.symbology.SimpleRenderer;
 import com.zrzyyzt.runtimeviewer.GloabApp.MPApplication;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.Adapter.AlertLayerListAdapter;
-import com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.Adapter.AttributeAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.Bean.KeyAndValueBean;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
+import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import gisluq.lib.Util.ToastUtils;
 
 /**
@@ -50,7 +51,8 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
 
     private View contextView;
     private TextView txtLayerName;
-    private ListView listViewField;//字段列表
+//    private ListView listViewField;//字段列表
+    private TableView<String[]> tableView;
     private TextView closeTextView;
 
     private GraphicsOverlay identityGraphicOverlay;
@@ -65,9 +67,10 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
         super(context, mapView);
         this.context = context;
         this.contextView = contextView;
-        this.txtLayerName = contextView.findViewById(R.id.widget_view_query_mapquery_1_txtLayerName);
-        this.listViewField = contextView.findViewById(R.id.widget_view_query_mapquery_1_fieldListview);
-        this.closeTextView = contextView.findViewById(R.id.widget_view_query_mapquery_1_closebtn);
+        this.txtLayerName = contextView.findViewById(R.id.map_query_result_view_1_txtLayerName);
+//        this.listViewField = contextView.findViewById(R.id.widget_view_query_mapquery_1_fieldListview);
+        this.tableView = contextView.findViewById(R.id.map_query_result_view_1_tableView);
+        this.closeTextView = contextView.findViewById(R.id.map_query_result_view_1_closebtn);
 
         this.mapView = mapView;
         this.callout  = this.mapView.getCallout();
@@ -263,8 +266,21 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
 //                    calloutContent.append(entity.getAlias()+entity.getValue() + "\n");
 //                }
 
-                AttributeAdapter attributeAdapter = new AttributeAdapter(context, keyAndValueBeans);
-                listViewField.setAdapter(attributeAdapter);
+//                AttributeAdapter attributeAdapter = new AttributeAdapter(context, keyAndValueBeans);
+//                listViewField.setAdapter(attributeAdapter);
+
+                String[] table_header = { "名称", "内容" };
+                tableView.setHeaderAdapter(new SimpleTableHeaderAdapter(context,table_header));
+                tableView.setHeaderVisible(false);
+
+                String[][] contentData =new String[keyAndValueBeans.size()][2];
+                int i=0;
+                for (KeyAndValueBean keyAndValueBean:keyAndValueBeans
+                     ) {
+                    contentData[i] = keyAndValueBean.toStringArray();
+                    i++;
+                }
+                tableView.setDataAdapter(new SimpleTableDataAdapter(context,contentData));
 
                 callout.setLocation(geoClickPoint);
                 callout.setContent(contextView);

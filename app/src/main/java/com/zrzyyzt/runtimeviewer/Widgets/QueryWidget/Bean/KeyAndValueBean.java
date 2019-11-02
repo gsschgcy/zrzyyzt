@@ -33,4 +33,12 @@ public class KeyAndValueBean {
     public void setValue(String value) {
         Value = value;
     }
+
+     public String[] toStringArray(){
+         if(Alias.equalsIgnoreCase("")){
+             return new String[]{Key,Value};
+         }else {
+             return new String[]{Alias,Value};
+         }
+     }
 }

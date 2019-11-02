@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.esri.arcgisruntime.arcgisservices.LabelDefinition;
 import com.esri.arcgisruntime.data.FeatureCollection;
@@ -20,9 +19,7 @@ import com.esri.arcgisruntime.data.GeoPackageFeatureTable;
 import com.esri.arcgisruntime.data.Geodatabase;
 import com.esri.arcgisruntime.data.GeodatabaseFeatureTable;
 import com.esri.arcgisruntime.data.ShapefileFeatureTable;
-import com.esri.arcgisruntime.geometry.Envelope;
 import com.esri.arcgisruntime.geometry.Point;
-import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
@@ -36,8 +33,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
-import com.zrzyyzt.runtimeviewer.Config.AppConfig;
-import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LayerListviewAdapter;
@@ -253,7 +248,7 @@ public class LayerManagerWidget extends BaseWidget {
 //        });
 
 
-//        final View mapQueryView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_query_mapquery_1,null);
+//        final View mapQueryView = LayoutInflater.from(super.context).inflate(R.layout.map_query_result_view_1,null);
 //        View viewBtnSelectFeature = mapQueryView.findViewById(R.id.widget_view_query_mapquery_linerBtnFeatureSelect);//要素选择
 //        TextView txtLayerName = (TextView)mapQueryView.findViewById(R.id.widget_view_query_mapquery_1_txtLayerName);
 //        ListView listViewField = (ListView)mapQueryView.findViewById(R.id.widget_view_query_mapquery_1_fieldListview);

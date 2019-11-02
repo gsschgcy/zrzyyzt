@@ -95,7 +95,7 @@ public class ResourceConfig {
         this.mapNorthView = activiy.findViewById(R.id.map_north_view);
         this.mapQueryView = activiy.findViewById(R.id.map_query_view);
 
-        this.mapQueryViewLayout  = LayoutInflater.from(context).inflate(R.layout.widget_view_query_mapquery_1,null);
+        this.mapQueryViewLayout  = LayoutInflater.from(context).inflate(R.layout.map_query_result_view_1,null);
 //        this.mapLocationView = (MapLocationView) activiy.findViewById(R.id.map_location_view);
 
 //        this.view_tdt_yx = activiy.findViewById(R.id.basemap_tdt_yx);

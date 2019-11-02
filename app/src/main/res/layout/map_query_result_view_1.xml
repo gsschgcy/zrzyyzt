@@ -26,14 +26,14 @@
                 android:textColor="@color/colorPrimary" />
 
             <TextView
-                android:id="@+id/widget_view_query_mapquery_1_txtLayerName"
+                android:id="@+id/map_query_result_view_1_txtLayerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="未选中图层"
                 android:textColor="@color/colorPrimary" />
             <TextView
-                android:id="@+id/widget_view_query_mapquery_1_closebtn"
+                android:id="@+id/map_query_result_view_1_closebtn"
                 android:textColor="@color/colorAccent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,10 +46,21 @@
             android:layout_width="match_parent"
             android:layout_height="1dip"
             android:background="@color/grey" />
-        <ListView
-            android:id="@+id/widget_view_query_mapquery_1_fieldListview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+<!--        <ListView-->
+<!--            android:id="@+id/widget_view_query_mapquery_1_fieldListview"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content" />-->
 
+        <de.codecrafters.tableview.TableView
+            android:id="@+id/map_query_result_view_1_tableView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tableView_columnCount="2"
+            app:tableView_headerColor="@color/light_gray"
+            app:tableView_headerElevation="5"
+            android:divider="@color/white"
+            android:dividerHeight="1dip">
+
+        </de.codecrafters.tableview.TableView>
         </LinearLayout>
 </LinearLayout>
