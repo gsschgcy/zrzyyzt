@@ -23,7 +23,6 @@ import com.esri.arcgisruntime.mapping.view.Graphic;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.LocationDisplay;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
-import com.zrzyyzt.runtimeviewer.Permission.PermissionsUtils;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Entity.Extent;
 import com.zrzyyzt.runtimeviewer.Widgets.BookmarkWidget.Entity.SpatialReference;
@@ -114,7 +113,7 @@ public class TraceRecordWidget extends BaseWidget {
 
         //地图定位事件
 
-        PermissionsUtils.PermissionsChecker(context);
+//        PermissionsUtils.PermissionsChecker(context);
 
 
 
