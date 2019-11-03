@@ -41,6 +41,9 @@ public class BookmarkManager {
 
     public List<BookmarkEntity> getBookmarkList2(){
         String configString = loadBookmarkListConfigString();
+        if(configString == null){
+            return null;
+        }
         Gson gson = new Gson();
         List<BookmarkEntity> bookmarkEntityList= gson.fromJson(configString,new TypeToken<List<BookmarkEntity>>() {
         }.getType());
@@ -137,7 +140,9 @@ public class BookmarkManager {
 
     private String loadBookmarkListConfigString(){
         String path = getJSONPath();
-
+        if(!FileUtils.isExist(path)){
+            return null;
+        }
         return FileUtils.openTxt(path, "UTF-8");
     }
 

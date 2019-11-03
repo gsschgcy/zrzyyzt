@@ -61,19 +61,12 @@ public class BookmarkWidget extends BaseWidget {
             bookmarkList = bookmarkManager.getEsriBookmarkList(bookmarkEntityList);
         }
 
-//        JSONArray jsonArray = bookmarkManager.loadBookmarkListConfig();
-//
-//        try{
-//            bookmarkList = bookmarkManager.getBookmarkList(jsonArray);
-//        }catch (JSONException ex){
-//            ex.printStackTrace();
-//        }
         initView();
     }
 
     private void initView() {
         Log.i(TAG, "initView: " + bookmarkList);
-        this.bookmarkListView = (ListView)bookmarkView.findViewById(R.id.widget_view_bookmark_bookmarkListview);
+        this.bookmarkListView = (ListView)bookmarkView.findViewById(R.id.widget_view_bookmark_listview);
         bookmarkviewAdapter = new BookmarkListviewAdapter(context, bookmarkEntityList, super.mapView, projectPath);
         this.bookmarkListView.setAdapter(bookmarkviewAdapter);
 

@@ -69,6 +69,10 @@ public class BookmarkListviewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        if(bookmarkList == null){
+            return convertView;
+        }
+
         final int index = bookmarkList.size()-position-1;
         if (index<0) return convertView;//为空
 

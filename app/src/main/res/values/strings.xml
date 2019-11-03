@@ -68,6 +68,7 @@
     <string name="toast_pick_file_error">浏览文件错误</string>
 
     <string name="trace_record">轨迹记录</string>
+    <string name="trace_record_list">轨迹列表</string>
     <string name="trace_record_name">轨迹名称</string>
 
 
