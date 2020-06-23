@@ -28,6 +28,7 @@ import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
 import com.esri.arcgisruntime.symbology.SimpleRenderer;
 import com.zrzyyzt.runtimeviewer.GloabApp.MPApplication;
 import com.zrzyyzt.runtimeviewer.R;
+import com.zrzyyzt.runtimeviewer.Utils.StringUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.Adapter.AlertLayerListAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.QueryWidget.Bean.KeyAndValueBean;
 
@@ -38,6 +39,7 @@ import java.util.Map;
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
+import gisluq.lib.Util.StringUtil;
 import gisluq.lib.Util.ToastUtils;
 
 /**
@@ -162,7 +164,7 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
 //            FeatureLayer layer = selectFeatureList.get(0).getFeatureTable().getFeatureLayer();
 //            String layerName = layer.getName();
             layerName = featureTable.getDisplayName();
-            Toast.makeText(context, "选择的图层为：" +layerName , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "选择的图层为：" +layerName , Toast.LENGTH_SHORT).show();
             txtLayerName.setText(layerName);
             setFeatureSelect(selectFeatureList.get(0));
         }else{
@@ -179,7 +181,7 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
 //                    String layerName = layer.getName();
                     FeatureTable featureTable = selectFeatureList.get(which).getFeatureTable();
                     layerName = featureTable.getDisplayName();
-                    Toast.makeText(context, "当前选择图层：" +layerName , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "当前选择图层：" +layerName , Toast.LENGTH_SHORT).show();
                     txtLayerName.setText(layerName);
 
                     setFeatureSelect(selectFeatureList.get(which));
@@ -204,7 +206,7 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
         identityGraphicOverlay.getGraphics().clear();
         Graphic graphic = new Graphic(feature.getGeometry(), feature.getAttributes());
         SimpleLineSymbol simpleLineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, ContextCompat.getColor(context,R.color.cyan),(float)2);
-        SimpleRenderer simpleRenderer = new SimpleRenderer(new SimpleFillSymbol(SimpleFillSymbol.Style.NULL, Color.RED, simpleLineSymbol));
+        SimpleRenderer simpleRenderer = new SimpleRenderer(new SimpleFillSymbol(SimpleFillSymbol.Style.SOLID, ContextCompat.getColor(context,R.color.lightblue), simpleLineSymbol));
         identityGraphicOverlay.setRenderer(simpleRenderer);
         identityGraphicOverlay.getGraphics().add(graphic);
 
@@ -227,9 +229,12 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
                 calloutContent.setMovementMethod(new ScrollingMovementMethod());
                 calloutContent.setLines(5);
 
+
                 for (Map.Entry<String, Object> entry:attributes.entrySet()){
                     String key=entry.getKey();
                     String alias=entry.getKey();
+
+
                     for (Field field:fields
                          ) {
                         if(field.getName().equals(key)){
@@ -241,7 +246,15 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
 
                     String value ="";
                     if (object!=null){
-                        value = String.valueOf(object);
+                        if(object instanceof Double) {
+                            Double d=(Double)object;
+                            java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+                            nf.setGroupingUsed(false);
+                            value=String.valueOf(nf.format(d));
+                        }else {
+                            value = String.valueOf(object);
+                        }
+                        //value = String.valueOf(object);
                     }
                     KeyAndValueBean keyAndValueBean = new KeyAndValueBean();
                     keyAndValueBean.setKey(key);
@@ -277,16 +290,25 @@ public class MapQueryListener extends DefaultMapViewOnTouchListener{
                 int i=0;
                 for (KeyAndValueBean keyAndValueBean:keyAndValueBeans
                      ) {
-                    contentData[i] = keyAndValueBean.toStringArray();
-                    i++;
+                    if(keyAndValueBean.toStringArray()[0].toUpperCase().contains("OBJECTID")){
+
+                    } else {
+                        contentData[i] = keyAndValueBean.toStringArray();
+                        i++;
+                    }
                 }
-                tableView.setDataAdapter(new SimpleTableDataAdapter(context,contentData));
+
+                SimpleTableDataAdapter simpleTableDataAdapter=new SimpleTableDataAdapter(context,contentData);
+                simpleTableDataAdapter.setTextSize(12);
+                tableView.setDataAdapter(simpleTableDataAdapter);
 
                 callout.setLocation(geoClickPoint);
                 callout.setContent(contextView);
                 Callout.Style style = callout.getStyle();
                 style.setBorderColor(Color.WHITE);
                 style.setBorderWidth(0);
+                style.setLeaderLength(100);
+                style.setLeaderPosition(Callout.Style.LeaderPosition.UPPER_RIGHT_CORNER);
                 callout.setStyle(style);
                 callout.show();
 

@@ -113,8 +113,8 @@ public class ArcGisMeasure extends Draw {
     private void drawScreenXY(float x, float y){
         Point point=super.screenXYtoPpoint(x,y);
         if(mapView.getSpatialReference().getWkid()==4490 || mapView.getSpatialReference().getWkid()==4326){
-            point = (Point) GeometryEngine.project(point , SpatialReference.create(102100));
-            super.setSpatialReference(SpatialReference.create(102100));
+            point = (Point) GeometryEngine.project(point , SpatialReference.create(4524));
+            super.setSpatialReference(SpatialReference.create(4524));
         }
         if( drawType==Variable.DrawType.LINE){
             PolylineBuilder line=(PolylineBuilder)super.drawByGisPoint(point);
@@ -123,7 +123,6 @@ public class ArcGisMeasure extends Draw {
             PolygonBuilder polygon=(PolygonBuilder)super.drawByGisPoint(point);
             showArea(polygon);
         }
-
     }
     private void drawScreenPoint(android.graphics.Point screenPoint){
         Point point=super.screenXYtoPpoint(screenPoint.x,screenPoint.y);
@@ -154,6 +153,4 @@ public class ArcGisMeasure extends Draw {
             super.drawText(polygon.toGeometry().getExtent().getCenter(),s+Util.lengthEnameToCname(measureAreaType),true);
         }
     }
-
-
 }

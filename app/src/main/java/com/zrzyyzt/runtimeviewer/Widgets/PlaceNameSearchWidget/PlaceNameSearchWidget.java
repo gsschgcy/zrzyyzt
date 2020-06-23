@@ -31,11 +31,13 @@ import com.esri.arcgisruntime.symbology.PictureMarkerSymbol;
 import com.esri.arcgisruntime.tasks.geocode.GeocodeParameters;
 import com.esri.arcgisruntime.tasks.geocode.GeocodeResult;
 import com.esri.arcgisruntime.tasks.geocode.LocatorTask;
+import com.google.gson.Gson;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.GloabApp.MPApplication;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.Adapter.PoiResultAdapter;
 import com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.Entity.PoiBean;
+import com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.Entity.PoiParm;
 import com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.Thread.GetPoiThread;
 
 import java.util.Collection;
@@ -52,11 +54,10 @@ public class PlaceNameSearchWidget extends BaseWidget {
     private static final String TAG = "PlaceNameSearchWidget";
     private Context context;
 
-
     private  PoiBean poiBean=null;
-    public View mWidgetView = null;//
+    public View mWidgetView = null;
+    private ListView resultList;
 
-    private MapView mMapView;
     private GraphicsOverlay mGraphicsOverlay;
     private PictureMarkerSymbol mPinSourceSymbol;
     private Callout mCallout;
@@ -73,7 +74,15 @@ public class PlaceNameSearchWidget extends BaseWidget {
         super.active();//默认需要调用，以保证切换到其他widget时，本widget可以正确执行inactive()方法并关闭
         super.showWidget(mWidgetView);//加载UI并显示
 
-        super.showMessageBox(super.name);//显示组件名称
+        if(mGraphicsOverlay==null){
+            mGraphicsOverlay=new GraphicsOverlay();
+        }
+
+        if(!mapView.getGraphicsOverlays().contains(mGraphicsOverlay)){
+            mapView.getGraphicsOverlays().add(mGraphicsOverlay);
+        }
+
+        //super.showMessageBox(super.name);//显示组件名称
     }
 
     /**
@@ -84,13 +93,12 @@ public class PlaceNameSearchWidget extends BaseWidget {
     public void create() {
 
         context=super.context;
-        mMapView=super.mapView;
 
         LayoutInflater mLayoutInflater = LayoutInflater.from(super.context);
         //设置widget组件显示内容
         mWidgetView = mLayoutInflater.inflate(R.layout.widget_view_placenamesearch,null);
 
-        final ListView resultList=mWidgetView.findViewById(R.id.widget_view_placenamesearch_resultListview);
+        resultList=mWidgetView.findViewById(R.id.widget_view_placenamesearch_resultListview);
         final SearchView mAddressSearchView = mWidgetView.findViewById(R.id.widget_view_placenamesearch_addressSearchView);
         TextView sTextView=mAddressSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         sTextView.setTextSize(14);
@@ -111,17 +119,13 @@ public class PlaceNameSearchWidget extends BaseWidget {
         mPinSourceSymbol.setWidth(19f);
         mPinSourceSymbol.setHeight(72f);
 
-//        mMapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context, mMapView) {
-//            @Override
-//            public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
-//                identifyGraphic(motionEvent);
-//                return true;
-//            }
-//        });
 
         mAddressSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                if(!s.contains("泾川")){
+                    s="泾川"+s;
+                }
                 poiBean=getPoi(s);
                 if(poiBean!=null){
                     List<PoiBean.PoisBean> list=poiBean.getPois();
@@ -169,7 +173,7 @@ public class PlaceNameSearchWidget extends BaseWidget {
         android.graphics.Point screenPoint = new android.graphics.Point(Math.round(motionEvent.getX()),
                 Math.round(motionEvent.getY()));
         // from the graphics overlay, get graphics near the tapped location
-        final ListenableFuture<IdentifyGraphicsOverlayResult> identifyResultsFuture = mMapView
+        final ListenableFuture<IdentifyGraphicsOverlayResult> identifyResultsFuture = mapView
                 .identifyGraphicsOverlayAsync(mGraphicsOverlay, screenPoint, 10, false);
         identifyResultsFuture.addDoneListener(new Runnable() {
             @Override public void run() {
@@ -193,34 +197,39 @@ public class PlaceNameSearchWidget extends BaseWidget {
     }
 
 
-    private PoiBean getPoi(String keyWord){
+    private PoiBean getPoi(String keyWord) {
 
-            String address="http://api.tianditu.gov.cn/search?";
-            String key="1a2360bdad0e682aba76bfb388fcb849";
-            String level="14";
-            String mapBound="91.63,32.351,109.66,42.97";
-            String count="20";
-            String postStr="postStr={\"keyWord\":\""+keyWord+"\",\"level\":\""+level+"\"," +
-                    "\"mapBound\":\""+mapBound+"\",\"queryType\":\"1\",\"count\":\""+count+"\",\"start\":\"0\"}" ;
-            String keyType="&type=query&tk="+key;
-            String url=address+postStr+keyType;
+        String address = "http://api.tianditu.gov.cn/search?";
+        String key = "1a2360bdad0e682aba76bfb388fcb849";
+        PoiParm poiParm = new PoiParm();
+        poiParm.setCount("20");
+        poiParm.setKeyWord(keyWord);
+        poiParm.setLevel("14");
+        poiParm.setMapBound("107.104804,35.174813,107.741562,35.524559");
+        poiParm.setQueryType("1");
+        poiParm.setStart("0");
+        Gson gson = new Gson();
+        String strGson = gson.toJson(poiParm);
+        //Log.v(TAG, strGson);
+        String keyType = "&type=query&tk=" + key;
+        String url = address + "postStr="+strGson + keyType;
 
-            PoiBean temp = null;
-            ExecutorService pool = Executors.newCachedThreadPool();
-            GetPoiThread getPoiThread = new GetPoiThread(temp,url);
-            Future<PoiBean> future  = pool.submit(getPoiThread);
-            while(true){
-                if(future.isDone()){
-                    try{
-                        temp= future.get();
-                    }catch (Exception e){
-                        Log.e(TAG, "PlaceNameSearchWidget: " + e.getMessage());
-                    }
-                    pool.shutdown();
-                    break;
+        PoiBean temp = null;
+        ExecutorService pool = Executors.newCachedThreadPool();
+        GetPoiThread getPoiThread = new GetPoiThread(temp, url);
+        Future<PoiBean> future = pool.submit(getPoiThread);
+        while (true) {
+            if (future.isDone()) {
+                try {
+                    temp = future.get();
+                } catch (Exception e) {
+                    Log.e(TAG, "PlaceNameSearchWidget: " + e.getMessage());
                 }
+                pool.shutdown();
+                break;
             }
-            return temp;
+        }
+        return temp;
     }
 
     private Map<String,Object> attributeMap(PoiBean.PoisBean poisBean) {
@@ -234,41 +243,38 @@ public class PlaceNameSearchWidget extends BaseWidget {
 
     private void displaySearchResult(Point point,Map<String,Object> map) {
         // dismiss any callout
-        if (mMapView.getCallout() != null && mMapView.getCallout().isShowing()) {
-            mMapView.getCallout().dismiss();
+        if (mapView.getCallout() != null && mapView.getCallout().isShowing()) {
+            mapView.getCallout().dismiss();
         }
-        // clear map of existing graphics
-        mMapView.getGraphicsOverlays().clear();
-        //mGraphicsOverlay.getGraphics().clear();
-        // create graphic object for resulting location
-        mGraphicsOverlay=new GraphicsOverlay();
+        mGraphicsOverlay.getGraphics().clear();
 
         Point resultPoint = point;
         Graphic resultLocGraphic = new Graphic(resultPoint,map,mPinSourceSymbol);
-        // add graphic to location layer
         mGraphicsOverlay.getGraphics().add(resultLocGraphic);
-        // zoom map to result over 3 seconds
-        mMapView.setViewpointAsync(new Viewpoint(resultPoint.getExtent()), 0.5f);
-        // set the graphics overlay to the map
-        mMapView.getGraphicsOverlays().add(mGraphicsOverlay);
+        mapView.setViewpointAsync(new Viewpoint(resultPoint.getExtent()), 0.5f);
         showCallout(resultLocGraphic);
     }
 
     private void showCallout(final Graphic graphic) {
-        // create a TextView for the Callout
+
         TextView calloutContent = new TextView(MPApplication.getContext());
         calloutContent.setTextColor(Color.BLACK);
-        // set the text of the Callout to graphic's attributes
+
         calloutContent.setText("名称："+graphic.getAttributes().get("name").toString() + "\n"
                 + "地址："+graphic.getAttributes().get("address").toString()+"\n"+"电话："+graphic.getAttributes().get("phone"));
-        // get Callout
-        mCallout = mMapView.getCallout();
-        // set Callout options: animateCallout: true, recenterMap: false, animateRecenter: false
+
+        mCallout = mapView.getCallout();
         mCallout.setShowOptions(new Callout.ShowOptions(true, false, false));
         mCallout.setContent(calloutContent);
-        // set the leader position and show the callout
-        // set the leader position and show the callout
-        Point calloutLocation = graphic.computeCalloutLocation(graphic.getGeometry().getExtent().getCenter(), mMapView);
+
+        Callout.Style calloutStyle=mCallout.getStyle();
+        calloutStyle.setBorderColor(Color.WHITE);
+        calloutStyle.setBorderWidth(0);
+        calloutStyle.setLeaderLength(15);
+        calloutStyle.setLeaderPosition(Callout.Style.LeaderPosition.LOWER_MIDDLE);
+        mCallout.setStyle(calloutStyle);
+
+        Point calloutLocation = graphic.computeCalloutLocation(graphic.getGeometry().getExtent().getCenter(), mapView);
         mCallout.setGeoElement(graphic, calloutLocation);
         mCallout.show();
     }
@@ -281,10 +287,18 @@ public class PlaceNameSearchWidget extends BaseWidget {
     public void inactive(){
 
         super.inactive();
-        super.hideCenterView();
+       // super.hideCenterView();
+//
         if(mGraphicsOverlay!=null){
-            mMapView.getGraphicsOverlays().remove(mGraphicsOverlay);
-            mMapView.refreshDrawableState();
+            mGraphicsOverlay.getGraphics().clear();
+            mapView.getGraphicsOverlays().remove(mGraphicsOverlay);
+        }
+
+        if(resultList!=null) {
+            resultList.setAdapter(null);
+        }
+
+        if(mapView.getCallout()!=null&& mapView.getCallout().isShowing()){
             mCallout.dismiss();
         }
     }

@@ -11,8 +11,11 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,9 +33,14 @@ import android.widget.Toast;
 
 import com.esri.arcgisruntime.geometry.Envelope;
 import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.PointCollection;
 import com.esri.arcgisruntime.geometry.SpatialReference;
+import com.esri.arcgisruntime.location.LocationDataSource;
 import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.mapping.view.DefaultMapViewOnTouchListener;
+import com.esri.arcgisruntime.mapping.view.Graphic;
+import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
+import com.esri.arcgisruntime.mapping.view.LocationDisplay;
 import com.zrzyyzt.runtimeviewer.BMOD.CameraModule.CameraActivity;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.WidgetManager;
@@ -61,6 +69,8 @@ import java.util.Map;
 
 import gisluq.lib.Util.SysUtils;
 import gisluq.lib.Util.ToastUtils;
+
+import static com.zrzyyzt.runtimeviewer.Widgets.TraceRecordWidget.Common.Common.ptSym;
 
 public class MapActivity extends BaseActivity {
 
@@ -355,7 +365,9 @@ public class MapActivity extends BaseActivity {
             Viewpoint vp = new Viewpoint(envelope);
             resourceConfig.mapView.setViewpointAsync(vp);
             return true ;
-        }else if(item.getItemId() == R.id.printScreen){
+        }else if(item.getItemId() == R.id.cross){
+            mapLocation();
+        } else if(item.getItemId() == R.id.printScreen){
             Bitmap bitmap = mMapManager.getMapViewBitmap();
             saveImageToGallery(bitmap);
         }else if(item.getItemId() == R.id.camera){
@@ -435,6 +447,20 @@ public class MapActivity extends BaseActivity {
         }
     }
 
+    private void mapLocation(){
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //LocationProvider lProvider = lm.getProvider(LocationManager.GPS_PROVIDER);
+        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(context, "请开启位置服务！", Toast.LENGTH_LONG).show();
+            Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivityForResult(intent,0);
+            return;
+        }
+        LocationDisplay locationDisplay=resourceConfig.mapView.getLocationDisplay();
+        locationDisplay.startAsync();
+        locationDisplay.setAutoPanMode(LocationDisplay.AutoPanMode.RECENTER);
+
+    }
     /**
      * 保存bitmap到图库
      * @param bitmap

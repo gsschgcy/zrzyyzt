@@ -24,6 +24,7 @@ import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.esri.arcgisruntime.symbology.PictureMarkerSymbol;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
+import com.zrzyyzt.runtimeviewer.BMOD.MapModule.Resource.ResourceConfig;
 import com.zrzyyzt.runtimeviewer.GloabApp.MPApplication;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.Adapter.PoiResultAdapter;
@@ -44,14 +45,16 @@ import gisluq.lib.Util.ToastUtils;
 public class PeripheralQueryWidget extends BaseWidget {
     public  final static String TAG="PeripheralQueryWidget";
     public View mWidgetView = null;//
-    private MapView mMapView;
+    //private MapView mMapView;
     private GraphicsOverlay mGraphicsOverlay;
+    private GraphicsOverlay mGraphicsOverlay1;
     private PictureMarkerSymbol mPinSourceSymbol;
     private PictureMarkerSymbol mPinSourceSymbol1;
     private Callout mCallout;
     private Point locationPoint=null;
     private String  radius="500";
     private String keyWords;
+    private EditText txtPoi;
     /**
      * 组件面板打开时，执行的操作
      * 当点击widget按钮是, WidgetManager将会调用这个方法，面板打开后的代码逻辑.
@@ -61,7 +64,21 @@ public class PeripheralQueryWidget extends BaseWidget {
     public void active() {
         super.active();//默认需要调用，以保证切换到其他widget时，本widget可以正确执行inactive()方法并关闭
         super.showWidget(mWidgetView);//加载UI并显示
-        super.showMessageBox(super.name);
+        //super.showMessageBox(super.name);
+
+        if(mGraphicsOverlay==null){
+            mGraphicsOverlay=new GraphicsOverlay();
+        }
+        if(!mapView.getGraphicsOverlays().contains(mGraphicsOverlay)){
+            mapView.getGraphicsOverlays().add(mGraphicsOverlay);
+        }
+
+        if(mGraphicsOverlay1==null){
+            mGraphicsOverlay1=new GraphicsOverlay();
+        }
+        if(!mapView.getGraphicsOverlays().contains(mGraphicsOverlay1)){
+            mapView.getGraphicsOverlays().add(mGraphicsOverlay1);
+        }
     }
 
     /**
@@ -71,12 +88,11 @@ public class PeripheralQueryWidget extends BaseWidget {
     @Override
     public void create() {
 
-        context=super.context;
-        mMapView=super.mapView;
+        //mMapView=super.mapView;
 
         LayoutInflater mLayoutInflater = LayoutInflater.from(super.context);
         mWidgetView = mLayoutInflater.inflate(R.layout.widget_view_peripheralquerywidget,null);
-        final EditText txtPoi=mWidgetView.findViewById(R.id.widget_view_peripheralquery_txtPoi);
+        txtPoi=mWidgetView.findViewById(R.id.widget_view_peripheralquery_txtPoi);
         final EditText queryRadius=mWidgetView.findViewById(R.id.widget_view_peripheralquery_queryRadius);
         final Button btnQuery=mWidgetView.findViewById(R.id.widget_view_peripheralquery_btnQuery);
         final Button poiType1=mWidgetView.findViewById(R.id.widget_view_peripheralquery_poitype1);
@@ -140,23 +156,24 @@ public class PeripheralQueryWidget extends BaseWidget {
 
                    }
                    else {
-                       Toast.makeText(MPApplication.getContext(), "查询关键字不符合查询要求！", Toast.LENGTH_LONG).show();
+                       Toast.makeText(MPApplication.getContext(), "没有查询到符合要求的记录！", Toast.LENGTH_LONG).show();
                    }
                }
             }
         });
 
-        mapView.setOnTouchListener(new DefaultMapViewOnTouchListener(context,mapView){
+        mapView.setOnTouchListener(new DefaultMapViewOnTouchListener(this.mapView.getContext(),this.mapView){
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 if(!txtPoi.getText().toString().equals("")){
                     locationPoint = mapView.screenToLocation(new android.graphics.Point((int) e.getX(), (int) e.getY()));
                     identifyGraphic(locationPoint);
-                    return true;
                 }
-               return false;
+               return super.onSingleTapUp(e);
             }
         });
+
+
 
         queryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -263,25 +280,25 @@ public class PeripheralQueryWidget extends BaseWidget {
         return  result;
     }
     private void identifyGraphic(Point point) {
-        if (mMapView.getCallout() != null && mMapView.getCallout().isShowing()) {
-            mMapView.getCallout().dismiss();
+        if (mapView.getCallout() != null && mapView.getCallout().isShowing()) {
+            mapView.getCallout().dismiss();
         }
         Map<String,Object>map=new HashMap<String,Object>();
         map.put("name","定位点");
         // clear map of existing graphics
-        mMapView.getGraphicsOverlays().clear();
+        //mapView.getGraphicsOverlays().clear();
         //mGraphicsOverlay.getGraphics().clear();
         // create graphic object for resulting location
-        mGraphicsOverlay=new GraphicsOverlay();
+        //mGraphicsOverlay=new GraphicsOverlay();
 
         Point resultPoint = point;
         Graphic resultLocGraphic = new Graphic(resultPoint,map,mPinSourceSymbol);
         // add graphic to location layer
-        mGraphicsOverlay.getGraphics().add(resultLocGraphic);
+        mGraphicsOverlay1.getGraphics().add(resultLocGraphic);
         // zoom map to result over 3 seconds
-        mMapView.setViewpointAsync(new Viewpoint(resultPoint.getExtent()), 0.5f);
+        mapView.setViewpointAsync(new Viewpoint(resultPoint.getExtent()), 0.5f);
         // set the graphics overlay to the map
-        mMapView.getGraphicsOverlays().add(mGraphicsOverlay);
+        //mapView.getGraphicsOverlays().add(mGraphicsOverlay);
     }
 
     private PoiBean getPoi(String keyWord,String radius){
@@ -324,12 +341,12 @@ public class PeripheralQueryWidget extends BaseWidget {
 
     private void displaySearchResult(Point point, Map<String,Object> map) {
         // dismiss any callout
-        if (mMapView.getCallout() != null && mMapView.getCallout().isShowing()) {
-            mMapView.getCallout().dismiss();
+        if (mapView.getCallout() != null && mapView.getCallout().isShowing()) {
+            mapView.getCallout().dismiss();
         }
         // clear map of existing graphics
-        mMapView.getGraphicsOverlays().clear();
-        //mGraphicsOverlay.getGraphics().clear();
+        //mapView.getGraphicsOverlays().clear();
+        mGraphicsOverlay.getGraphics().clear();
         // create graphic object for resulting location
         //mGraphicsOverlay=new GraphicsOverlay();
 
@@ -338,9 +355,9 @@ public class PeripheralQueryWidget extends BaseWidget {
         // add graphic to location layer
         mGraphicsOverlay.getGraphics().add(resultLocGraphic);
         // zoom map to result over 3 seconds
-        mMapView.setViewpointAsync(new Viewpoint(resultPoint.getExtent()), 0.5f);
+        mapView.setViewpointAsync(new Viewpoint(resultPoint.getExtent()), 0.5f);
         // set the graphics overlay to the map
-        mMapView.getGraphicsOverlays().add(mGraphicsOverlay);
+       // mapView.getGraphicsOverlays().add(mGraphicsOverlay);
         showCallout(resultLocGraphic);
     }
 
@@ -352,12 +369,12 @@ public class PeripheralQueryWidget extends BaseWidget {
         calloutContent.setText("名称："+graphic.getAttributes().get("name").toString() + "\n"
                 + "地址："+graphic.getAttributes().get("address").toString()+"\n"+"电话："+graphic.getAttributes().get("phone"));
         // get Callout
-        mCallout = mMapView.getCallout();
+        mCallout = mapView.getCallout();
         // set Callout options: animateCallout: true, recenterMap: false, animateRecenter: false
         mCallout.setShowOptions(new Callout.ShowOptions(true, false, false));
         mCallout.setContent(calloutContent);
         // set the leader position and show the callout
-        Point calloutLocation = graphic.computeCalloutLocation(graphic.getGeometry().getExtent().getCenter(), mMapView);
+        Point calloutLocation = graphic.computeCalloutLocation(graphic.getGeometry().getExtent().getCenter(), mapView);
         mCallout.setGeoElement(graphic, calloutLocation);
         mCallout.show();
     }
@@ -369,9 +386,20 @@ public class PeripheralQueryWidget extends BaseWidget {
     @Override
     public void inactive(){
         super.inactive();
+        txtPoi.setText("");
         if(mGraphicsOverlay!=null){
-            mCallout.dismiss();
-            mMapView.getGraphicsOverlays().remove(mGraphicsOverlay);
+            mGraphicsOverlay.getGraphics().clear();
+            mapView.getGraphicsOverlays().remove(mGraphicsOverlay);
+            //mCallout.dismiss();
+        }
+
+        if (mapView.getCallout() != null && mapView.getCallout().isShowing()) {
+            mapView.getCallout().dismiss();
+        }
+
+        if(mGraphicsOverlay1!=null){
+            mGraphicsOverlay1.getGraphics().clear();
+            mapView.getGraphicsOverlays().remove(mGraphicsOverlay1);
         }
     }
 }

@@ -70,7 +70,12 @@ public class StFieldSpinnerAdapter extends BaseAdapter {
 //                indexPositon++;
 //            }
 //        }
-        holder.textView.setText(fieldList.get(position).getName());
+        if(fieldList.get(position).getAlias().equalsIgnoreCase("")){
+            holder.textView.setText(fieldList.get(position).getName());
+        }else{
+            holder.textView.setText(fieldList.get(position).getAlias());
+        }
+        //holder.textView.setText(fieldList.get(position).getAlias());
         return convertView;
     }
 }

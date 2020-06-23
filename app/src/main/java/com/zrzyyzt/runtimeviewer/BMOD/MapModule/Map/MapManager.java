@@ -74,10 +74,10 @@ public class MapManager {
 //        this.map = new ArcGISMap();//初始化
 //        resourceConfig.mapView.setMap(map);
         addBasemap();
-//        addBasemapJygYx();
+        //addBasemapJygYx();
         addBasemapTdtSl();
         addBasemapTdtYx();
-
+        addBasemapJygYx();
         //initBaseMapResource(); //初始化底图资源
 
         initMapResource();//初始化配置
@@ -98,7 +98,7 @@ public class MapManager {
             Log.d(TAG, "init: lisence" + configEntity.getRuntimrKey());
             String version = ArcGISRuntimeEnvironment.getAPIVersion();
             String lic = ArcGISRuntimeEnvironment.getLicense().getLicenseLevel().name();
-            ToastUtils.showShort(context, "ArcGIS Runtime版本:" + version + "; 许可信息:" + lic);
+            //ToastUtils.showShort(context, "ArcGIS Runtime版本:" + version + "; 许可信息:" + lic);
         } catch (Exception e) {
             ToastUtils.showShort(context, "ArcGIS Runtime 许可设置异常:" + e.getMessage());
         }
@@ -239,13 +239,14 @@ public class MapManager {
     }
 
     /**
-     * 嘉峪关影像
+     * 本地影像
      */
     void addBasemapJygYx(){
         //加载影像底图
         String theURLString =
-                "http://61.178.152.45:6080/arcgis/rest/services/OneMap/JYGDOM2018/MapServer";
-
+                "http://61.178.245.189:9092/arcgis/rest/services/jccgzyx/MapServer";
+        //http://61.178.245.189:9092/arcgis/rest/services/jccqyx/MapServer
+        //http://61.178.152.45:6080/arcgis/rest/services/OneMap/JYGDOM2018/MapServer
         ArcGISTiledLayer tiledLayer = new ArcGISTiledLayer(theURLString);
         tiledLayer.setVisible(true);
         tiledLayer.setName("dom2018");

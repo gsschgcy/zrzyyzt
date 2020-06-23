@@ -2,7 +2,7 @@
     <string name="app_name">自然资源一张图移动应用系统</string>
     <string name="app_title_name_mian">自然资源一张图移动应用系统</string>
     <string name="app_title_name_subhead">基于ArcGIS Runtime SDK 100.x</string>
-    <string name="app_company">Copyright © XXX</string>
+    <string name="app_company">Copyright © 甘肃北斗天地测绘有限公司</string>
 
     <!--解锁信息-->
     <string name="loginRemark">请输入解锁密码</string>
@@ -22,6 +22,7 @@
     <string name="location_not_found">No location with that name: </string>
 
     <!--    菜单-->
+    <string name="cross">定位</string>
     <string name="printScreen">截屏</string>
     <string name="camera">拍照</string>
     <string name="photo">相册</string>

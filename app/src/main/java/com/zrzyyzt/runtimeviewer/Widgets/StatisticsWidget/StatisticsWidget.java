@@ -67,7 +67,7 @@ public class StatisticsWidget extends BaseWidget {
         super.active();//默认需要调用，以保证切换到其他widget时，本widget可以正确执行inactive()方法并关闭
         super.showWidget(mWidgetView);//加载UI并显示
 
-        super.showMessageBox(super.name);//显示组件名称
+        //super.showMessageBox(super.name);//显示组件名称
 
         super.mapView.getMap().getBasemap().getBaseLayers();
         super.mapView.getMap().getOperationalLayers();
@@ -107,8 +107,8 @@ public class StatisticsWidget extends BaseWidget {
         viewContent=mWidgetView.findViewById(R.id.widget_view_statistics_result);
         chartView=mWidgetView.findViewById(R.id.widget_view_statistics_result_chart);
         tableView1=mWidgetView.findViewById(R.id.widget_view_statistics_result_table);
-        TextView txtBtnChart=mWidgetView.findViewById(R.id.widget_view_statistics_txtBtnChart);
-        TextView txtBtnTable=mWidgetView.findViewById(R.id.widget_view_statistics_txtBtnTable);
+        final TextView txtBtnChart=mWidgetView.findViewById(R.id.widget_view_statistics_txtBtnChart);
+        final TextView txtBtnTable=mWidgetView.findViewById(R.id.widget_view_statistics_txtBtnTable);
 
         final Spinner spinnerLayerList =mWidgetView.findViewById(R.id.widget_view_statistics_spinnerLayer);
         final Spinner spinnerFieldList=mWidgetView.findViewById(R.id.widget_view_statistics_spinnerfield);
@@ -123,6 +123,7 @@ public class StatisticsWidget extends BaseWidget {
         List<String>  typeList=new ArrayList<>();
         typeList.add("数量");
         typeList.add("面积");
+        typeList.add("金额");
         StTypeSpinnerAdapter stTypeSpinnerAdapter=new StTypeSpinnerAdapter(context,typeList);
         spinnerTypeList.setAdapter(stTypeSpinnerAdapter);
         spinnerTypeList.setSelection(0);
@@ -135,9 +136,9 @@ public class StatisticsWidget extends BaseWidget {
         tableView.setHeaderBackgroundColor(Color.parseColor("#008577"));
 
         TableColumnDpWidthModel columnModel = new TableColumnDpWidthModel(context, 3, 200);
-        columnModel.setColumnWidth(0,80);
-        columnModel.setColumnWidth(1,120);
-        columnModel.setColumnWidth(2,160);
+        columnModel.setColumnWidth(0,60);
+        columnModel.setColumnWidth(1,200);
+        columnModel.setColumnWidth(2,300);
         tableView.setColumnModel(columnModel);
 
         final Button btnStatistics=mWidgetView.findViewById(R.id.widget_view_statistics_btnStatistics);
@@ -190,13 +191,14 @@ public class StatisticsWidget extends BaseWidget {
                         statisticDefinitions.add(new StatisticDefinition(field.getName(), StatisticType.COUNT,sataType));
                     }
                     else if(sataType=="面积"){
-                        statisticDefinitions.add(new StatisticDefinition("AREA", StatisticType.SUM,sataType));
+
+                        statisticDefinitions.add(new StatisticDefinition("SJ", StatisticType.SUM,sataType));
                     }
                     else {
-                        statisticDefinitions.add(new StatisticDefinition("LENGTH", StatisticType.SUM,sataType));
+                        statisticDefinitions.add(new StatisticDefinition("CRJK", StatisticType.SUM,sataType));
                     }
 
-                    String[]header={"序号",field.getName(),sataType};
+                    String[]header={"序号",field.getAlias(),sataType};
                     SimpleTableHeaderAdapter simpleTableHeaderAdapter=new SimpleTableHeaderAdapter(context, header);
                     simpleTableHeaderAdapter.setTextColor(Color.WHITE);
                     simpleTableHeaderAdapter.setTextSize(12);
@@ -298,8 +300,16 @@ public class StatisticsWidget extends BaseWidget {
                 if(list.size()<0){
                     return;
                 }
+
+                List<Field>fields=new ArrayList<>();
+                for (Field field:list) {
+                    if(!field.getName().contains("OBJECTID")){
+                        fields.add(field);
+                    }
+                }
+
                 final StFieldSpinnerAdapter[] stFieldSpinnerAdapter = new StFieldSpinnerAdapter[1];
-                stFieldSpinnerAdapter[0] =new StFieldSpinnerAdapter(context,list);
+                stFieldSpinnerAdapter[0] =new StFieldSpinnerAdapter(context,fields);
                 fieldList.setAdapter(stFieldSpinnerAdapter[0]);
             }
         });

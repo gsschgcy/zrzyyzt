@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.esri.arcgisruntime.arcgisservices.LabelDefinition;
 import com.esri.arcgisruntime.data.FeatureCollection;
@@ -19,7 +20,9 @@ import com.esri.arcgisruntime.data.GeoPackageFeatureTable;
 import com.esri.arcgisruntime.data.Geodatabase;
 import com.esri.arcgisruntime.data.GeodatabaseFeatureTable;
 import com.esri.arcgisruntime.data.ShapefileFeatureTable;
+import com.esri.arcgisruntime.geometry.Envelope;
 import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.Layer;
@@ -33,6 +36,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.zrzyyzt.runtimeviewer.BMOD.MapModule.BaseWidget.BaseWidget;
+import com.zrzyyzt.runtimeviewer.Config.AppConfig;
+import com.zrzyyzt.runtimeviewer.Config.Entity.ConfigEntity;
 import com.zrzyyzt.runtimeviewer.R;
 import com.zrzyyzt.runtimeviewer.Utils.FileUtils;
 import com.zrzyyzt.runtimeviewer.Widgets.LayerManagerWidget.Adapter.LayerListviewAdapter;
@@ -86,15 +91,15 @@ public class LayerManagerWidget extends BaseWidget {
 
 //        initBaseMapResource();//初始化底图
 
-        initOperationalGdbLayers();//初始化Geo图层
+        //initOperationalGdbLayers();//初始化Geo图层
 
-        initOperationalLayers();//初始化业务图层
+        //initOperationalLayers();//初始化业务图层
 
-        //initOperationalLayersWeb();//初始化网络业务图层
+        initOperationalLayersWeb();//初始化网络业务图层
 
-        initGeoPackageLayers();//初始化业务图层 gpkg
+        //initGeoPackageLayers();//初始化业务图层 gpkg
 
-        initJsonLayers();//初始化json图层
+        //initJsonLayers();//初始化json图层
 
         initWidgetView();//初始化UI
 
@@ -248,7 +253,7 @@ public class LayerManagerWidget extends BaseWidget {
 //        });
 
 
-//        final View mapQueryView = LayoutInflater.from(super.context).inflate(R.layout.map_query_result_view_1,null);
+//        final View mapQueryView = LayoutInflater.from(super.context).inflate(R.layout.widget_view_query_mapquery_1,null);
 //        View viewBtnSelectFeature = mapQueryView.findViewById(R.id.widget_view_query_mapquery_linerBtnFeatureSelect);//要素选择
 //        TextView txtLayerName = (TextView)mapQueryView.findViewById(R.id.widget_view_query_mapquery_1_txtLayerName);
 //        ListView listViewField = (ListView)mapQueryView.findViewById(R.id.widget_view_query_mapquery_1_fieldListview);
@@ -340,6 +345,7 @@ public class LayerManagerWidget extends BaseWidget {
                             // use a custom label expression combining some of the feature's fields
                             JsonObject expressionInfo = new JsonObject();
                             expressionInfo.add("expression", new JsonPrimitive("$feature.权利人"));
+                            json.add("minScale",new JsonPrimitive(10000));
                             //expressionInfo.add("expression", new JsonPrimitive("$feature.QLRMC + \"\\n \" + $feature.BDCDYH "));
                             json.add("labelExpressionInfo", expressionInfo);
                             // position the label in the center of the feature
@@ -354,41 +360,13 @@ public class LayerManagerWidget extends BaseWidget {
                         }
                         else if(mainShapefileLayer.getName().trim().equals("泾川房屋")){
                             SimpleLineSymbol lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.parseColor("#03a9f4"), 1.5f);
-                            SimpleFillSymbol fillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.NULL, Color.YELLOW, lineSymbol);
+                            SimpleFillSymbol fillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.SOLID, Color.parseColor("#FFC0CB"), lineSymbol);
 
                             // create the Renderer
                             SimpleRenderer renderer = new SimpleRenderer(fillSymbol);
                             mainShapefileLayer.setRenderer(renderer);
                         }
-                        else if(mainShapefileLayer.getName().trim().equals("泾川矿产")){
-                            SimpleLineSymbol lineSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.YELLOW, 2.0f);
-                            SimpleFillSymbol fillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.NULL, Color.YELLOW, lineSymbol);
 
-                            // create the Renderer
-                            SimpleRenderer renderer = new SimpleRenderer(fillSymbol);
-                            mainShapefileLayer.setRenderer(renderer);
-
-                            TextSymbol democratTextSymbol = new TextSymbol();
-                            democratTextSymbol.setSize(10);
-                            democratTextSymbol.setColor(Color.BLUE);
-                            democratTextSymbol.setHaloColor(Color.WHITE);
-                            democratTextSymbol.setHaloWidth(2);
-
-                            JsonObject json = new JsonObject();
-                            // use a custom label expression combining some of the feature's fields
-                            JsonObject expressionInfo = new JsonObject();
-                            expressionInfo.add("expression", new JsonPrimitive("$feature.KSMC"));
-                            //expressionInfo.add("expression", new JsonPrimitive("$feature.QLRMC + \"\\n \" + $feature.BDCDYH "));
-                            json.add("labelExpressionInfo", expressionInfo);
-                            // position the label in the center of the feature
-                            json.add("labelPlacement", new JsonPrimitive("esriServerPolygonPlacementAlwaysHorizontal"));
-                            json.add("where", new JsonPrimitive("1 = 1"));
-                            json.add("symbol", new JsonParser().parse(democratTextSymbol.toJson()));
-
-                            LabelDefinition democratLabelDefinition = LabelDefinition.fromJson(json.toString());
-
-                            mainShapefileLayer.getLabelDefinitions().add(democratLabelDefinition);
-                        }
                         mainShapefileLayer.setLabelsEnabled(true);
                         mapView.getMap().getOperationalLayers().add(mainShapefileLayer);
                         //mapView.setViewpointAsync(new Viewpoint(mainShapefileLayer.getFullExtent()));
@@ -476,6 +454,7 @@ public class LayerManagerWidget extends BaseWidget {
         for (int i = 0; i < fileInfos.size(); i++) {
             FileUtils.FileInfo fileInfo = fileInfos.get(i);
             String json = FileUtils.openTxt(fileInfo.FilePath,"UTF-8");
+
             final FeatureCollection featureCollection = FeatureCollection.fromJson(json);
             featureCollection.loadAsync();
             featureCollection.addDoneLoadingListener(new Runnable() {

@@ -137,7 +137,7 @@ public class TraceRecordWidget extends BaseWidget {
                             + ", size:" + pointCollection.size()
 //                            + ", graphics size:" + graphicsLayer.getGraphics().size()
                             + ", distance:" + distance;
-                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                     if(distance < 5)
                         return;
                 }

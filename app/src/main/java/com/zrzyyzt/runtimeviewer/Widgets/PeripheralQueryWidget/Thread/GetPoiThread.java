@@ -1,12 +1,11 @@
-package com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.Thread;
+package com.zrzyyzt.runtimeviewer.Widgets.PeripheralQueryWidget.Thread;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.zrzyyzt.runtimeviewer.Widgets.PlaceNameSearchWidget.Entity.PoiBean;
+import com.zrzyyzt.runtimeviewer.Widgets.PeripheralQueryWidget.Bean.PoiBean;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import okhttp3.OkHttpClient;
@@ -30,7 +29,7 @@ public class GetPoiThread implements Callable<PoiBean> {
         OkHttpClient client = new OkHttpClient();
         String url = mIpAddress ;
 
-        Log.d(TAG, "call: " + url);
+        //Log.d(TAG, "call: " + url);
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -38,7 +37,7 @@ public class GetPoiThread implements Callable<PoiBean> {
             Response execute = client.newCall(request).execute();
             String jsonBody = execute.body().string();
             if(jsonBody.contains("pois")) {
-                //Log.v(TAG, jsonBody);
+                Log.v(TAG, jsonBody);
                 Gson gson = new Gson();
                 poiBean = gson.fromJson(jsonBody, PoiBean.class);
             }

@@ -40,7 +40,7 @@
         <activity android:name=".BMOD.PhotoModule.PhotoListActivity"></activity>
         <activity android:name=".BMOD.PhotoModule.PhotoActivity" />
         <activity android:name=".BMOD.CameraModule.CameraActivity"></activity>
-        <activity android:name=".Widgets.DocManagerWidget.PdfViewerActivity" />
+        <activity android:name=".Widgets.DocManagerWidget.PdfViewerActivity" android:screenOrientation="landscape" />
         <activity android:name=".BMOD.SystemModule.LoginActivity" />
         <activity android:name=".BMOD.SystemModule.LockviewActivity" />
         <activity android:name=".BMOD.ProjectsModule.View.MainActivity" />
@@ -60,6 +60,8 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+        <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="4AlTZv0xDjeS6X1aBnllstGlRzFKvEhj">
+        </meta-data>
     </application>
 
     <supports-screens
@@ -68,6 +70,5 @@
         android:normalScreens="false"
         android:resizeable="true"
         android:smallScreens="true" />
-
 
 </manifest>

@@ -135,8 +135,8 @@ public class InitActivity extends AppCompatActivity implements LockPatternView.O
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        textView.setText("版本号: 密度" +dm.density +",dpi "+ dm.densityDpi);
-
+        //textView.setText("版本号: 密度" +dm.density +",dpi "+ dm.densityDpi);
+        textView.setText("版本号: "+"V-0.2");
     }
 
     /**

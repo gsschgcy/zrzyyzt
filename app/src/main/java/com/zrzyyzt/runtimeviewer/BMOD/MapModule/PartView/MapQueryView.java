@@ -152,7 +152,6 @@ public class MapQueryView extends LinearLayout {
                     mMapView.setMagnifierEnabled(false);
                     mapQueryListener.clear();
                 }
-
             }
         }
     };

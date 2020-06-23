@@ -130,7 +130,7 @@ public class MapQueryOnTouchListener extends DefaultMapViewOnTouchListener{
 //            FeatureLayer layer = selectFeatureList.get(0).getFeatureTable().getFeatureLayer();
 //            String layerName = layer.getName();
             String layerName = featureTable.getDisplayName();
-            Toast.makeText(context, "选择的图层为：" +layerName , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "选择的图层为：" +layerName , Toast.LENGTH_SHORT).show();
             txtLayerName.setText(layerName);
             setFeatureSelect(selectFeatureList.get(0));
         }else{
